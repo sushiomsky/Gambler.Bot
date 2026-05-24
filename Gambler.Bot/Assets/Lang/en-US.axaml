@@ -112,10 +112,11 @@
 
         <system:String x:Key="Localization.Common.SessionStats.TimeRunning">Time running</system:String>
   <system:String x:Key="Localization.Common.SessionStats.BettingSpeed">Bets/s</system:String>
+	<system:String x:Key="Localization.Common.SessionStats.AvgBettingSpeed">Avg Bets/s</system:String>
         <system:String x:Key="Localization.Common.SessionStats.Wagered">Wagered</system:String>
         <system:String x:Key="Localization.Common.SessionStats.CurrentStreak">Current streak</system:String>
         <system:String x:Key="Localization.Common.SessionStats.BestStreak">Best streak</system:String>
-        <system:String x:Key="Localization.Common.SessionStats.WorstSTreak">Worst streak</system:String>
+        <system:String x:Key="Localization.Common.SessionStats.WorstStreak">Worst streak</system:String>
         <system:String x:Key="Localization.Common.SessionStats.ProfitHour">Profit/hour</system:String>
         <system:String x:Key="Localization.Common.SessionStats.AvgProfitBet">Avg profit/bet</system:String>
         <system:String x:Key="Localization.Common.SessionStats.ProfitDay">Profit/day</system:String>

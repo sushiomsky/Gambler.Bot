@@ -25,6 +25,7 @@
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition/>
+						<RowDefinition/>
                         <RowDefinition/>
                         <RowDefinition/>
                         <RowDefinition/>
@@ -34,18 +35,19 @@
                     </Grid.RowDefinitions>
                     <TextBlock Grid.Column="0" Grid.Row="0" Text="{DynamicResource Localization.Common.SessionStats.TimeRunning}" />
                   <TextBlock Grid.Column="2" Grid.Row="0" Text="{DynamicResource Localization.Common.SessionStats.BettingSpeed}" />
+					<TextBlock Grid.Column="2" Grid.Row="1" Text="{DynamicResource Localization.Common.SessionStats.AvgBettingSpeed}" />
                     <TextBlock Grid.Column="0" Grid.Row="1" Text="{DynamicResource Localization.Common.Profit}" />
-                    <TextBlock Grid.Column="2" Grid.Row="1" Text="{DynamicResource Localization.Common.SessionStats.Wagered}" />
+                    <TextBlock Grid.Column="2" Grid.Row="2" Text="{DynamicResource Localization.Common.SessionStats.Wagered}" />
                     <TextBlock Grid.Column="0" Grid.Row="2" Text="{DynamicResource Localization.Common.Bets}" />
-                    <TextBlock Grid.Column="2" Grid.Row="2" Text="{DynamicResource Localization.Common.SessionStats.CurrentStreak}" />
+                    <TextBlock Grid.Column="2" Grid.Row="3" Text="{DynamicResource Localization.Common.SessionStats.CurrentStreak}" />
                     <TextBlock Grid.Column="0" Grid.Row="3" Text="{DynamicResource Localization.Common.Wins}" />
-                    <TextBlock Grid.Column="2" Grid.Row="3" Text="{DynamicResource Localization.Common.Losses}" />
+                    <TextBlock Grid.Column="2" Grid.Row="4" Text="{DynamicResource Localization.Common.Losses}" />
                     <TextBlock Grid.Column="0" Grid.Row="4" Text="{DynamicResource Localization.Common.SessionStats.BestStreak}" />
-                    <TextBlock Grid.Column="2" Grid.Row="4" Text="{DynamicResource Localization.Common.SessionStats.WorstStreak}" />
+                    <TextBlock Grid.Column="2" Grid.Row="5" Text="{DynamicResource Localization.Common.SessionStats.WorstStreak}" />
                     <TextBlock Grid.Column="0" Grid.Row="5" Text="{DynamicResource Localization.Common.SessionStats.ProfitHour}" />
-                    <TextBlock Grid.Column="2" Grid.Row="5" Text="{DynamicResource Localization.Common.SessionStats.AvgProfitBet}" />
+                    <TextBlock Grid.Column="2" Grid.Row="6" Text="{DynamicResource Localization.Common.SessionStats.AvgProfitBet}" />
                     <TextBlock Grid.Column="0" Grid.Row="6" Text="{DynamicResource Localization.Common.SessionStats.ProfitDay}" />
-                    <TextBlock Grid.Column="2" Grid.Row="6" Text="{DynamicResource Localization.Common.SessionStats.Luck}" />
+                    <TextBlock Grid.Column="2" Grid.Row="7" Text="{DynamicResource Localization.Common.SessionStats.Luck}" />
                     <SelectableTextBlock Grid.Column="1" Grid.Row="0" >
                         <i:Interaction.Behaviors>
                             <behaviours:NumberFormatBehaviour Mask="d\,hh\:mm\:ss"  Text="{Binding Stats.RunningTimeSpan , Mode=OneWay}" />
@@ -74,7 +76,12 @@
                       <behaviours:NumberFormatBehaviour Mask="n8" Text="{Binding Stats.BettingSpeed, Mode=OneWay}"/>
                     </i:Interaction.Behaviors>
                   </SelectableTextBlock>
-                    <SelectableTextBlock Grid.Column="3" Grid.Row="1"  >
+					<SelectableTextBlock Grid.Column="3" Grid.Row="1"  >
+						<i:Interaction.Behaviors>
+							<behaviours:NumberFormatBehaviour Mask="n8" Text="{Binding Stats.AvgBettingSpeed, Mode=OneWay}"/>
+						</i:Interaction.Behaviors>
+					</SelectableTextBlock>
+                    <SelectableTextBlock Grid.Column="3" Grid.Row="2"  >
                         <i:Interaction.Behaviors>
                             <behaviours:NumberFormatBehaviour Mask="n8" Text="{Binding Stats.Wagered, Mode=OneWay}"/>
                         </i:Interaction.Behaviors>
@@ -89,7 +96,7 @@
                             <behaviours:NumberFormatBehaviour Mask="n0" Text="{Binding Stats.Wins, Mode=OneWay}"/>
                         </i:Interaction.Behaviors>
                     </SelectableTextBlock>
-                    <SelectableTextBlock Grid.Column="3" Grid.Row="3" Classes="theme-text-body danger"  >
+                    <SelectableTextBlock Grid.Column="3" Grid.Row="4" Classes="theme-text-body danger"  >
                         <i:Interaction.Behaviors>
                             <behaviours:NumberFormatBehaviour Mask="n0" Text="{Binding Stats.Losses, Mode=OneWay}"/>
                         </i:Interaction.Behaviors>
@@ -99,7 +106,7 @@
                             <behaviours:NumberFormatBehaviour Mask="n0" Text="{Binding Stats.BestStreak, Mode=OneWay}" />
                         </i:Interaction.Behaviors>
                     </SelectableTextBlock>
-                    <SelectableTextBlock Grid.Column="3" Grid.Row="4" Classes="theme-text-body danger"  >
+                    <SelectableTextBlock Grid.Column="3" Grid.Row="5" Classes="theme-text-body danger"  >
                         <i:Interaction.Behaviors>
                             <behaviours:NumberFormatBehaviour Mask="n0" Text="{Binding Stats.WorstStreak, Mode=OneWay}"/>
                         </i:Interaction.Behaviors>
@@ -134,7 +141,7 @@
                             </ia:DataTriggerBehavior>
                         </i:Interaction.Behaviors>
                     </controls:ColourChangeSelTextBlock>
-                    <controls:ColourChangeSelTextBlock Grid.Column="3" Grid.Row="2"  >
+                    <controls:ColourChangeSelTextBlock Grid.Column="3" Grid.Row="3"  >
                         <i:Interaction.Behaviors>
                             <behaviours:NumberFormatBehaviour Mask="n0" Text="{Binding Stats.CurrentStreak, Mode=OneWay}" />
                             <ia:DataTriggerBehavior Binding="{Binding Stats.CurrentStreak}"
@@ -149,7 +156,7 @@
                             </ia:DataTriggerBehavior>
                         </i:Interaction.Behaviors>
                     </controls:ColourChangeSelTextBlock>
-                    <controls:ColourChangeSelTextBlock Grid.Column="3" Grid.Row="5"  >
+                    <controls:ColourChangeSelTextBlock Grid.Column="3" Grid.Row="6"  >
                         <i:Interaction.Behaviors>
                             <behaviours:NumberFormatBehaviour Mask="n8" Text="{Binding Stats.ProfitPerBet, Mode=OneWay}" />
                             <ia:DataTriggerBehavior Binding="{Binding Stats.ProfitPerBet}"
@@ -164,7 +171,7 @@
                             </ia:DataTriggerBehavior>
                         </i:Interaction.Behaviors>
                     </controls:ColourChangeSelTextBlock>
-                    <controls:ColourChangeSelTextBlock Grid.Column="3" Grid.Row="6" >
+                    <controls:ColourChangeSelTextBlock Grid.Column="3" Grid.Row="7" >
                         <i:Interaction.Behaviors>
                             <behaviours:NumberFormatBehaviour Mask="n5" Text="{Binding Stats.Luck, Mode=OneWay}" />
                             <ia:DataTriggerBehavior Binding="{Binding Stats.Luck}"

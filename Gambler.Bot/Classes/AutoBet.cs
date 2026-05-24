@@ -1028,8 +1028,14 @@ namespace Gambler.Bot.Classes
                 Stats.RunningTime += (long)(Stats.EndTime - Stats.StartTime).TotalMilliseconds;
                 if (wasrunning && DBInterface != null)
                 {
+                    
                     if (Stats.SessionStatsId<=0)
                         DBInterface.Add(Stats);
+                    else if (DBInterface.Entry(Stats).State == Microsoft.EntityFrameworkCore.EntityState.Detached)
+                    {
+                        DBInterface.Attach(Stats);
+                        DBInterface.Entry(Stats).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                    }
                     try
                     {
                         DBInterface?.SaveChanges();
@@ -1056,7 +1062,13 @@ namespace Gambler.Bot.Classes
             TotalRuntime += Stats.RunningTime;
             if (this.DBInterface != null)
             {
-               this.DBInterface.Add(Stats);
+                if (Stats.SessionStatsId <= 0)
+                    DBInterface.Add(Stats);
+                else if (DBInterface.Entry(Stats).State == Microsoft.EntityFrameworkCore.EntityState.Detached)
+                {
+                    DBInterface.Attach(Stats);
+                    DBInterface.Entry(Stats).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                }
                 try
                 {
                     this.DBInterface.SaveChanges();
@@ -1096,6 +1108,11 @@ namespace Gambler.Bot.Classes
                     {
                         DBInterface?.Add(NewBet);
                         await DBInterface?.SaveChangesAsync();
+                        if (Stats?.Bets % 100 == 0)
+                        {
+                            DBInterface?.ChangeTracker.Clear();
+                        }
+
                     }
                     else
                     {
