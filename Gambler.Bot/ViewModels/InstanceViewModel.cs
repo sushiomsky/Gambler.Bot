@@ -294,7 +294,7 @@ var langs2 = langs.Where(x => x.Source?.OriginalString?.Contains("/Lang/") ?? fa
                     case
                     Bot.Common.Games.Games.Twist:
                         {
-                            LivebetVMs[game ?? default] = new DiceLiveBetViewModel(_logger);
+                            LivebetVMs[game ?? default] = new TwistLiveBetViewModel(_logger);
                             tmpLive = LivebetVMs[game ?? default];
 
                             break;
@@ -344,6 +344,7 @@ var langs2 = langs.Where(x => x.Source?.OriginalString?.Contains("/Lang/") ?? fa
                     }
                 case
                     Bot.Common.Games.Games.Limbo:
+                    PlaceBetVM = new LimboPlaceBetViewModel(_logger);
                     break;
             }
             SetGameVM(botIns.CurrentGame);

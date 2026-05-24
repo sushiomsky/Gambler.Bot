@@ -186,6 +186,8 @@ namespace Gambler.Bot.ViewModels.Games.Dice
         public bool ShowButton { get=>!ShowToggle && showHighLow; }
         public IGameConfig GameSettings { get; set; }
 
+        public virtual Bot.Common.Games.Games Game => Bot.Common.Games.Games.Dice;
+
         public virtual event EventHandler<PlaceBetEventArgs> PlaceBet;
 
         protected virtual void Bet(bool High)

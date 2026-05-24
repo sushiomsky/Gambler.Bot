@@ -1632,6 +1632,9 @@
 	  <Compile Update="Views\Games\Limbo\LimboLiveBetView.axaml.cs">
 	    <DependentUpon>LimboLiveBetView.axaml</DependentUpon>
 	  </Compile>
+	  <Compile Update="Views\Games\Twist\TwistLiveBetView.axaml.cs">
+	    <DependentUpon>TwistLiveBetView.axaml</DependentUpon>
+	  </Compile>
 	</ItemGroup>
 
 	

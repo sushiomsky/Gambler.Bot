@@ -9,6 +9,7 @@ using Gambler.Bot.Common.Games.Crash;
 using Gambler.Bot.Common.Games.Plinko;
 using Gambler.Bot.Common.Games.Roulette;
 using Gambler.Bot.Common.Games.Limbo;
+using Gambler.Bot.Common.Games.Twist;
 
 namespace Gambler.Bot.Core.Storage
 {

@@ -172,7 +172,7 @@
                                     <dice:DiceLiveBetView/>
                                 </DataTemplate>
                                 <DataTemplate DataType="twistVM:TwistLiveBetViewModel">
-                                    <dice:DiceLiveBetView/>
+                                    <twist:TwistLiveBetView/>
                                 </DataTemplate>
                                 <DataTemplate DataType="limboVM:LimboLiveBetViewModel">
                                     <limbo:LimboLiveBetView/>

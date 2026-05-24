@@ -13,7 +13,7 @@ namespace Gambler.Bot.Classes.BetsPanel
 
     public interface iPlaceBet
     {
-
+        public Games Game { get; }
         event EventHandler<PlaceBetEventArgs> PlaceBet;
         public IGameConfig GameSettings { get; set; }
         void BetCommand();

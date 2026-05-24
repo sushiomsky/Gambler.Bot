@@ -12,6 +12,7 @@ using Gambler.Bot.Helpers;
 using Gambler.Bot.Strategies.Helpers;
 using Gambler.Bot.Strategies.Strategies;
 using Gambler.Bot.Strategies.Strategies.Abstractions;
+using Gambler.Bot.Views;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Scripting.Utils;
@@ -22,10 +23,10 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Security.Policy;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using Gambler.Bot.Views;
 using static Gambler.Bot.Classes.PersonalSettings;
 using ErrorEventArgs = Gambler.Bot.Common.Events.ErrorEventArgs;
 
@@ -267,7 +268,11 @@ namespace Gambler.Bot.Classes
                     {
                         CurrentGame = baseSite.SupportedGames[0];
                     }
+                    if (Strategy != null)
+                    {
+                        Strategy.Config = CurrentSite?.GetGameSettings(CurrentGame);
 
+                    }
                 }
                 if (Strategy is IProgrammerMode prog)
                 {
@@ -297,7 +302,7 @@ namespace Gambler.Bot.Classes
         public Games CurrentGame
         {
             get { return currentGame; }
-            set { currentGame = value; OnGameChanged?.Invoke(this, new EventArgs()); this.RaisePropertyChanged(); }
+            set { currentGame = value; OnGameChanged?.Invoke(this, new EventArgs()); this.RaisePropertyChanged(); if (this.Strategy!=null)this.Strategy.Config = CurrentSite?.GetGameSettings(CurrentGame); }
         }
 
 
@@ -611,6 +616,7 @@ namespace Gambler.Bot.Classes
                 strategy = value;
                 if (strategy != null)
                 {
+                    Strategy.Config = CurrentSite?.GetGameSettings(CurrentGame);
                     strategy.NeedBalance += Strategy_NeedBalance;
                     strategy.Stop += Strategy_Stop;
                     strategy.OnNeedStats += Strategy_OnNeedStats;
