@@ -1,4 +1,5 @@
-﻿using Gambler.Bot.Strategies.Strategies.Abstractions;
+﻿using Gambler.Bot.Classes;
+using Gambler.Bot.Strategies.Strategies.Abstractions;
 using Microsoft.Extensions.Logging;
 using ReactiveUI;
 using System;
@@ -72,7 +73,7 @@ namespace Gambler.Bot.ViewModels.Common
                 Lines = new ObservableCollection<string>();
             Lines.Add(line);
             content.AppendLine(line);
-            while (Lines.Count>1000)
+            while (Lines.Count>UISettings.Settings.ConsoleLines)
             {
                 content.Remove(0, Lines[0].Length + 2);
                 Lines.RemoveAt(0);
