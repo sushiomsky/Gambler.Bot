@@ -136,7 +136,7 @@
                         <ColumnDefinition Width="2*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="175" MinHeight="175" MaxHeight="175" ></RowDefinition>
+                        <RowDefinition Height="Auto"  ></RowDefinition>
                         <RowDefinition Height="*"></RowDefinition>
                     </Grid.RowDefinitions>
                     <GridSplitter Margin="3" Grid.Column="1" Grid.RowSpan="2" Background="{actipro:ThemeResource Container3BorderBrush}" ResizeDirection="Columns"/>
@@ -172,7 +172,7 @@
                                     <dice:DiceLiveBetView/>
                                 </DataTemplate>
                                 <DataTemplate DataType="twistVM:TwistLiveBetViewModel">
-                                    <dice:DiceLiveBetView/>
+                                    <twist:TwistLiveBetView/>
                                 </DataTemplate>
                                 <DataTemplate DataType="limboVM:LimboLiveBetViewModel">
                                     <limbo:LimboLiveBetView/>

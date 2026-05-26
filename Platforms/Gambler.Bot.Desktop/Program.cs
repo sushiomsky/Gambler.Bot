@@ -22,7 +22,11 @@ class Program
                 .Run();
             var serilogLogger = new LoggerConfiguration()
    .Enrich.FromLogContext()
+#if DEBUG
    .MinimumLevel.Debug()
+   #else
+   .MinimumLevel.Warning()
+#endif
    .WriteTo.File("gamblerbotlog.log") // Serilog.Sinks.Debug
    .CreateLogger();
             Log.Logger = serilogLogger;

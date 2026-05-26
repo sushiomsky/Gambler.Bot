@@ -16,7 +16,7 @@ namespace Gambler.Bot.ViewModels.Games.Limbo
         public LimboPlaceBetViewModel(ILogger logger) : base(logger)
         {
         }
-
+        public override Bot.Common.Games.Games Game => Bot.Common.Games.Games.Limbo;
         protected override void Bet(bool High)
         {
             PlaceBet?.Invoke(this, new PlaceBetEventArgs(new PlaceLimboBet(Amount, Payout)));

@@ -111,7 +111,7 @@
         <system:String x:Key="Localization.Common.SessionStats.Wagered">Ingezet</system:String>
         <system:String x:Key="Localization.Common.SessionStats.CurrentStreak">Huidige reeks</system:String>
         <system:String x:Key="Localization.Common.SessionStats.BestStreak">Beste reeks</system:String>
-        <system:String x:Key="Localization.Common.SessionStats.WorstSTreak">Slechtste reeks</system:String>
+        <system:String x:Key="Localization.Common.SessionStats.WorstStreak">Slechtste reeks</system:String>
         <system:String x:Key="Localization.Common.SessionStats.ProfitHour">Winst/uur</system:String>
         <system:String x:Key="Localization.Common.SessionStats.AvgProfitBet">Gem. winst/inzet</system:String>
         <system:String x:Key="Localization.Common.SessionStats.ProfitDay">Winst/dag</system:String>

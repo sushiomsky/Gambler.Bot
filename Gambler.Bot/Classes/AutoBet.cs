@@ -12,6 +12,7 @@ using Gambler.Bot.Helpers;
 using Gambler.Bot.Strategies.Helpers;
 using Gambler.Bot.Strategies.Strategies;
 using Gambler.Bot.Strategies.Strategies.Abstractions;
+using Gambler.Bot.Views;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Scripting.Utils;
@@ -22,10 +23,10 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Security.Policy;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using Gambler.Bot.Views;
 using static Gambler.Bot.Classes.PersonalSettings;
 using ErrorEventArgs = Gambler.Bot.Common.Events.ErrorEventArgs;
 
@@ -267,7 +268,11 @@ namespace Gambler.Bot.Classes
                     {
                         CurrentGame = baseSite.SupportedGames[0];
                     }
+                    if (Strategy != null)
+                    {
+                        Strategy.Config = CurrentSite?.GetGameSettings(CurrentGame);
 
+                    }
                 }
                 if (Strategy is IProgrammerMode prog)
                 {
@@ -297,7 +302,7 @@ namespace Gambler.Bot.Classes
         public Games CurrentGame
         {
             get { return currentGame; }
-            set { currentGame = value; OnGameChanged?.Invoke(this, new EventArgs()); this.RaisePropertyChanged(); }
+            set { currentGame = value; OnGameChanged?.Invoke(this, new EventArgs()); this.RaisePropertyChanged(); if (this.Strategy!=null)this.Strategy.Config = CurrentSite?.GetGameSettings(CurrentGame); }
         }
 
 
@@ -611,6 +616,7 @@ namespace Gambler.Bot.Classes
                 strategy = value;
                 if (strategy != null)
                 {
+                    Strategy.Config = CurrentSite?.GetGameSettings(CurrentGame);
                     strategy.NeedBalance += Strategy_NeedBalance;
                     strategy.Stop += Strategy_Stop;
                     strategy.OnNeedStats += Strategy_OnNeedStats;
@@ -1028,8 +1034,14 @@ namespace Gambler.Bot.Classes
                 Stats.RunningTime += (long)(Stats.EndTime - Stats.StartTime).TotalMilliseconds;
                 if (wasrunning && DBInterface != null)
                 {
+                    
                     if (Stats.SessionStatsId<=0)
                         DBInterface.Add(Stats);
+                    else if (DBInterface.Entry(Stats).State == Microsoft.EntityFrameworkCore.EntityState.Detached)
+                    {
+                        DBInterface.Attach(Stats);
+                        DBInterface.Entry(Stats).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                    }
                     try
                     {
                         DBInterface?.SaveChanges();
@@ -1056,7 +1068,13 @@ namespace Gambler.Bot.Classes
             TotalRuntime += Stats.RunningTime;
             if (this.DBInterface != null)
             {
-               this.DBInterface.Add(Stats);
+                if (Stats.SessionStatsId <= 0)
+                    DBInterface.Add(Stats);
+                else if (DBInterface.Entry(Stats).State == Microsoft.EntityFrameworkCore.EntityState.Detached)
+                {
+                    DBInterface.Attach(Stats);
+                    DBInterface.Entry(Stats).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                }
                 try
                 {
                     this.DBInterface.SaveChanges();
@@ -1096,6 +1114,11 @@ namespace Gambler.Bot.Classes
                     {
                         DBInterface?.Add(NewBet);
                         await DBInterface?.SaveChangesAsync();
+                        if (Stats?.Bets % 100 == 0)
+                        {
+                            DBInterface?.ChangeTracker.Clear();
+                        }
+
                     }
                     else
                     {

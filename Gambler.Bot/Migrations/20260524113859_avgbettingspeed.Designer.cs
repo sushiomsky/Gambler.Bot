@@ -3,6 +3,7 @@ using System;
 using Gambler.Bot.Core.Storage;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Gambler.Bot.Strategies.Migrations
 {
     [DbContext(typeof(BotContext))]
-    partial class BotContextModelSnapshot : ModelSnapshot
+    [Migration("20260524113859_avgbettingspeed")]
+    partial class avgbettingspeed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.6");
@@ -145,9 +148,79 @@ namespace Gambler.Bot.Strategies.Migrations
                     b.ToTable("DiceBets");
                 });
 
+            modelBuilder.Entity("Gambler.Bot.Common.Games.Dice.TwistBet", b =>
+                {
+                    b.Property<string>("BetID")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("Chance")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ClientSeed")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Currency")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("Date")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("Edge")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Game")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Guid")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("High")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsWin")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<long>("Nonce")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("Profit")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("Roll")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ServerHash")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ServerSeed")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Site")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("TotalAmount")
+                        .HasColumnType("TEXT");
+
+                    b.Property<long>("Userid")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("WinnableType")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("BetID");
+
+                    b.ToTable("TwistBets");
+                });
+
             modelBuilder.Entity("Gambler.Bot.Common.Games.Limbo.LimboBet", b =>
                 {
                     b.Property<string>("BetID")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("Chance")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ClientSeed")
@@ -175,9 +248,6 @@ namespace Gambler.Bot.Strategies.Migrations
 
                     b.Property<long>("Nonce")
                         .HasColumnType("INTEGER");
-
-                    b.Property<decimal>("Payout")
-                        .HasColumnType("TEXT");
 
                     b.Property<decimal>("Profit")
                         .HasColumnType("TEXT");
@@ -293,73 +363,6 @@ namespace Gambler.Bot.Strategies.Migrations
                     b.HasKey("BetID");
 
                     b.ToTable("RouletteBets");
-                });
-
-            modelBuilder.Entity("Gambler.Bot.Common.Games.Twist.TwistBet", b =>
-                {
-                    b.Property<string>("BetID")
-                        .HasColumnType("TEXT");
-
-                    b.Property<decimal>("Chance")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ClientSeed")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Currency")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<decimal>("Date")
-                        .HasColumnType("TEXT");
-
-                    b.Property<decimal>("Edge")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("Game")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Guid")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool>("High")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<bool>("IsWin")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<long>("Nonce")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<decimal>("Profit")
-                        .HasColumnType("TEXT");
-
-                    b.Property<decimal>("Roll")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ServerHash")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ServerSeed")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Site")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<decimal>("TotalAmount")
-                        .HasColumnType("TEXT");
-
-                    b.Property<long>("Userid")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("WinnableType")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("BetID");
-
-                    b.ToTable("TwistBets");
                 });
 
             modelBuilder.Entity("Gambler.Bot.Common.Helpers.Currency", b =>

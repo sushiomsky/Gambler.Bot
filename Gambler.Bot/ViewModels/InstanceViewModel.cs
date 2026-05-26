@@ -144,11 +144,17 @@ namespace Gambler.Bot.ViewModels
             tmp.OnSiteNotify += Tmp_OnSiteNotify;
             tmp.OnSiteError += Tmp_OnSiteError;
             tmp.PropertyChanged += Tmp_PropertyChanged;
+            tmp.OnSiteStatsUpdated += Tmp_OnSiteStatsUpdated;
             tmp.GetStrats();
             BotInstance = tmp;
             botIns.CurrentGame = Bot.Common.Games.Games.Dice;
             _logger.LogDebug("Instance viewmodel created");
             genLiveBetView = new GenericLiveBetViewModel(_logger);
+        }
+
+        private void Tmp_OnSiteStatsUpdated(object? sender, StatsUpdatedEventArgs e)
+        {
+            SiteStatsData.StatsUpdated(botIns.SiteStats);
         }
 
         private void BrowserDone()
@@ -288,7 +294,7 @@ var langs2 = langs.Where(x => x.Source?.OriginalString?.Contains("/Lang/") ?? fa
                     case
                     Bot.Common.Games.Games.Twist:
                         {
-                            LivebetVMs[game ?? default] = new DiceLiveBetViewModel(_logger);
+                            LivebetVMs[game ?? default] = new TwistLiveBetViewModel(_logger);
                             tmpLive = LivebetVMs[game ?? default];
 
                             break;
@@ -338,6 +344,7 @@ var langs2 = langs.Where(x => x.Source?.OriginalString?.Contains("/Lang/") ?? fa
                     }
                 case
                     Bot.Common.Games.Games.Limbo:
+                    PlaceBetVM = new LimboPlaceBetViewModel(_logger);
                     break;
             }
             SetGameVM(botIns.CurrentGame);

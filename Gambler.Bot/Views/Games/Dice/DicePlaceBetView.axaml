@@ -7,6 +7,10 @@
              xmlns:vm="using:Gambler.Bot.ViewModels.Games.Dice"
              x:DataType="vm:DicePlaceBetViewModel"
              xmlns:img="https://github.com/projektanker/icons.avalonia">
+	<StackPanel Orientation="Vertical">
+		<StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+			<TextBlock Text="{Binding Game}" />
+		</StackPanel>
     <Grid ColumnDefinitions="Auto,2*,Auto" RowDefinitions="Auto,Auto,Auto,Auto">
         <TextBlock IsVisible="{Binding ShowAmount}" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" Text="{DynamicResource Localization.Common.Bet}" />
         <TextBlock IsVisible="{Binding ShowChance}" VerticalAlignment="Center" Grid.Column="0" Grid.Row="1" Text="{DynamicResource Localization.Games.Dice.Chance}" />
@@ -44,4 +48,5 @@
         </ToggleButton>
 
     </Grid>
+	</StackPanel>
 </UserControl>
