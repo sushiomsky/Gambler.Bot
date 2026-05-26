@@ -2,6 +2,7 @@
 using Gambler.Bot.Common.Events;
 using Gambler.Bot.Common.Games;
 using Gambler.Bot.Common.Games.Dice;
+using Gambler.Bot.Common.Games.Twist;
 using Gambler.Bot.Common.Helpers;
 using Gambler.Bot.Core.Events;
 using Gambler.Bot.Core.Helpers;
@@ -526,6 +527,18 @@ namespace Gambler.Bot.Classes
             {
                 NextBext.Amount = BetSettings.MinBet;
             }
+            //doing it this way will override a value specified by the strategy
+            if (BetSettings.CheckHighLow(MostRecentBet, win, Stats, out bool NewHigh, SiteStats))
+            {
+                if (NextBext is PlaceDiceBet dice)
+                {
+                    dice.High = NewHigh;
+                }
+                else if (NextBext is PlaceTwistBet twist)
+                {
+                    twist.High = NewHigh;
+                }
+            }
             if (Running)
             {
                 decimal secondsPerBet = 0;
@@ -950,10 +963,7 @@ namespace Gambler.Bot.Classes
                             if (CurrentSite.CanChangeSeed)
                                 await CurrentSite.ResetSeed("");
                         }
-                        if (BetSettings.CheckHighLow(MostRecentBet, win, Stats, out NewHigh, SiteStats))
-                        {
-                            (strategy as iDiceStrategy).High = NewHigh;
-                        }
+                       
                         if (Running)
                         {
                             if (!Reset)
@@ -966,6 +976,7 @@ namespace Gambler.Bot.Classes
                             
                             await PlaceBet(NextBext);
                         }
+                        
                     }
                     catch (Exception E)
                     {
