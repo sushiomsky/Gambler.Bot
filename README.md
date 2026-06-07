@@ -1,27 +1,53 @@
-Gambler.Bot
-=======
+# Gambler.Bot
 
-Build: [![Build Status](https://eugenebotma.visualstudio.com/seuntjie900/_apis/build/status%2FSeuntjie900.Gambler.Bot?repoName=Seuntjie900%2FGambler.Bot&branchName=master&jobName=BuildJob)](https://eugenebotma.visualstudio.com/seuntjie900/_build/latest?definitionId=6&repoName=Seuntjie900%2FGambler.Bot&branchName=master)<br/>
-<br/>
-Note:This bot is still in beta.<br/>
-<br/>
-Betting for for a variety of online casinos, supporting a variety of games and strategies.<br/>
-<br/>
-Freaturs include customizable betting strategies, including martingale, labouchere, d'alembert, fibonacci, and preset list of bets.<br/>
-Variety of games - Dice, Limbo, Twist currently supported. HiLo, Crash, Plinko and Roulette planned<br/>
-Several programmer modes, including LUA, JS, Pythong and C# with additional features (error handling, resetting, more info).<br/>
-Advanced reset and stop conditions.<br/>
-Automatic withdrawal, tipping, investing or banking/vaulting<br/>
-profit chart and bet history<br/>
-extremely fast simulator<br/>
-bet verifier<br/>
-Light and dark mode<br/>
-variety of colour schemes<br/>
-bet storage options including sqlite (default), sqlserver, mysql, postgres and mongodb (coming soon)<br/>
-dynamic triggers for notifications<br/>
-dynamic action triggers for stopping, resetting, withdrawing etc<br/>
-Error settings - define how the bot should behave upon certain errors<br/>
-<br/>
-<br/>
-Gambling is gambling no matter what you do or how good your strategy is. The house always wins if you keep playing. Winners know when to stop.<br/>
-Like any human, I make mistakes, and like any program, the bot is bound to have a few bugs. Use the bot at your own risk. Should you come accross a bug, please report it with as much detail as possible to contact@seuntjie.com
+Gambler.Bot is a cross-platform betting client for supported gambling sites. It focuses on strategy automation, session tracking, and a structured UI for managing games, bets, and account settings.
+
+## What You Get
+
+- Strategy support for martingale, labouchere, d'Alembert, fibonacci, preset lists, and programmer-mode scripts.
+- Game coverage for dice, limbo, and twist, with room for additional game-specific workflows.
+- Session tools for bet history, profit charts, reset handling, triggers, and simulator-style testing.
+- Database-backed storage with support for SQLite, SQL Server, MySQL, and PostgreSQL.
+- A desktop-oriented Avalonia UI with shared code for the additional platform hosts in `Platforms/`.
+
+## Repository Layout
+
+- `Gambler.Bot/` contains the main application shell, view models, assets, and shared UI.
+- `Platforms/` contains the platform entry points for desktop, Android, browser, and iOS.
+- `ProgrammerMode.md` documents the script-driven betting runtime.
+- `scripts/` contains release and hook helpers.
+- `.githooks/` contains the repository-managed git hooks.
+
+## Versioning And Releases
+
+Release automation is handled through repository hooks and the central `Directory.Build.props` file.
+
+1. Install the repo hooks with:
+
+```powershell
+pwsh -File scripts/install-hooks.ps1
+```
+
+2. Create a release commit with one of these messages:
+
+```text
+release
+release patch
+release minor
+release major
+release 1.2.3
+```
+
+3. The hook updates `Directory.Build.props`, stages the version change, tags the commit, pushes the branch and tags, and creates a GitHub release when a token is available.
+
+If no GitHub token is present, the tag still gets pushed and the hook reports that the release creation step was skipped.
+
+## Contact
+
+- Email: `schnickfitzel1@gmail.com`
+- Telegram: `@yzymowep`
+
+## Notes
+
+- The application includes update and platform-specific code paths that still reference the upstream project for runtime behavior.
+- This README intentionally avoids external documentation links so the repo stays self-contained.

@@ -9,27 +9,24 @@
              >
     <Grid ColumnDefinitions="auto,*">
         <Image Margin="15" Height="100" Width="100" Grid.Column="0" />
-        <Grid Grid.Column="1" ColumnDefinitions="auto,*" RowDefinitions="auto,auto,auto,auto,auto,auto,auto,auto,auto,auto,">
+        <Grid Grid.Column="1" ColumnDefinitions="auto,*" RowDefinitions="auto,auto,auto,auto,auto,auto,auto,auto,auto">
             <TextBlock Text="Gambler.Bot" FontSize="24" FontWeight="Bold" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0"/>
-            <TextBlock Text="Version:"  Grid.Column="0" Grid.Row="1"/>
+            <TextBlock Text="Version:" Grid.Column="0" Grid.Row="1"/>
             <TextBlock Text="{Binding Version}" Grid.Column="1" Grid.Row="1" TextWrapping="Wrap"/>
-            <TextBlock Text="Author:"  Grid.Column="0" Grid.Row="2" />
-            <TextBlock Text="{Binding Author}" Grid.Column="1"  Grid.Row="2" TextWrapping="Wrap"/>
-            <TextBlock Text="Description:"  Grid.Column="0" Grid.Row="3"/>
-            <TextBlock Text="{Binding Description}" Grid.Column="1"  Grid.Row="3" TextWrapping="Wrap"/>
-            <TextBlock Text="License:"  Grid.Column="0" Grid.Row="4"/>
-            <TextBlock Text="{Binding License}" Grid.Column="1"  Grid.Row="4" TextWrapping="Wrap"/>
-            <TextBlock Text="Copyright:"  Grid.Column="0" Grid.Row="5"/>
+            <TextBlock Text="Author:" Grid.Column="0" Grid.Row="2" />
+            <TextBlock Text="{Binding Author}" Grid.Column="1" Grid.Row="2" TextWrapping="Wrap"/>
+            <TextBlock Text="Description:" Grid.Column="0" Grid.Row="3"/>
+            <TextBlock Text="{Binding Description}" Grid.Column="1" Grid.Row="3" TextWrapping="Wrap"/>
+            <TextBlock Text="License:" Grid.Column="0" Grid.Row="4"/>
+            <TextBlock Text="{Binding License}" Grid.Column="1" Grid.Row="4" TextWrapping="Wrap"/>
+            <TextBlock Text="Copyright:" Grid.Column="0" Grid.Row="5"/>
             <TextBlock Text="{Binding Copyright}" Grid.Column="1" Grid.Row="5" TextWrapping="Wrap"/>
-            <TextBlock Text="Source code:"  Grid.Column="0" Grid.Row="6"/>
-            <TextBlock Text="See Help -> Source Code" Grid.Column="1" Grid.Row="6"/>
-                <TextBlock Text="Contact:"  Grid.Column="0" Grid.Row="7"/>
-                <TextBlock Text="See Help -> Contact" Grid.Column="1" Grid.Row="7"/>
-                    <TextBlock Text="Donations:"  Grid.Column="0" Grid.Row="8"/>
-                    <TextBlock Text="{Binding Donations}" Grid.Column="1" Grid.Row="8" TextWrapping="Wrap"/>
-                    <TextBlock Text="Acknowledgements: "  Grid.Column="0" Grid.Row="9"/>
-                    <TextBlock Text="{Binding Acknowledgements}" Grid.Column="1" Grid.Row="9" TextWrapping="Wrap"/>
-
-                </Grid>
-            </Grid>
-        </UserControl>
+            <TextBlock Text="Email:" Grid.Column="0" Grid.Row="6"/>
+            <TextBlock Text="{Binding ContactEmail}" Grid.Column="1" Grid.Row="6" TextWrapping="Wrap"/>
+            <TextBlock Text="Telegram:" Grid.Column="0" Grid.Row="7"/>
+            <TextBlock Text="{Binding TelegramHandle}" Grid.Column="1" Grid.Row="7" TextWrapping="Wrap"/>
+            <TextBlock Text="Acknowledgements:" Grid.Column="0" Grid.Row="8"/>
+            <TextBlock Text="{Binding Acknowledgements}" Grid.Column="1" Grid.Row="8" TextWrapping="Wrap"/>
+        </Grid>
+    </Grid>
+</UserControl>

@@ -28,8 +28,4 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Gambler.Bot\Gambler.Bot.csproj" />
   </ItemGroup>
-  <PropertyGroup>
-    <Version>
-    </Version>
-  </PropertyGroup>
 </Project>

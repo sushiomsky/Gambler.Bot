@@ -16,7 +16,8 @@ namespace Gambler.Bot.ViewModels.Common
         public string Description { get; set; }
         public string License { get; set; }
         public string Copyright { get; set; }
-        public string Donations { get; set; }
+        public string ContactEmail { get; set; }
+        public string TelegramHandle { get; set; }
         public string Acknowledgements { get; set; }
         public AboutViewModel(ILogger logger):base(logger)
         {
@@ -25,7 +26,8 @@ namespace Gambler.Bot.ViewModels.Common
             Description = "A bot for gambling sites";
             License = "MIT";
             Copyright = "© 2024 Botma Software (Pty) ltd - All rights reserved";
-            Donations = "See gambler.bot/donate";
+            ContactEmail = "schnickfitzel1@gmail.com";
+            TelegramHandle = "@yzymowep";
             Acknowledgements = "Thanks to all the people who helped me with this project";
         }
     }

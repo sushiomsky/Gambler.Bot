@@ -62,13 +62,20 @@ namespace Gambler.Bot
             try
             {
                 var mgr = new UpdateManager(new GithubSource("https://github.com/Seuntjie900/Gambler.Bot", null, false));
-                return (mgr.CurrentVersion?.ToFullString() ?? Assembly.GetExecutingAssembly().GetFileVersion().ToString());
+                return mgr.CurrentVersion?.ToFullString() ?? GetAssemblyVersion();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return Assembly.GetExecutingAssembly().GetFileVersion().ToString();
+                return GetAssemblyVersion();
             }
-            
+        }
+
+        private static string GetAssemblyVersion()
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+            return assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion
+                ?? assembly.GetName().Version?.ToString()
+                ?? "0.0.0";
         }
         internal static bool IsPortable()
         {
