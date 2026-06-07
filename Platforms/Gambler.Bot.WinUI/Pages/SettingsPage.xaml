@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Page
+    x:Class="Gambler.Bot.WinUI.Pages.SettingsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:Gambler.Bot.WinUI.Pages"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Padding="24,16,24,16" RowSpacing="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <TextBlock Style="{StaticResource TitleTextBlockStyle}" Text="Settings" />
+        <StackPanel Grid.Row="1" Spacing="12" MaxWidth="680" HorizontalAlignment="Left">
+            <ToggleSwitch x:Name="UseNativeThemeToggle" Header="Use native Windows theme" IsOn="True" />
+            <ToggleSwitch x:Name="PromptBeforeUpdatesToggle" Header="Prompt before updates" IsOn="True" />
+            <ToggleSwitch x:Name="RiskGuardToggle" Header="Risk guard" IsOn="True" />
+            <ToggleSwitch x:Name="SessionInsightsToggle" Header="Session insights" IsOn="True" />
+            <ComboBox x:Name="StorageProviderComboBox" Header="Default storage provider" SelectedIndex="0">
+                <ComboBoxItem Content="SQLite" />
+                <ComboBoxItem Content="SQL Server" />
+                <ComboBoxItem Content="PostgreSQL" />
+                <ComboBoxItem Content="MySQL" />
+            </ComboBox>
+            <Button HorizontalAlignment="Left" Click="SaveButton_Click">
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <FontIcon Glyph="&#xE74E;" />
+                    <TextBlock Text="Save settings" />
+                </StackPanel>
+            </Button>
+            <InfoBar x:Name="SaveInfoBar" IsOpen="False" Severity="Success" Title="Settings saved" Message="WinUI settings were written to the app data folder." />
+        </StackPanel>
+    </Grid>
+</Page>

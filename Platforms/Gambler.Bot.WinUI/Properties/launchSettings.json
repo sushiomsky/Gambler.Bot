@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Gambler.Bot.WinUI (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "Gambler.Bot.WinUI (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}

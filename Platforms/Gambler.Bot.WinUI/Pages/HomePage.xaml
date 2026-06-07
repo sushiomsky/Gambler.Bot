@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Page
+    x:Class="Gambler.Bot.WinUI.Pages.HomePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:Gambler.Bot.WinUI.Pages"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Padding="28,20,28,24" RowSpacing="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid ColumnSpacing="16">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <StackPanel Spacing="4">
+                <TextBlock Style="{StaticResource TitleTextBlockStyle}" Text="Command Center" />
+                <TextBlock x:Name="DashboardSubtitleText" Foreground="{ThemeResource MutedTextBrush}" Text="Live session overview, strategy health, and account state." />
+            </StackPanel>
+            <CommandBar Grid.Column="1" DefaultLabelPosition="Right">
+                <AppBarButton Icon="Play" Label="Start" Click="StartButton_Click" />
+                <AppBarButton Icon="Pause" Label="Pause" Click="PauseButton_Click" />
+                <AppBarButton Icon="Stop" Label="Stop" Click="StopButton_Click" />
+                <AppBarButton Icon="Preview" Label="Preview bet" Click="PreviewBetButton_Click" />
+            </CommandBar>
+        </Grid>
+
+        <Grid Grid.Row="1" ColumnSpacing="12">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <InfoBar x:Name="SessionInfoBar" Grid.Column="0" IsOpen="True" Severity="Informational" Title="Session" Message="No live session connected." />
+            <InfoBar x:Name="StrategyInfoBar" Grid.Column="1" IsOpen="True" Severity="Informational" Title="Strategy" Message="No strategy selected." />
+            <InfoBar x:Name="RuntimeInfoBar" Grid.Column="2" IsOpen="True" Severity="Informational" Title="Runtime" Message="Idle." />
+            <InfoBar x:Name="StorageInfoBar" Grid.Column="3" IsOpen="True" Severity="Informational" Title="Storage" Message="Core data layer pending." />
+        </Grid>
+
+        <Grid Grid.Row="2" ColumnSpacing="20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Grid RowSpacing="16">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <Grid ColumnSpacing="12">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Border Padding="18" CornerRadius="8" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1">
+                        <StackPanel Spacing="8">
+                            <TextBlock Style="{StaticResource MetricCaptionTextBlockStyle}" Text="BALANCE" />
+                            <TextBlock Style="{StaticResource MetricValueTextBlockStyle}" Text="0.00000000" />
+                            <TextBlock x:Name="BalanceCaptionText" Foreground="{ThemeResource MutedTextBrush}" Text="Waiting for site login" />
+                        </StackPanel>
+                    </Border>
+
+                    <Border Grid.Column="1" Padding="18" CornerRadius="8" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1">
+                        <StackPanel Spacing="8">
+                            <TextBlock Style="{StaticResource MetricCaptionTextBlockStyle}" Text="PROFIT" />
+                            <TextBlock Style="{StaticResource MetricValueTextBlockStyle}" Foreground="{ThemeResource RiskPositiveBrush}" Text="+0.00000000" />
+                            <TextBlock Foreground="{ThemeResource MutedTextBrush}" Text="Current session" />
+                        </StackPanel>
+                    </Border>
+
+                    <Border Grid.Column="2" Padding="18" CornerRadius="8" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1">
+                        <StackPanel Spacing="8">
+                            <TextBlock Style="{StaticResource MetricCaptionTextBlockStyle}" Text="BET SPEED" />
+                            <TextBlock Style="{StaticResource MetricValueTextBlockStyle}" Text="0/min" />
+                            <TextBlock Foreground="{ThemeResource MutedTextBrush}" Text="Automation idle" />
+                        </StackPanel>
+                    </Border>
+                </Grid>
+
+                <Border Grid.Row="1" Padding="18" CornerRadius="8" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1">
+                    <Grid RowSpacing="14">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Grid ColumnSpacing="12">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="Live Activity" />
+                            <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="6">
+                                <RadioButton Content="Bets" IsChecked="True" />
+                                <RadioButton Content="Profit" />
+                                <RadioButton Content="Risk" />
+                            </StackPanel>
+                        </Grid>
+
+                        <ListView x:Name="ActivityListView" Grid.Row="1" SelectionMode="None">
+                            <ListViewItem Content="WinUI shell created. Core session adapter is next." />
+                            <ListViewItem Content="Strategy workspace placeholder added for script migration." />
+                            <ListViewItem Content="Site connector surface prepared for login and balance state." />
+                        </ListView>
+                    </Grid>
+                </Border>
+            </Grid>
+
+            <Border Grid.Column="1" Padding="18" CornerRadius="8" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1">
+                <StackPanel Spacing="16">
+                    <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="Intelligence" />
+                    <ProgressBar Value="38" Maximum="100" />
+                    <TextBlock x:Name="UpdateStatusText" TextWrapping="Wrap" Foreground="{ThemeResource MutedTextBrush}" Text="Checking settings and update status." />
+                    <ToggleSwitch x:Name="RiskGuardToggle" Header="Risk guard" IsEnabled="False" />
+                    <ToggleSwitch x:Name="SessionInsightsToggle" Header="Session insights" IsEnabled="False" />
+                    <Button HorizontalAlignment="Stretch">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <FontIcon Glyph="&#xE945;" />
+                            <TextBlock Text="Review migration tasks" />
+                        </StackPanel>
+                    </Button>
+                    <InfoBar x:Name="BetPreviewInfoBar" IsOpen="False" Severity="Informational" Title="Next bet" />
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Grid>
+</Page>

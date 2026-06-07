@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Page
+    x:Class="Gambler.Bot.WinUI.Pages.SitesPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:models="using:Gambler.Bot.WinUI.Models"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Padding="28,20,28,24" RowSpacing="18">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid ColumnSpacing="16">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <StackPanel Spacing="4">
+                <TextBlock Style="{StaticResource TitleTextBlockStyle}" Text="Sites" />
+                <TextBlock x:Name="SiteCountText" Foreground="{ThemeResource MutedTextBrush}" Text="Loading supported sites." />
+            </StackPanel>
+            <CommandBar Grid.Column="1" DefaultLabelPosition="Right">
+                <AppBarButton Icon="Refresh" Label="Refresh" Click="RefreshButton_Click" />
+                <AppBarButton Icon="Play" Label="Simulate" Click="SimulateButton_Click" />
+                <AppBarButton Icon="Contact" Label="Select" Click="SelectButton_Click" />
+            </CommandBar>
+        </Grid>
+
+        <InfoBar x:Name="SelectionInfoBar" Grid.Row="1" IsOpen="True" Severity="Informational" Title="Catalog" Message="Site metadata is loaded from the existing Core site classes without using Avalonia." />
+
+        <ListView x:Name="SitesListView" Grid.Row="2" SelectionMode="Single">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="models:SiteSummary">
+                    <Grid Padding="10" ColumnSpacing="16">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="220" />
+                            <ColumnDefinition Width="2*" />
+                            <ColumnDefinition Width="2*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Spacing="2">
+                            <TextBlock FontWeight="SemiBold" Text="{x:Bind Name}" />
+                            <HyperlinkButton Padding="0" NavigateUri="{x:Bind Url}" Content="{x:Bind Url}" />
+                        </StackPanel>
+
+                        <TextBlock Grid.Column="1" VerticalAlignment="Center" TextWrapping="Wrap" Text="{x:Bind GameText}" />
+                        <TextBlock Grid.Column="2" VerticalAlignment="Center" TextWrapping="Wrap" Foreground="{ThemeResource MutedTextBrush}" Text="{x:Bind CurrencyText}" />
+                        <InfoBadge Grid.Column="3" Value="{x:Bind Status}" />
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</Page>

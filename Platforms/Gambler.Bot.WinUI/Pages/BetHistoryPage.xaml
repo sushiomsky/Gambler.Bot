@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Page
+    x:Class="Gambler.Bot.WinUI.Pages.BetHistoryPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:models="using:Gambler.Bot.WinUI.Models"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Padding="28,20,28,24" RowSpacing="18">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid ColumnSpacing="16">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <StackPanel Spacing="4">
+                <TextBlock Style="{StaticResource TitleTextBlockStyle}" Text="Bet History" />
+                <TextBlock x:Name="HistorySubtitleText" Foreground="{ThemeResource MutedTextBrush}" Text="Recent bets and session outcomes." />
+            </StackPanel>
+            <CommandBar Grid.Column="1" DefaultLabelPosition="Right">
+                <AppBarButton Icon="Refresh" Label="Refresh" Click="RefreshButton_Click" />
+                <AppBarButton Icon="Download" Label="Export" Click="ExportButton_Click" />
+            </CommandBar>
+        </Grid>
+
+        <InfoBar x:Name="HistoryInfoBar" Grid.Row="1" IsOpen="True" Severity="Informational" Title="Storage" Message="Reading persisted SQLite bet tables when a GamblerBot.db file is available." />
+
+        <ListView x:Name="HistoryListView" Grid.Row="2" SelectionMode="None">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="models:BetHistoryRecord">
+                    <Grid Padding="10" ColumnSpacing="16">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="190" />
+                            <ColumnDefinition Width="160" />
+                            <ColumnDefinition Width="110" />
+                            <ColumnDefinition Width="110" />
+                            <ColumnDefinition Width="120" />
+                            <ColumnDefinition Width="120" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Text="{x:Bind Timestamp}" />
+                        <TextBlock Grid.Column="1" Text="{x:Bind Site}" />
+                        <TextBlock Grid.Column="2" Text="{x:Bind Game}" />
+                        <TextBlock Grid.Column="3" Text="{x:Bind Currency}" />
+                        <TextBlock Grid.Column="4" Text="{x:Bind Amount}" />
+                        <TextBlock Grid.Column="5" Text="{x:Bind Profit}" />
+                        <InfoBadge Grid.Column="6" Value="{x:Bind Outcome}" />
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</Page>
