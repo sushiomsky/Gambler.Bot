@@ -11,11 +11,12 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <UserSecretsId>ef5be181-7c33-4a6b-8d07-0b8cd94b8d6c</UserSecretsId>
     <ApplicationIcon>app.ico</ApplicationIcon>
+    <AvaloniaUILicenseDisableTask Condition="'$(AvaAcc)' == ''">true</AvaloniaUILicenseDisableTask>
   </PropertyGroup>
   <ItemGroup>
     <Content Include="app.ico" />
   </ItemGroup>
-  <ItemGroup>
+  <ItemGroup Condition="'$(AvaAcc)' != ''">
     <AvaloniaUILicenseKey Include="$(AvaAcc)" />
   </ItemGroup>
   <ItemGroup>
