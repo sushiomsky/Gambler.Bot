@@ -15,6 +15,7 @@ public sealed partial class MainWindow : Window
     private readonly IStrategyCatalogService _strategyCatalogService;
     private readonly IStrategySessionService _strategySessionService;
     private readonly IBetHistoryService _betHistoryService;
+    private readonly IBetHistoryExportService _betHistoryExportService;
     private readonly IInsightService _insightService;
     private readonly IAutomationStateService _automationStateService;
     private readonly IAutomationRuntimeService _automationRuntimeService;
@@ -30,6 +31,7 @@ public sealed partial class MainWindow : Window
         IStrategyCatalogService strategyCatalogService,
         IStrategySessionService strategySessionService,
         IBetHistoryService betHistoryService,
+        IBetHistoryExportService betHistoryExportService,
         IInsightService insightService,
         IAutomationStateService automationStateService,
         IAutomationRuntimeService automationRuntimeService,
@@ -44,6 +46,7 @@ public sealed partial class MainWindow : Window
         _strategyCatalogService = strategyCatalogService;
         _strategySessionService = strategySessionService;
         _betHistoryService = betHistoryService;
+        _betHistoryExportService = betHistoryExportService;
         _insightService = insightService;
         _automationStateService = automationStateService;
         _automationRuntimeService = automationRuntimeService;
@@ -115,6 +118,7 @@ public sealed partial class MainWindow : Window
         _strategyCatalogService,
         _strategySessionService,
         _betHistoryService,
+        _betHistoryExportService,
         _insightService,
         _automationStateService,
         _automationRuntimeService,

@@ -156,9 +156,13 @@ Currently scanned tables:
 - `PlinkoBets`
 - `RouletteBets`
 
+Available actions:
+
+- `Refresh`: reloads persisted records.
+- `Export`: writes the currently loaded records to a CSV file in your Documents folder.
+
 Still pending:
 
-- export,
 - advanced filtering,
 - detailed bet view,
 - native charts.

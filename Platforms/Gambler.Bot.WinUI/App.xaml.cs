@@ -35,6 +35,7 @@ public partial class App : Application
         services.AddSingleton<IStrategyCatalogService, ReflectionStrategyCatalogService>();
         services.AddSingleton<IStrategySessionService, StrategySessionService>();
         services.AddSingleton<IBetHistoryService, BetHistoryService>();
+        services.AddSingleton<IBetHistoryExportService, BetHistoryExportService>();
         services.AddSingleton<IInsightService, InsightService>();
         services.AddSingleton<IAutomationStateService, AutomationStateService>();
         services.AddSingleton<IAutomationRuntimeService, AutomationRuntimeService>();

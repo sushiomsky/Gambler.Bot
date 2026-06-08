@@ -8,6 +8,7 @@ public sealed record NavigationContext(
     IStrategyCatalogService StrategyCatalogService,
     IStrategySessionService StrategySessionService,
     IBetHistoryService BetHistoryService,
+    IBetHistoryExportService BetHistoryExportService,
     IInsightService InsightService,
     IAutomationStateService AutomationStateService,
     IAutomationRuntimeService AutomationRuntimeService,

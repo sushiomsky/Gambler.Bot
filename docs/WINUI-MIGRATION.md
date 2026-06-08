@@ -32,6 +32,7 @@ The UI-neutral WinUI migration layer is testable through `Platforms/Gambler.Bot.
 - `LiveLoginService` performs normal Core site login and clears secret/MFA field values after each attempt.
 - `BetExecutionService` prepares the next `PlaceBet` from active Core site and strategy without placing it.
 - `BetHistoryService` reads persisted SQLite bet tables without depending on Avalonia storage.
+- `BetHistoryExportService` exports loaded history records to CSV.
 - `InsightService` combines settings, catalog, session, and runtime state into diagnostics.
 - `NavigationContext` passes UI-neutral services into pages while the shell is still lightweight.
 
@@ -41,14 +42,14 @@ The UI-neutral WinUI migration layer is testable through `Platforms/Gambler.Bot.
 - `SitesPage`: supported site catalog with select and simulation actions.
 - `LoginPage`: native login preparation using Core `LoginParameter` metadata, including hidden password/MFA input fields.
 - `StrategiesPage`: strategy catalog with active strategy selection.
-- `BetHistoryPage`: native history surface ready for persisted storage.
+- `BetHistoryPage`: native history surface with persisted SQLite loading and CSV export.
 - `IntelligencePage`: diagnostics derived from the new services.
 
 ## Verification
 
 - `dotnet build .\Platforms\Gambler.Bot.WinUI\Gambler.Bot.WinUI.csproj -c Debug` succeeds with 0 warnings and 0 errors.
 - `dotnet build .\Gambler.Bot.sln -c Debug` succeeds with 0 warnings and 0 errors.
-- `dotnet test .\Platforms\Gambler.Bot.WinUI.Tests\Gambler.Bot.WinUI.Tests.csproj -c Release` succeeds with 16 tests covering runtime safety, session state, insight diagnostics, and SQLite bet history reading.
+- `dotnet test .\Platforms\Gambler.Bot.WinUI.Tests\Gambler.Bot.WinUI.Tests.csproj -c Release` succeeds with 19 tests covering runtime safety, session state, insight diagnostics, SQLite bet history reading, and CSV export.
 - `dotnet publish .\Platforms\Gambler.Bot.WinUI\Gambler.Bot.WinUI.csproj -c Release -r win-x64 --self-contained true -p:WindowsAppSDKSelfContained=true -p:WindowsPackageType=None -p:PublishTrimmed=false -p:PublishSingleFile=false` succeeds locally.
 - `dotnet test .\Gambler.Bot.sln -c Debug --no-build` runs strategy tests successfully, but existing core site integration tests fail because local login parameter JSON is missing and some live seed reset expectations are not satisfied.
 
