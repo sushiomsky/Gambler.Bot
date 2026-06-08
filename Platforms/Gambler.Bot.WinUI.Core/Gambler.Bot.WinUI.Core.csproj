@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\Gambler.Bot.WinUI\Models\**\*.cs" LinkBase="Models" />
+    <Compile Include="..\Gambler.Bot.WinUI\Services\**\*.cs" LinkBase="Services" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="9.0.6" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.6" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.6" />
+    <PackageReference Include="Velopack" Version="0.0.1298" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Gambler.Bot.Core\Gambler.Bot.Core\Gambler.Bot.Common\Gambler.Bot.Common.csproj" />
+    <ProjectReference Include="..\..\..\Gambler.Bot.Core\Gambler.Bot.Core\Gambler.Bot.Core\Gambler.Bot.Core.csproj" />
+    <ProjectReference Include="..\..\..\Gambler.Bot.Strategies\Gambler.Bot.Strategies\Gambler.Bot.Strategies.csproj" />
+  </ItemGroup>
+</Project>

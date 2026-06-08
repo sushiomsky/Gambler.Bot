@@ -34,6 +34,45 @@ release 1.2.3
 - The hook pushes the branch and tags to `origin`.
 - If `GITHUB_TOKEN` or `GH_TOKEN` is available, the hook creates a GitHub release through the GitHub API.
 
+## WinUI Binary Downloads
+
+The native Windows client is built by `.github/workflows/winui-release.yml`.
+
+On pull requests and pushes to `main`/`master`, the workflow:
+
+- restores the WinUI client,
+- builds `Platforms/Gambler.Bot.WinUI`,
+- runs `Platforms.Gambler.Bot.WinUI.Tests`,
+- publishes a self-contained `win-x64` build,
+- uploads `Gambler.Bot.WinUI-win-x64.zip` as a workflow artifact.
+
+On tags matching `v*`, the same ZIP is attached to the GitHub release.
+
+To create a downloadable WinUI release:
+
+```powershell
+git tag v1.2.3
+git push origin v1.2.3
+```
+
+After the workflow finishes, users can download `Gambler.Bot.WinUI-win-x64.zip` from the GitHub release page.
+
+Local equivalent:
+
+```powershell
+dotnet publish .\Platforms\Gambler.Bot.WinUI\Gambler.Bot.WinUI.csproj `
+  -c Release `
+  -r win-x64 `
+  --self-contained true `
+  -p:WindowsAppSDKSelfContained=true `
+  -p:WindowsPackageType=None `
+  -p:PublishTrimmed=false `
+  -p:PublishSingleFile=false `
+  -o .\artifacts\Gambler.Bot.WinUI-win-x64
+```
+
+Trimming is disabled because the native client currently discovers Core sites and strategies through reflection.
+
 ## Version Source
 
 The repository uses the root `Directory.Build.props` file as the single source of truth for the version number. The app reads that version at runtime, and the release hook updates the same value before the commit is finalized.

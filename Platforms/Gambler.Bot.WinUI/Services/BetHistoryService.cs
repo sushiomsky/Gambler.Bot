@@ -1,3 +1,4 @@
+using System.Globalization;
 using Gambler.Bot.WinUI.Models;
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Logging;
@@ -17,15 +18,17 @@ public sealed class BetHistoryService : IBetHistoryService
     ];
 
     private readonly ILogger<BetHistoryService> _logger;
+    private readonly string? _databasePath;
 
-    public BetHistoryService(ILogger<BetHistoryService> logger)
+    public BetHistoryService(ILogger<BetHistoryService> logger, string? databasePath = null)
     {
         _logger = logger;
+        _databasePath = databasePath;
     }
 
     public IReadOnlyList<BetHistoryRecord> GetRecent(string? siteName = null, int limit = 100)
     {
-        var databasePath = FindDatabasePath();
+        var databasePath = _databasePath ?? FindDatabasePath();
         if (databasePath is null)
         {
             return [];
@@ -34,11 +37,16 @@ public sealed class BetHistoryService : IBetHistoryService
         try
         {
             var records = new List<BetHistoryRecord>();
-            using var connection = new SqliteConnection($"Data Source={databasePath}");
+            using var connection = new SqliteConnection($"Data Source={databasePath};Pooling=False");
             connection.Open();
 
             foreach (var table in BetTables)
             {
+                if (!TableExists(connection, table))
+                {
+                    continue;
+                }
+
                 ReadTable(connection, table, siteName, records);
             }
 
@@ -52,6 +60,14 @@ public sealed class BetHistoryService : IBetHistoryService
             _logger.LogWarning(ex, "Failed to read bet history from SQLite.");
             return [];
         }
+    }
+
+    private static bool TableExists(SqliteConnection connection, string table)
+    {
+        using var command = connection.CreateCommand();
+        command.CommandText = "select count(*) from sqlite_master where type = 'table' and name = $table";
+        command.Parameters.AddWithValue("$table", table);
+        return Convert.ToInt32(command.ExecuteScalar()) > 0;
     }
 
     private static void ReadTable(
@@ -113,14 +129,14 @@ public sealed class BetHistoryService : IBetHistoryService
 
     private static DateTimeOffset ReadTimestamp(string value)
     {
-        return decimal.TryParse(value, out var epochSeconds)
+        return decimal.TryParse(value, NumberStyles.Number, CultureInfo.InvariantCulture, out var epochSeconds)
             ? DateTimeOffset.FromUnixTimeMilliseconds((long)(epochSeconds * 1000m))
             : DateTimeOffset.MinValue;
     }
 
     private static decimal ReadDecimal(string value)
     {
-        return decimal.TryParse(value, out var result) ? result : 0m;
+        return decimal.TryParse(value, NumberStyles.Number, CultureInfo.InvariantCulture, out var result) ? result : 0m;
     }
 
     private static string ReadGameName(int gameValue, string table)

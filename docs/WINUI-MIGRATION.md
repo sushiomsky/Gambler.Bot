@@ -2,6 +2,8 @@
 
 This repo now has a native Windows shell at `Platforms/Gambler.Bot.WinUI`.
 
+The UI-neutral WinUI migration layer is testable through `Platforms/Gambler.Bot.WinUI.Core`, and service tests live in `Platforms/Gambler.Bot.WinUI.Tests`.
+
 ## Direction
 
 - Keep the existing Avalonia app available while the new Windows app is built.
@@ -46,4 +48,13 @@ This repo now has a native Windows shell at `Platforms/Gambler.Bot.WinUI`.
 
 - `dotnet build .\Platforms\Gambler.Bot.WinUI\Gambler.Bot.WinUI.csproj -c Debug` succeeds with 0 warnings and 0 errors.
 - `dotnet build .\Gambler.Bot.sln -c Debug` succeeds with 0 warnings and 0 errors.
+- `dotnet test .\Platforms\Gambler.Bot.WinUI.Tests\Gambler.Bot.WinUI.Tests.csproj -c Release` succeeds with 16 tests covering runtime safety, session state, insight diagnostics, and SQLite bet history reading.
+- `dotnet publish .\Platforms\Gambler.Bot.WinUI\Gambler.Bot.WinUI.csproj -c Release -r win-x64 --self-contained true -p:WindowsAppSDKSelfContained=true -p:WindowsPackageType=None -p:PublishTrimmed=false -p:PublishSingleFile=false` succeeds locally.
 - `dotnet test .\Gambler.Bot.sln -c Debug --no-build` runs strategy tests successfully, but existing core site integration tests fail because local login parameter JSON is missing and some live seed reset expectations are not satisfied.
+
+## Documentation And Releases
+
+- User-facing documentation starts at `docs/user-guide/README.md`.
+- GitHub release packaging is defined in `.github/workflows/winui-release.yml`.
+- The release workflow builds, tests, publishes, zips, uploads, and attaches `Gambler.Bot.WinUI-win-x64.zip` to `v*` GitHub releases.
+- Screenshots are planned in `docs/user-guide/images/`, but have not been captured from the running native app yet.
