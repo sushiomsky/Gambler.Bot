@@ -128,13 +128,24 @@ Currently available:
 
 - strategy catalog,
 - active strategy selection,
+- native Programmer Mode editor,
+- script templates for C#, JavaScript, Lua, and Python,
+- script save and basic entry-point validation,
 - Dashboard and Intelligence diagnostics.
+
+Programmer Mode scripts are stored under:
+
+```text
+%APPDATA%\Gambler.Bot\scripts
+```
+
+Preset strategies are read-only in the native editor. Select a Programmer Mode strategy, choose `Open editor`, edit the script, then use `Validate` and `Save`.
 
 Still pending:
 
-- full native strategy editor,
+- Monaco/WebView2 syntax highlighting,
 - preset management,
-- programmer mode with editor support.
+- advanced script diagnostics.
 
 ## Bet Preview
 
@@ -302,8 +313,8 @@ Not fully replaced yet:
 - old Avalonia UI,
 - full bot loop,
 - live bet execution with confirmation gate,
-- strategy editor,
-- programmer mode,
+- advanced strategy editor diagnostics,
+- Monaco/WebView2 programmer mode syntax highlighting,
 - charts,
 - console,
 - roll verifier,

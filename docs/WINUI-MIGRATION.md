@@ -16,7 +16,7 @@ The UI-neutral WinUI migration layer is testable through `Platforms/Gambler.Bot.
 1. Extract settings and update checks from the Avalonia `App` and `MainViewModel` into UI-neutral services. Done for the WinUI client via `IAppSettingsService` and `IUpdateService`.
 2. Port the site selection and login state into the new `Sites` workspace. Site catalog discovery is now wired through `ISiteCatalogService`; login state is next.
 3. Port session metrics into the dashboard cards and activity feed. Native site, strategy, and runtime session state are now shared with the dashboard.
-4. Replace `AvaloniaEdit` programmer mode with a native editor strategy, likely Monaco in WebView2.
+4. Replace `AvaloniaEdit` programmer mode with a native editor strategy. A first WinUI editor now supports app-data script documents, templates, save, and validation; Monaco/WebView2 syntax highlighting remains planned.
 5. Rebuild the bet history as a native WinUI table with filtering and export actions. The native history page now reads persisted SQLite bet tables when `GamblerBot.db` is available.
 
 ## New WinUI Services
@@ -26,6 +26,7 @@ The UI-neutral WinUI migration layer is testable through `Platforms/Gambler.Bot.
 - `VelopackUpdateService` checks `https://github.com/sushiomsky/Gambler.Bot` for WinUI releases.
 - `ReflectionSiteCatalogService` discovers enabled Core site classes and exposes native `SiteSummary` models.
 - `ReflectionStrategyCatalogService` discovers strategy classes from `Gambler.Bot.Strategies`.
+- `StrategyScriptService` creates, loads, saves, and validates Programmer Mode script documents under `%APPDATA%\Gambler.Bot\scripts`.
 - `SiteSessionService`, `StrategySessionService`, and `AutomationStateService` provide shared native session state.
 - `AutomationRuntimeService` validates active site and strategy, instantiates the matching Core/Strategies runtime classes, and runs a cancellable simulation loop with iteration telemetry.
 - Live automation remains intentionally blocked behind explicit settings and an exact confirmation phrase until the verified live bet adapter is complete.
@@ -44,7 +45,7 @@ The UI-neutral WinUI migration layer is testable through `Platforms/Gambler.Bot.
 - `HomePage`: command center with settings, active site, active strategy, runtime state, simulation loop iterations, and diagnostics summary.
 - `SitesPage`: supported site catalog with select and simulation actions.
 - `LoginPage`: native login preparation using Core `LoginParameter` metadata, including hidden password/MFA input fields.
-- `StrategiesPage`: strategy catalog with active strategy selection.
+- `StrategiesPage`: strategy catalog with active strategy selection and native Programmer Mode script editing.
 - `BetHistoryPage`: native history surface with persisted SQLite loading, search/outcome filtering, summary cards, and CSV export.
 - `IntelligencePage`: diagnostics derived from the new services.
 
@@ -52,7 +53,7 @@ The UI-neutral WinUI migration layer is testable through `Platforms/Gambler.Bot.
 
 - `dotnet build .\Platforms\Gambler.Bot.WinUI\Gambler.Bot.WinUI.csproj -c Debug` succeeds with 0 warnings and 0 errors.
 - `dotnet build .\Gambler.Bot.sln -c Debug` succeeds with 0 warnings and 0 errors.
-- `dotnet test .\Platforms\Gambler.Bot.WinUI.Tests\Gambler.Bot.WinUI.Tests.csproj -c Release` succeeds with 32 tests covering runtime safety, simulation loop execution, live bet gating, session state, settings persistence, update URL configuration, insight diagnostics, SQLite bet history reading, history filtering/summaries, and CSV export.
+- `dotnet test .\Platforms\Gambler.Bot.WinUI.Tests\Gambler.Bot.WinUI.Tests.csproj -c Release` succeeds with 37 tests covering runtime safety, simulation loop execution, live bet gating, guarded DuckDice live smoke test behavior, Programmer Mode script documents, session state, settings persistence, update URL configuration, insight diagnostics, SQLite bet history reading, history filtering/summaries, and CSV export.
 - `dotnet publish .\Platforms\Gambler.Bot.WinUI\Gambler.Bot.WinUI.csproj -c Release -r win-x64 --self-contained true -p:WindowsAppSDKSelfContained=true -p:WindowsPackageType=None -p:PublishTrimmed=false -p:PublishSingleFile=false` succeeds locally.
 - `dotnet test .\Gambler.Bot.sln -c Debug --no-build` runs strategy tests successfully, but existing core site integration tests fail because local login parameter JSON is missing and some live seed reset expectations are not satisfied.
 

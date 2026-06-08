@@ -14,6 +14,7 @@ public sealed partial class MainWindow : Window
     private readonly ISiteSessionService _siteSessionService;
     private readonly IStrategyCatalogService _strategyCatalogService;
     private readonly IStrategySessionService _strategySessionService;
+    private readonly IStrategyScriptService _strategyScriptService;
     private readonly IBetHistoryService _betHistoryService;
     private readonly IBetHistoryExportService _betHistoryExportService;
     private readonly IBetHistoryFilterService _betHistoryFilterService;
@@ -32,6 +33,7 @@ public sealed partial class MainWindow : Window
         ISiteSessionService siteSessionService,
         IStrategyCatalogService strategyCatalogService,
         IStrategySessionService strategySessionService,
+        IStrategyScriptService strategyScriptService,
         IBetHistoryService betHistoryService,
         IBetHistoryExportService betHistoryExportService,
         IBetHistoryFilterService betHistoryFilterService,
@@ -49,6 +51,7 @@ public sealed partial class MainWindow : Window
         _siteSessionService = siteSessionService;
         _strategyCatalogService = strategyCatalogService;
         _strategySessionService = strategySessionService;
+        _strategyScriptService = strategyScriptService;
         _betHistoryService = betHistoryService;
         _betHistoryExportService = betHistoryExportService;
         _betHistoryFilterService = betHistoryFilterService;
@@ -123,6 +126,7 @@ public sealed partial class MainWindow : Window
         _siteSessionService,
         _strategyCatalogService,
         _strategySessionService,
+        _strategyScriptService,
         _betHistoryService,
         _betHistoryExportService,
         _betHistoryFilterService,

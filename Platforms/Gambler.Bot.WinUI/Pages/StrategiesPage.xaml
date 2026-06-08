@@ -33,24 +33,72 @@
 
         <InfoBar x:Name="StrategyInfoBar" Grid.Row="1" IsOpen="True" Severity="Informational" Title="Catalog" Message="Strategy metadata is loaded from Gambler.Bot.Strategies." />
 
-        <ListView x:Name="StrategiesListView" Grid.Row="2" SelectionMode="Single">
-            <ListView.ItemTemplate>
-                <DataTemplate x:DataType="models:StrategySummary">
-                    <Grid Padding="10" ColumnSpacing="16">
+        <Grid Grid.Row="2" ColumnSpacing="18">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="3*" />
+            </Grid.ColumnDefinitions>
+
+            <ListView x:Name="StrategiesListView" SelectionMode="Single">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="models:StrategySummary">
+                        <Grid Padding="10" ColumnSpacing="16">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="220" />
+                                <ColumnDefinition Width="150" />
+                                <ColumnDefinition Width="140" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock FontWeight="SemiBold" Text="{x:Bind Name}" />
+                            <TextBlock Grid.Column="1" Foreground="{ThemeResource MutedTextBrush}" Text="{x:Bind Kind}" />
+                            <TextBlock Grid.Column="2" Text="{x:Bind Runtime}" />
+                            <InfoBadge Grid.Column="3" Value="{x:Bind Status}" />
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <Border Grid.Column="1" Padding="18" CornerRadius="8" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1">
+                <Grid RowSpacing="12">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Spacing="4">
+                        <TextBlock x:Name="EditorTitleText" Style="{StaticResource SubtitleTextBlockStyle}" Text="Strategy Editor" />
+                        <TextBlock x:Name="EditorSubtitleText" Foreground="{ThemeResource MutedTextBrush}" Text="Open a Programmer Mode strategy to create or edit a script." />
+                    </StackPanel>
+
+                    <Grid Grid.Row="1" ColumnSpacing="12">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="240" />
-                            <ColumnDefinition Width="180" />
-                            <ColumnDefinition Width="180" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
-
-                        <TextBlock FontWeight="SemiBold" Text="{x:Bind Name}" />
-                        <TextBlock Grid.Column="1" Foreground="{ThemeResource MutedTextBrush}" Text="{x:Bind Kind}" />
-                        <TextBlock Grid.Column="2" Text="{x:Bind Runtime}" />
-                        <InfoBadge Grid.Column="3" Value="{x:Bind Status}" />
+                        <TextBox x:Name="ScriptPathTextBox" Header="Script file" IsReadOnly="True" PlaceholderText="No script loaded." />
+                        <Button Grid.Column="1" VerticalAlignment="Bottom" Click="ValidateScriptButton_Click">
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <FontIcon Glyph="&#xE73E;" />
+                                <TextBlock Text="Validate" />
+                            </StackPanel>
+                        </Button>
+                        <Button Grid.Column="2" VerticalAlignment="Bottom" Click="SaveScriptButton_Click">
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <FontIcon Glyph="&#xE74E;" />
+                                <TextBlock Text="Save" />
+                            </StackPanel>
+                        </Button>
                     </Grid>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+
+                    <TextBox x:Name="ScriptEditorTextBox" Grid.Row="2" AcceptsReturn="True" TextWrapping="NoWrap" FontFamily="Consolas" FontSize="14" IsSpellCheckEnabled="False" PlaceholderText="Script content will appear here." />
+
+                    <InfoBar x:Name="EditorInfoBar" Grid.Row="3" IsOpen="True" Severity="Informational" Title="Editor" Message="Preset strategies are read-only. Programmer Mode strategies can be edited here." />
+                </Grid>
+            </Border>
+        </Grid>
     </Grid>
 </Page>
