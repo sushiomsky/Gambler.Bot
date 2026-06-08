@@ -46,6 +46,11 @@ public sealed partial class SettingsPage : Page
         PromptBeforeUpdatesToggle.IsOn = _settings.PromptBeforeUpdates;
         RiskGuardToggle.IsOn = _settings.RiskGuardEnabled;
         SessionInsightsToggle.IsOn = _settings.SessionInsightsEnabled;
+        EnableAutomationLoopToggle.IsOn = _settings.EnableAutomationLoop;
+        AutomationLoopDelayTextBox.Text = _settings.AutomationLoopDelayMs.ToString();
+        AutomationMaxSimulationIterationsTextBox.Text = _settings.AutomationMaxSimulationIterations.ToString();
+        AllowLiveBetExecutionToggle.IsOn = _settings.AllowLiveBetExecution;
+        LiveBetConfirmationPhraseTextBox.Text = _settings.LiveBetConfirmationPhrase;
 
         for (var index = 0; index < StorageProviderComboBox.Items.Count; index++)
         {
@@ -64,7 +69,19 @@ public sealed partial class SettingsPage : Page
         _settings.PromptBeforeUpdates = PromptBeforeUpdatesToggle.IsOn;
         _settings.RiskGuardEnabled = RiskGuardToggle.IsOn;
         _settings.SessionInsightsEnabled = SessionInsightsToggle.IsOn;
+        _settings.EnableAutomationLoop = EnableAutomationLoopToggle.IsOn;
+        _settings.AutomationLoopDelayMs = ReadInt32(AutomationLoopDelayTextBox.Text, 1000, 100, 60_000);
+        _settings.AutomationMaxSimulationIterations = ReadInt32(AutomationMaxSimulationIterationsTextBox.Text, 0, 0, 1_000_000);
+        _settings.AllowLiveBetExecution = AllowLiveBetExecutionToggle.IsOn;
+        _settings.LiveBetConfirmationPhrase = LiveBetConfirmationPhraseTextBox.Text.Trim();
         _settings.DefaultStorageProvider =
             (StorageProviderComboBox.SelectedItem as ComboBoxItem)?.Content?.ToString() ?? "SQLite";
+    }
+
+    private static int ReadInt32(string value, int fallback, int minimum, int maximum)
+    {
+        return int.TryParse(value, out var parsed)
+            ? Math.Clamp(parsed, minimum, maximum)
+            : fallback;
     }
 }

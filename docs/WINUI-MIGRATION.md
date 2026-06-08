@@ -27,8 +27,8 @@ The UI-neutral WinUI migration layer is testable through `Platforms/Gambler.Bot.
 - `ReflectionSiteCatalogService` discovers enabled Core site classes and exposes native `SiteSummary` models.
 - `ReflectionStrategyCatalogService` discovers strategy classes from `Gambler.Bot.Strategies`.
 - `SiteSessionService`, `StrategySessionService`, and `AutomationStateService` provide shared native session state.
-- `AutomationRuntimeService` validates active site and strategy and instantiates the matching Core/Strategies runtime classes before changing runtime state; it is the handoff point for the real betting loop.
-- Live automation remains intentionally blocked until a real login/account state service is extracted; simulation mode can prepare the runtime.
+- `AutomationRuntimeService` validates active site and strategy, instantiates the matching Core/Strategies runtime classes, and runs a cancellable simulation loop with iteration telemetry.
+- Live automation remains intentionally blocked behind explicit settings and an exact confirmation phrase until the verified live bet adapter is complete.
 - `LoginPreparationService` reads Core login metadata and powers the native Login page with native text/password controls.
 - `LiveLoginService` performs normal Core site login and clears secret/MFA field values after each attempt.
 - `BetExecutionService` prepares the next `PlaceBet` from active Core site and strategy without placing it.
@@ -41,7 +41,7 @@ The UI-neutral WinUI migration layer is testable through `Platforms/Gambler.Bot.
 
 ## Native Pages
 
-- `HomePage`: command center with settings, active site, active strategy, runtime state, and diagnostics summary.
+- `HomePage`: command center with settings, active site, active strategy, runtime state, simulation loop iterations, and diagnostics summary.
 - `SitesPage`: supported site catalog with select and simulation actions.
 - `LoginPage`: native login preparation using Core `LoginParameter` metadata, including hidden password/MFA input fields.
 - `StrategiesPage`: strategy catalog with active strategy selection.
@@ -52,7 +52,7 @@ The UI-neutral WinUI migration layer is testable through `Platforms/Gambler.Bot.
 
 - `dotnet build .\Platforms\Gambler.Bot.WinUI\Gambler.Bot.WinUI.csproj -c Debug` succeeds with 0 warnings and 0 errors.
 - `dotnet build .\Gambler.Bot.sln -c Debug` succeeds with 0 warnings and 0 errors.
-- `dotnet test .\Platforms\Gambler.Bot.WinUI.Tests\Gambler.Bot.WinUI.Tests.csproj -c Release` succeeds with 29 tests covering runtime safety, session state, settings persistence, update URL configuration, insight diagnostics, SQLite bet history reading, history filtering/summaries, and CSV export.
+- `dotnet test .\Platforms\Gambler.Bot.WinUI.Tests\Gambler.Bot.WinUI.Tests.csproj -c Release` succeeds with 32 tests covering runtime safety, simulation loop execution, live bet gating, session state, settings persistence, update URL configuration, insight diagnostics, SQLite bet history reading, history filtering/summaries, and CSV export.
 - `dotnet publish .\Platforms\Gambler.Bot.WinUI\Gambler.Bot.WinUI.csproj -c Release -r win-x64 --self-contained true -p:WindowsAppSDKSelfContained=true -p:WindowsPackageType=None -p:PublishTrimmed=false -p:PublishSingleFile=false` succeeds locally.
 - `dotnet test .\Gambler.Bot.sln -c Debug --no-build` runs strategy tests successfully, but existing core site integration tests fail because local login parameter JSON is missing and some live seed reset expectations are not satisfied.
 

@@ -19,6 +19,11 @@
             <ToggleSwitch x:Name="PromptBeforeUpdatesToggle" Header="Prompt before updates" IsOn="True" />
             <ToggleSwitch x:Name="RiskGuardToggle" Header="Risk guard" IsOn="True" />
             <ToggleSwitch x:Name="SessionInsightsToggle" Header="Session insights" IsOn="True" />
+            <ToggleSwitch x:Name="EnableAutomationLoopToggle" Header="Enable automation loop" IsOn="True" />
+            <TextBox x:Name="AutomationLoopDelayTextBox" Header="Automation loop delay (milliseconds)" Text="1000" />
+            <TextBox x:Name="AutomationMaxSimulationIterationsTextBox" Header="Maximum simulation iterations (0 = unlimited)" Text="0" />
+            <ToggleSwitch x:Name="AllowLiveBetExecutionToggle" Header="Allow live bet execution gate" IsOn="False" />
+            <TextBox x:Name="LiveBetConfirmationPhraseTextBox" Header="Live bet confirmation phrase" PlaceholderText="PLACE LIVE BETS" />
             <ComboBox x:Name="StorageProviderComboBox" Header="Default storage provider" SelectedIndex="0">
                 <ComboBoxItem Content="SQLite" />
                 <ComboBoxItem Content="SQL Server" />

@@ -7,4 +7,9 @@ public sealed class NativeUiSettings
     public string DefaultStorageProvider { get; set; } = "SQLite";
     public bool RiskGuardEnabled { get; set; } = true;
     public bool SessionInsightsEnabled { get; set; } = true;
+    public bool EnableAutomationLoop { get; set; } = true;
+    public int AutomationLoopDelayMs { get; set; } = 1000;
+    public int AutomationMaxSimulationIterations { get; set; } = 0;
+    public bool AllowLiveBetExecution { get; set; } = false;
+    public string LiveBetConfirmationPhrase { get; set; } = string.Empty;
 }

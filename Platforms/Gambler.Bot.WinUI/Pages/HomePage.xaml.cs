@@ -152,7 +152,17 @@ public sealed partial class HomePage : Page
         RuntimeInfoBar.Severity = state.Status == "Running" ? InfoBarSeverity.Success : InfoBarSeverity.Informational;
         RuntimeInfoBar.Message = state.StartedAt is null
             ? state.Status
-            : $"{state.Status} since {state.StartedAt:t}";
+            : $"{state.Status} since {state.StartedAt:t} ({state.Mode}, {state.LoopIterations} iterations)";
+        LoopStatusText.Text = state.LastMessage;
+        LoopIterationsText.Text = state.LoopIterations.ToString("N0");
+
+        if (state.LastBetPreview is not null)
+        {
+            ActivityListView.Items.Insert(0, new ListViewItem
+            {
+                Content = $"{state.LastBetPreview.Site} / {state.LastBetPreview.Strategy}: {state.LastBetPreview.Amount:0.########} {state.LastBetPreview.Currency} on {state.LastBetPreview.Game}."
+            });
+        }
     }
 
     private void ShowRuntimeCommandResult(Models.AutomationCommandResult result)

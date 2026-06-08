@@ -82,9 +82,9 @@
 
                     <Border Grid.Column="2" Padding="18" CornerRadius="8" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1">
                         <StackPanel Spacing="8">
-                            <TextBlock Style="{StaticResource MetricCaptionTextBlockStyle}" Text="BET SPEED" />
-                            <TextBlock Style="{StaticResource MetricValueTextBlockStyle}" Text="0/min" />
-                            <TextBlock Foreground="{ThemeResource MutedTextBrush}" Text="Automation idle" />
+                            <TextBlock Style="{StaticResource MetricCaptionTextBlockStyle}" Text="LOOP ITERATIONS" />
+                            <TextBlock x:Name="LoopIterationsText" Style="{StaticResource MetricValueTextBlockStyle}" Text="0" />
+                            <TextBlock x:Name="LoopStatusText" Foreground="{ThemeResource MutedTextBrush}" Text="Automation idle" />
                         </StackPanel>
                     </Border>
                 </Grid>

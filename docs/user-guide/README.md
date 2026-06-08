@@ -87,7 +87,9 @@ Main actions:
 - `Stop`: resets the runtime state.
 - `Preview Bet`: prepares the next bet from the active site and strategy without placing it.
 
-Safety rule: live automation cannot start unless simulation mode is active or live login completed successfully.
+The runtime now starts a native simulation loop. The Dashboard shows the current mode, loop iteration count, and latest prepared bet.
+
+Safety rule: live automation is intentionally locked behind settings and is not allowed to place real bets in this build.
 
 ## Selecting Sites
 
@@ -200,6 +202,19 @@ Native UI settings are stored at:
 
 The old Avalonia settings area has not been fully replaced yet.
 
+Available WinUI settings:
+
+- native Windows theme preference,
+- update prompt preference,
+- risk guard,
+- session insights,
+- automation loop enablement,
+- automation loop delay in milliseconds,
+- maximum simulation iterations,
+- live bet execution gate,
+- live bet confirmation phrase,
+- default storage provider.
+
 ## Safety
 
 Current WinUI safety mechanisms:
@@ -207,6 +222,9 @@ Current WinUI safety mechanisms:
 - the runtime cannot start without an active site,
 - the runtime cannot start without simulation mode or successful live login,
 - the runtime cannot start without an active strategy,
+- live bet execution remains blocked unless the user explicitly enables the gate and enters the exact confirmation phrase,
+- this build still refuses live bet placement even after the gate is armed, because the verified live execution adapter is not complete yet,
+- the simulation loop can be limited with a maximum iteration count,
 - `Preview Bet` never places a real bet,
 - password and MFA fields are hidden,
 - secrets are cleared from the login model after login attempts.
