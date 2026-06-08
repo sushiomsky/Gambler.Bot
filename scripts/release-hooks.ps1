@@ -2,6 +2,7 @@ param(
     [Parameter(Mandatory = $true)]
     [string]$HookName,
 
+    [Parameter(ValueFromRemainingArguments = $true)]
     [string[]]$Arguments = @()
 )
 
