@@ -17,6 +17,7 @@ This guide describes the new native Windows client built with WinUI 3.
 - [Bet History](#bet-history)
 - [Intelligence](#intelligence)
 - [Settings](#settings)
+- [Live DuckDice Smoke Test](#live-duckdice-smoke-test)
 - [Safety](#safety)
 - [Troubleshooting](#troubleshooting)
 - [Known Limitations](#known-limitations)
@@ -214,6 +215,39 @@ Available WinUI settings:
 - live bet execution gate,
 - live bet confirmation phrase,
 - default storage provider.
+
+## Live DuckDice Smoke Test
+
+The repository contains a guarded live smoke test for DuckDice. It is intentionally narrow:
+
+- site: `DuckDice`
+- currency: `DECOY`
+- bet amount: `0.01`
+- game: `Dice`
+- chance: `49.5`
+- bet direction: high
+
+The test does not place a live bet during normal CI or normal local test runs. It only runs when both a local API key and an explicit confirmation variable are present.
+
+Store the API key outside the repository:
+
+```powershell
+.\scripts\Set-DuckDiceApiKey.ps1
+```
+
+Alternatively, use an environment variable for the current shell:
+
+```powershell
+$env:GAMBLER_BOT_DUCKDICE_API_KEY = '<your api key>'
+```
+
+To explicitly allow exactly one `0.01 DECOY` live smoke bet, set:
+
+```powershell
+.\scripts\Run-DuckDiceLiveSmoke.ps1
+```
+
+The local `.secrets/` directory and `*.local.json` files are ignored by Git. Do not paste API keys into tracked settings, documentation, screenshots, logs, or issue reports.
 
 ## Safety
 
