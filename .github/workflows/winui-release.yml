@@ -58,6 +58,9 @@ jobs:
       - name: Restore WinUI client
         run: dotnet restore .\Platforms\Gambler.Bot.WinUI\Gambler.Bot.WinUI.csproj
 
+      - name: Restore WinUI tests
+        run: dotnet restore .\Platforms\Gambler.Bot.WinUI.Tests\Gambler.Bot.WinUI.Tests.csproj
+
       - name: Build WinUI client
         run: dotnet build .\Platforms\Gambler.Bot.WinUI\Gambler.Bot.WinUI.csproj -c Release --no-restore
 
