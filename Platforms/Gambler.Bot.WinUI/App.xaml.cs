@@ -2,6 +2,7 @@ using Gambler.Bot.WinUI.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.UI.Xaml;
+using Velopack;
 
 namespace Gambler.Bot.WinUI;
 
@@ -11,6 +12,7 @@ public partial class App : Application
 
     public App()
     {
+        VelopackApp.Build().Run();
         InitializeComponent();
         Services = ConfigureServices();
     }

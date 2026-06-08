@@ -53,6 +53,7 @@ On manual runs, pull requests, and pushes to `main`/`master`, the workflow:
 - uploads `Gambler.Bot.WinUI-win-x64.zip` as a workflow artifact.
 
 On tags matching `v*`, the same ZIP is attached to the GitHub release.
+The workflow also creates Velopack assets (`RELEASES`, `releases.win.json`, package files, portable ZIP, and setup EXE) so the WinUI update checker can use GitHub releases as its update feed.
 
 To create a downloadable WinUI release:
 
@@ -61,7 +62,7 @@ git tag v1.2.3
 git push origin v1.2.3
 ```
 
-After the workflow finishes, users can download `Gambler.Bot.WinUI-win-x64.zip` from the GitHub release page.
+After the workflow finishes, users can download `Gambler.Bot.WinUI-win-x64.zip` or the Velopack setup/portable assets from the GitHub release page.
 
 The native WinUI update checker uses the same release source:
 

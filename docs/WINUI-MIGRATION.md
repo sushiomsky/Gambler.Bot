@@ -60,5 +60,5 @@ The UI-neutral WinUI migration layer is testable through `Platforms/Gambler.Bot.
 
 - User-facing documentation starts at `docs/user-guide/README.md`.
 - GitHub release packaging is defined in `.github/workflows/winui-release.yml`.
-- The release workflow builds, tests, publishes, zips, uploads, and attaches `Gambler.Bot.WinUI-win-x64.zip` to `v*` GitHub releases.
+- The release workflow builds, tests, publishes, zips, creates Velopack packages, uploads artifacts, and attaches both `Gambler.Bot.WinUI-win-x64.zip` and Velopack update assets to `v*` GitHub releases.
 - Screenshots are planned in `docs/user-guide/images/`, but have not been captured from the running native app yet.

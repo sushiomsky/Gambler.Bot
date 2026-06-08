@@ -56,6 +56,9 @@ jobs:
         with:
           dotnet-version: 9.0.x
 
+      - name: Install Velopack CLI
+        run: dotnet tool install vpk --tool-path .\.tools
+
       - name: Restore WinUI client
         run: >
           dotnet restore .\Platforms\Gambler.Bot.WinUI\Gambler.Bot.WinUI.csproj
@@ -101,15 +104,39 @@ jobs:
             -DestinationPath .\artifacts\release\Gambler.Bot.WinUI-win-x64.zip `
             -Force
 
+      - name: Create Velopack packages
+        shell: pwsh
+        run: |
+          [xml]$props = Get-Content .\Directory.Build.props -Raw
+          $version = $props.Project.PropertyGroup.VersionPrefix | Select-Object -First 1
+          .\.tools\vpk.exe pack `
+            --packId Gambler.Bot.WinUI `
+            --packVersion $version `
+            --packDir .\artifacts\Gambler.Bot.WinUI-win-x64 `
+            --mainExe Gambler.Bot.WinUI.exe `
+            --packAuthors sushiomsky `
+            --packTitle "Gambler.Bot WinUI" `
+            --runtime win-x64 `
+            --outputDir .\artifacts\velopack `
+            --channel win
+
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
           name: Gambler.Bot.WinUI-win-x64
           path: .\Gambler.Bot\artifacts\release\Gambler.Bot.WinUI-win-x64.zip
 
+      - name: Upload Velopack artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: Gambler.Bot.WinUI-velopack
+          path: .\Gambler.Bot\artifacts\velopack\*
+
       - name: Create GitHub release
         if: startsWith(github.ref, 'refs/tags/v')
         uses: softprops/action-gh-release@v2
         with:
-          files: .\Gambler.Bot\artifacts\release\Gambler.Bot.WinUI-win-x64.zip
+          files: |
+            .\Gambler.Bot\artifacts\release\Gambler.Bot.WinUI-win-x64.zip
+            .\Gambler.Bot\artifacts\velopack\*
           generate_release_notes: true
