@@ -15,6 +15,7 @@ This guide describes the new native Windows client built with WinUI 3.
 - [Strategies](#strategies)
 - [Bet Preview](#bet-preview)
 - [Bet History](#bet-history)
+- [Console](#console)
 - [Intelligence](#intelligence)
 - [Settings](#settings)
 - [Live DuckDice Smoke Test](#live-duckdice-smoke-test)
@@ -73,6 +74,7 @@ The left navigation contains the main workspaces:
 - `Login`: Login preparation for the active site.
 - `Strategies`: List of discovered strategy classes.
 - `Bet History`: Native view over persisted SQLite bet tables.
+- `Console`: Runtime diagnostics and operator commands.
 - `Intelligence`: Diagnostics and contextual guidance.
 - `Settings`: Native UI settings.
 - `About`: Version and project information.
@@ -185,11 +187,32 @@ The summary cards above the table always reflect the currently visible records:
 - total amount wagered,
 - net profit.
 
+The chart card below the summary shows:
+
+- a cumulative profit sparkline,
+- ending profit,
+- best and worst cumulative profit,
+- chart win/loss counts.
+
 Still pending:
 
 - advanced filtering,
 - detailed bet view,
-- native charts.
+
+## Console
+
+The Console page provides native diagnostics and simple operator commands.
+
+Available commands:
+
+- `help`: lists supported commands.
+- `status`: prints active site mode and runtime state.
+- `site`: prints the active site.
+- `strategy`: prints the active strategy.
+- `runtime`: prints runtime mode, loop iterations, and last runtime message.
+- `clear`: clears the console buffer.
+
+The console keeps the latest 500 entries in memory.
 
 ## Intelligence
 
@@ -315,8 +338,8 @@ Not fully replaced yet:
 - live bet execution with confirmation gate,
 - advanced strategy editor diagnostics,
 - Monaco/WebView2 programmer mode syntax highlighting,
-- charts,
-- console,
+- advanced chart interactions,
+- persistent console logs,
 - roll verifier,
 - full settings surface,
 - export functions,

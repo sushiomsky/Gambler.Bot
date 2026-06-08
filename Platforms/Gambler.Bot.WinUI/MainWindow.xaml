@@ -65,6 +65,11 @@
                         <FontIcon Glyph="&#xE81C;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
+                <NavigationViewItem Content="Console" Tag="console">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE756;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
                 <NavigationViewItem Content="Intelligence" Tag="intelligence">
                     <NavigationViewItem.Icon>
                         <FontIcon Glyph="&#xE9D2;" />

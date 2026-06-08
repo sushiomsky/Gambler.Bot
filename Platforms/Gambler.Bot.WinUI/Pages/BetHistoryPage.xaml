@@ -14,6 +14,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
@@ -98,7 +99,34 @@
             </Border>
         </Grid>
 
-        <ListView x:Name="HistoryListView" Grid.Row="4" SelectionMode="None">
+        <Border Grid.Row="4" Padding="16" CornerRadius="8" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1">
+            <Grid ColumnSpacing="18">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <StackPanel Spacing="4">
+                    <TextBlock Foreground="{ThemeResource MutedTextBrush}" Text="Profit Sparkline" />
+                    <TextBlock x:Name="ProfitSparklineText" FontFamily="Consolas" FontSize="28" Text="No data" />
+                </StackPanel>
+                <StackPanel Grid.Column="1" Spacing="4">
+                    <TextBlock Foreground="{ThemeResource MutedTextBrush}" Text="End profit" />
+                    <TextBlock x:Name="ChartEndProfitText" Style="{StaticResource SubtitleTextBlockStyle}" Text="0" />
+                </StackPanel>
+                <StackPanel Grid.Column="2" Spacing="4">
+                    <TextBlock Foreground="{ThemeResource MutedTextBrush}" Text="Best / Worst" />
+                    <TextBlock x:Name="ChartBestWorstText" Style="{StaticResource SubtitleTextBlockStyle}" Text="0 / 0" />
+                </StackPanel>
+                <StackPanel Grid.Column="3" Spacing="4">
+                    <TextBlock Foreground="{ThemeResource MutedTextBrush}" Text="Chart wins/losses" />
+                    <TextBlock x:Name="ChartWinLossText" Style="{StaticResource SubtitleTextBlockStyle}" Text="0 / 0" />
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <ListView x:Name="HistoryListView" Grid.Row="5" SelectionMode="None">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="models:BetHistoryRecord">
                     <Grid Padding="10" ColumnSpacing="16">

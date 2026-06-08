@@ -109,5 +109,20 @@ public sealed partial class BetHistoryPage : Page
         WinRateText.Text = $"{summary.WinRate.ToString(CultureInfo.InvariantCulture)}%";
         WageredText.Text = summary.TotalAmount.ToString(CultureInfo.InvariantCulture);
         NetProfitText.Text = summary.NetProfit.ToString(CultureInfo.InvariantCulture);
+        UpdateChart();
+    }
+
+    private void UpdateChart()
+    {
+        if (_navigationContext is null)
+        {
+            return;
+        }
+
+        var chart = _navigationContext.BetChartService.CreateSnapshot(_filteredRecords);
+        ProfitSparklineText.Text = chart.Sparkline;
+        ChartEndProfitText.Text = chart.EndProfit.ToString(CultureInfo.InvariantCulture);
+        ChartBestWorstText.Text = $"{chart.BestProfit.ToString(CultureInfo.InvariantCulture)} / {chart.WorstProfit.ToString(CultureInfo.InvariantCulture)}";
+        ChartWinLossText.Text = $"{chart.Wins} / {chart.Losses}";
     }
 }

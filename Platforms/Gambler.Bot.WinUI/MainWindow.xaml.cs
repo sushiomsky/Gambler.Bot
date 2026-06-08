@@ -19,6 +19,8 @@ public sealed partial class MainWindow : Window
     private readonly IBetHistoryExportService _betHistoryExportService;
     private readonly IBetHistoryFilterService _betHistoryFilterService;
     private readonly IBetHistorySummaryService _betHistorySummaryService;
+    private readonly IBetChartService _betChartService;
+    private readonly IConsoleLogService _consoleLogService;
     private readonly IInsightService _insightService;
     private readonly IAutomationStateService _automationStateService;
     private readonly IAutomationRuntimeService _automationRuntimeService;
@@ -38,6 +40,8 @@ public sealed partial class MainWindow : Window
         IBetHistoryExportService betHistoryExportService,
         IBetHistoryFilterService betHistoryFilterService,
         IBetHistorySummaryService betHistorySummaryService,
+        IBetChartService betChartService,
+        IConsoleLogService consoleLogService,
         IInsightService insightService,
         IAutomationStateService automationStateService,
         IAutomationRuntimeService automationRuntimeService,
@@ -56,6 +60,8 @@ public sealed partial class MainWindow : Window
         _betHistoryExportService = betHistoryExportService;
         _betHistoryFilterService = betHistoryFilterService;
         _betHistorySummaryService = betHistorySummaryService;
+        _betChartService = betChartService;
+        _consoleLogService = consoleLogService;
         _insightService = insightService;
         _automationStateService = automationStateService;
         _automationRuntimeService = automationRuntimeService;
@@ -110,6 +116,9 @@ public sealed partial class MainWindow : Window
                 case "history":
                     NavFrame.Navigate(typeof(BetHistoryPage), CreateNavigationContext());
                     break;
+                case "console":
+                    NavFrame.Navigate(typeof(ConsolePage), CreateNavigationContext());
+                    break;
                 case "intelligence":
                     NavFrame.Navigate(typeof(IntelligencePage), CreateNavigationContext());
                     break;
@@ -131,6 +140,8 @@ public sealed partial class MainWindow : Window
         _betHistoryExportService,
         _betHistoryFilterService,
         _betHistorySummaryService,
+        _betChartService,
+        _consoleLogService,
         _insightService,
         _automationStateService,
         _automationRuntimeService,
