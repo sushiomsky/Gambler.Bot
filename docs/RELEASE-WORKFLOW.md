@@ -38,6 +38,12 @@ release 1.2.3
 
 The native Windows client is built by `.github/workflows/winui-release.yml`.
 
+The workflow checks out three repositories side by side because the current solution uses sibling project references:
+
+- `sushiomsky/Gambler.Bot` into `Gambler.Bot`
+- `Seuntjie900/Gambler.Bot.Core` into `Gambler.Bot.Core`
+- `Seuntjie900/Gambler.Bot.Strategies` into `Gambler.Bot.Strategies`
+
 On pull requests and pushes to `main`/`master`, the workflow:
 
 - restores the WinUI client,
