@@ -1,5 +1,6 @@
 using Gambler.Bot.WinUI.Models;
 using Gambler.Bot.WinUI.Services;
+using System.Globalization;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
@@ -92,5 +93,21 @@ public sealed partial class BetHistoryPage : Page
         _filteredRecords = _navigationContext.BetHistoryFilterService.Apply(_allRecords, SearchTextBox.Text, outcome);
         HistoryListView.ItemsSource = _filteredRecords;
         HistorySubtitleText.Text = $"{_filteredRecords.Count} of {_allRecords.Count} records visible.";
+        UpdateSummary();
+    }
+
+    private void UpdateSummary()
+    {
+        if (_navigationContext is null)
+        {
+            return;
+        }
+
+        var summary = _navigationContext.BetHistorySummaryService.Summarize(_filteredRecords);
+        VisibleRecordsText.Text = summary.TotalRecords.ToString(CultureInfo.InvariantCulture);
+        WinLossText.Text = $"{summary.Wins} / {summary.Losses}";
+        WinRateText.Text = $"{summary.WinRate.ToString(CultureInfo.InvariantCulture)}%";
+        WageredText.Text = summary.TotalAmount.ToString(CultureInfo.InvariantCulture);
+        NetProfitText.Text = summary.NetProfit.ToString(CultureInfo.InvariantCulture);
     }
 }

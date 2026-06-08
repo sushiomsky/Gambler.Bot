@@ -163,6 +163,14 @@ Available actions:
 - `Outcome`: filters visible records by all results, wins, or losses.
 - `Export`: writes the currently visible records to a CSV file in your Documents folder.
 
+The summary cards above the table always reflect the currently visible records:
+
+- visible record count,
+- wins and losses,
+- win rate,
+- total amount wagered,
+- net profit.
+
 Still pending:
 
 - advanced filtering,

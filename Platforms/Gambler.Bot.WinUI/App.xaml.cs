@@ -37,6 +37,7 @@ public partial class App : Application
         services.AddSingleton<IBetHistoryService, BetHistoryService>();
         services.AddSingleton<IBetHistoryExportService, BetHistoryExportService>();
         services.AddSingleton<IBetHistoryFilterService, BetHistoryFilterService>();
+        services.AddSingleton<IBetHistorySummaryService, BetHistorySummaryService>();
         services.AddSingleton<IInsightService, InsightService>();
         services.AddSingleton<IAutomationStateService, AutomationStateService>();
         services.AddSingleton<IAutomationRuntimeService, AutomationRuntimeService>();

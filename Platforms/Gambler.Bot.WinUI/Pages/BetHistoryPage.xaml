@@ -13,6 +13,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
@@ -56,7 +57,48 @@
             </ComboBox>
         </Grid>
 
-        <ListView x:Name="HistoryListView" Grid.Row="3" SelectionMode="None">
+        <Grid Grid.Row="3" ColumnSpacing="12">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Border Padding="14" CornerRadius="8" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1">
+                <StackPanel Spacing="2">
+                    <TextBlock Foreground="{ThemeResource MutedTextBrush}" Text="Visible" />
+                    <TextBlock x:Name="VisibleRecordsText" Style="{StaticResource SubtitleTextBlockStyle}" Text="0" />
+                </StackPanel>
+            </Border>
+            <Border Grid.Column="1" Padding="14" CornerRadius="8" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1">
+                <StackPanel Spacing="2">
+                    <TextBlock Foreground="{ThemeResource MutedTextBrush}" Text="Wins / Losses" />
+                    <TextBlock x:Name="WinLossText" Style="{StaticResource SubtitleTextBlockStyle}" Text="0 / 0" />
+                </StackPanel>
+            </Border>
+            <Border Grid.Column="2" Padding="14" CornerRadius="8" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1">
+                <StackPanel Spacing="2">
+                    <TextBlock Foreground="{ThemeResource MutedTextBrush}" Text="Win rate" />
+                    <TextBlock x:Name="WinRateText" Style="{StaticResource SubtitleTextBlockStyle}" Text="0%" />
+                </StackPanel>
+            </Border>
+            <Border Grid.Column="3" Padding="14" CornerRadius="8" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1">
+                <StackPanel Spacing="2">
+                    <TextBlock Foreground="{ThemeResource MutedTextBrush}" Text="Wagered" />
+                    <TextBlock x:Name="WageredText" Style="{StaticResource SubtitleTextBlockStyle}" Text="0" />
+                </StackPanel>
+            </Border>
+            <Border Grid.Column="4" Padding="14" CornerRadius="8" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1">
+                <StackPanel Spacing="2">
+                    <TextBlock Foreground="{ThemeResource MutedTextBrush}" Text="Net profit" />
+                    <TextBlock x:Name="NetProfitText" Style="{StaticResource SubtitleTextBlockStyle}" Text="0" />
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <ListView x:Name="HistoryListView" Grid.Row="4" SelectionMode="None">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="models:BetHistoryRecord">
                     <Grid Padding="10" ColumnSpacing="16">

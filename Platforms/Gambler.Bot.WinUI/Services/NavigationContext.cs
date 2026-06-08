@@ -10,6 +10,7 @@ public sealed record NavigationContext(
     IBetHistoryService BetHistoryService,
     IBetHistoryExportService BetHistoryExportService,
     IBetHistoryFilterService BetHistoryFilterService,
+    IBetHistorySummaryService BetHistorySummaryService,
     IInsightService InsightService,
     IAutomationStateService AutomationStateService,
     IAutomationRuntimeService AutomationRuntimeService,

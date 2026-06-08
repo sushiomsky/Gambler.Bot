@@ -17,6 +17,7 @@ public sealed partial class MainWindow : Window
     private readonly IBetHistoryService _betHistoryService;
     private readonly IBetHistoryExportService _betHistoryExportService;
     private readonly IBetHistoryFilterService _betHistoryFilterService;
+    private readonly IBetHistorySummaryService _betHistorySummaryService;
     private readonly IInsightService _insightService;
     private readonly IAutomationStateService _automationStateService;
     private readonly IAutomationRuntimeService _automationRuntimeService;
@@ -34,6 +35,7 @@ public sealed partial class MainWindow : Window
         IBetHistoryService betHistoryService,
         IBetHistoryExportService betHistoryExportService,
         IBetHistoryFilterService betHistoryFilterService,
+        IBetHistorySummaryService betHistorySummaryService,
         IInsightService insightService,
         IAutomationStateService automationStateService,
         IAutomationRuntimeService automationRuntimeService,
@@ -50,6 +52,7 @@ public sealed partial class MainWindow : Window
         _betHistoryService = betHistoryService;
         _betHistoryExportService = betHistoryExportService;
         _betHistoryFilterService = betHistoryFilterService;
+        _betHistorySummaryService = betHistorySummaryService;
         _insightService = insightService;
         _automationStateService = automationStateService;
         _automationRuntimeService = automationRuntimeService;
@@ -123,6 +126,7 @@ public sealed partial class MainWindow : Window
         _betHistoryService,
         _betHistoryExportService,
         _betHistoryFilterService,
+        _betHistorySummaryService,
         _insightService,
         _automationStateService,
         _automationRuntimeService,
