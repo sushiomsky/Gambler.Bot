@@ -8,10 +8,12 @@ public sealed class JsonAppSettingsService : IAppSettingsService
 {
     private readonly ILogger<JsonAppSettingsService> _logger;
     private readonly JsonSerializerOptions _jsonOptions = new() { WriteIndented = true };
+    private readonly string? _settingsPath;
 
-    public JsonAppSettingsService(ILogger<JsonAppSettingsService> logger)
+    public JsonAppSettingsService(ILogger<JsonAppSettingsService> logger, string? settingsPath = null)
     {
         _logger = logger;
+        _settingsPath = settingsPath;
     }
 
     public async Task<NativeUiSettings> LoadAsync(CancellationToken cancellationToken = default)
@@ -44,8 +46,13 @@ public sealed class JsonAppSettingsService : IAppSettingsService
         await JsonSerializer.SerializeAsync(stream, settings, _jsonOptions, cancellationToken);
     }
 
-    private static string GetSettingsPath()
+    private string GetSettingsPath()
     {
+        if (!string.IsNullOrWhiteSpace(_settingsPath))
+        {
+            return _settingsPath;
+        }
+
         var appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
         return Path.Combine(appData, "Gambler.Bot", "WinUISettings.json");
     }
