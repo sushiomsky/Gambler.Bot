@@ -159,7 +159,9 @@ Currently scanned tables:
 Available actions:
 
 - `Refresh`: reloads persisted records.
-- `Export`: writes the currently loaded records to a CSV file in your Documents folder.
+- `Search history`: filters the visible records by site, game, currency, or outcome.
+- `Outcome`: filters visible records by all results, wins, or losses.
+- `Export`: writes the currently visible records to a CSV file in your Documents folder.
 
 Still pending:
 

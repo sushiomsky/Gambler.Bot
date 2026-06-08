@@ -12,6 +12,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
@@ -32,7 +33,30 @@
 
         <InfoBar x:Name="HistoryInfoBar" Grid.Row="1" IsOpen="True" Severity="Informational" Title="Storage" Message="Reading persisted SQLite bet tables when a GamblerBot.db file is available." />
 
-        <ListView x:Name="HistoryListView" Grid.Row="2" SelectionMode="None">
+        <Grid Grid.Row="2" ColumnSpacing="12">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="220" />
+            </Grid.ColumnDefinitions>
+
+            <TextBox
+                x:Name="SearchTextBox"
+                Header="Search history"
+                PlaceholderText="Site, game, currency, outcome"
+                TextChanged="FilterControl_Changed" />
+            <ComboBox
+                x:Name="OutcomeFilterComboBox"
+                Grid.Column="1"
+                Header="Outcome"
+                SelectionChanged="FilterControl_Changed"
+                SelectedIndex="0">
+                <ComboBoxItem Content="All" />
+                <ComboBoxItem Content="Win" />
+                <ComboBoxItem Content="Loss" />
+            </ComboBox>
+        </Grid>
+
+        <ListView x:Name="HistoryListView" Grid.Row="3" SelectionMode="None">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="models:BetHistoryRecord">
                     <Grid Padding="10" ColumnSpacing="16">

@@ -9,7 +9,8 @@ namespace Gambler.Bot.WinUI.Pages;
 public sealed partial class BetHistoryPage : Page
 {
     private NavigationContext? _navigationContext;
-    private IReadOnlyList<BetHistoryRecord> _records = [];
+    private IReadOnlyList<BetHistoryRecord> _allRecords = [];
+    private IReadOnlyList<BetHistoryRecord> _filteredRecords = [];
 
     public BetHistoryPage()
     {
@@ -34,17 +35,17 @@ public sealed partial class BetHistoryPage : Page
             return;
         }
 
-        if (_records.Count == 0)
+        if (_filteredRecords.Count == 0)
         {
             HistoryInfoBar.Severity = InfoBarSeverity.Warning;
             HistoryInfoBar.Title = "Nothing to export";
-            HistoryInfoBar.Message = "Load bet history before exporting.";
+            HistoryInfoBar.Message = "Load bet history or change filters before exporting.";
             return;
         }
 
         try
         {
-            var path = await _navigationContext.BetHistoryExportService.ExportCsvAsync(_records);
+            var path = await _navigationContext.BetHistoryExportService.ExportCsvAsync(_filteredRecords);
             HistoryInfoBar.Severity = InfoBarSeverity.Success;
             HistoryInfoBar.Title = "Export complete";
             HistoryInfoBar.Message = $"CSV exported to {path}.";
@@ -57,6 +58,11 @@ public sealed partial class BetHistoryPage : Page
         }
     }
 
+    private void FilterControl_Changed(object sender, RoutedEventArgs e)
+    {
+        ApplyFilters();
+    }
+
     private void LoadHistory()
     {
         if (_navigationContext is null)
@@ -65,13 +71,26 @@ public sealed partial class BetHistoryPage : Page
         }
 
         var activeSite = _navigationContext.SiteSessionService.Current.SelectedSite?.Name;
-        _records = _navigationContext.BetHistoryService.GetRecent(activeSite);
-        HistoryListView.ItemsSource = _records;
+        _allRecords = _navigationContext.BetHistoryService.GetRecent(activeSite);
+        ApplyFilters();
         HistorySubtitleText.Text = activeSite is null
-            ? $"{_records.Count} records loaded across all sites."
-            : $"{_records.Count} records loaded for {activeSite}.";
-        HistoryInfoBar.Message = _records.Count == 0
+            ? $"{_allRecords.Count} records loaded across all sites."
+            : $"{_allRecords.Count} records loaded for {activeSite}.";
+        HistoryInfoBar.Message = _allRecords.Count == 0
             ? "No persisted bets found yet."
             : "Persisted bets loaded from SQLite.";
+    }
+
+    private void ApplyFilters()
+    {
+        if (_navigationContext is null)
+        {
+            return;
+        }
+
+        var outcome = (OutcomeFilterComboBox.SelectedItem as ComboBoxItem)?.Content?.ToString();
+        _filteredRecords = _navigationContext.BetHistoryFilterService.Apply(_allRecords, SearchTextBox.Text, outcome);
+        HistoryListView.ItemsSource = _filteredRecords;
+        HistorySubtitleText.Text = $"{_filteredRecords.Count} of {_allRecords.Count} records visible.";
     }
 }
