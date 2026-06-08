@@ -1,6 +1,7 @@
 name: WinUI Build and Release
 
 on:
+  workflow_dispatch:
   pull_request:
     paths:
       - "Platforms/Gambler.Bot.WinUI/**"

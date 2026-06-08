@@ -44,7 +44,7 @@ The workflow checks out three repositories side by side because the current solu
 - `Seuntjie900/Gambler.Bot.Core` into `Gambler.Bot.Core`
 - `Seuntjie900/Gambler.Bot.Strategies` into `Gambler.Bot.Strategies`
 
-On pull requests and pushes to `main`/`master`, the workflow:
+On manual runs, pull requests, and pushes to `main`/`master`, the workflow:
 
 - restores the WinUI client,
 - builds `Platforms/Gambler.Bot.WinUI`,
