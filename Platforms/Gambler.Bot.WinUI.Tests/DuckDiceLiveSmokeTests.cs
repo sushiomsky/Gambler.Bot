@@ -1,7 +1,9 @@
 using Gambler.Bot.Common.Games.Dice;
+using Gambler.Bot.Core.Helpers;
 using Gambler.Bot.Core.Sites;
 using Gambler.Bot.Core.Sites.Classes;
 using Microsoft.Extensions.Logging.Abstractions;
+using System.Net;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -41,6 +43,17 @@ public sealed class DuckDiceLiveSmokeTests
         {
             CurrentCurrency = Currency
         };
+        site.OnBrowserBypassRequired = _ => Task.FromResult(new BrowserConfig
+        {
+            Cookies = new CookieContainer(),
+            Headers = new Dictionary<string, string>
+            {
+                ["accept"] = "application/json, text/plain, */*",
+                ["user-agent"] = "Gambler.Bot.WinUI.LiveSmoke/1.0"
+            },
+            UserAgent = "Gambler.Bot.WinUI.LiveSmoke/1.0"
+        });
+        site.OnCFCaptchaBypass = _ => Task.CompletedTask;
 
         var loggedIn = await site.LogIn(site.Mirrors[0], CreateLogin(apiKey));
         Assert.True(loggedIn);
