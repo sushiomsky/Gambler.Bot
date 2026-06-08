@@ -63,6 +63,12 @@ git push origin v1.2.3
 
 After the workflow finishes, users can download `Gambler.Bot.WinUI-win-x64.zip` from the GitHub release page.
 
+The native WinUI update checker uses the same release source:
+
+```text
+https://github.com/sushiomsky/Gambler.Bot
+```
+
 Local equivalent:
 
 ```powershell

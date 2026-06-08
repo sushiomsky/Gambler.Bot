@@ -23,6 +23,7 @@ The UI-neutral WinUI migration layer is testable through `Platforms/Gambler.Bot.
 
 - `JsonAppSettingsService` stores native UI settings in `%APPDATA%\Gambler.Bot\WinUISettings.json`.
 - `VelopackUpdateService` reads current version and update availability without referencing Avalonia.
+- `VelopackUpdateService` checks `https://github.com/sushiomsky/Gambler.Bot` for WinUI releases.
 - `ReflectionSiteCatalogService` discovers enabled Core site classes and exposes native `SiteSummary` models.
 - `ReflectionStrategyCatalogService` discovers strategy classes from `Gambler.Bot.Strategies`.
 - `SiteSessionService`, `StrategySessionService`, and `AutomationStateService` provide shared native session state.
@@ -51,7 +52,7 @@ The UI-neutral WinUI migration layer is testable through `Platforms/Gambler.Bot.
 
 - `dotnet build .\Platforms\Gambler.Bot.WinUI\Gambler.Bot.WinUI.csproj -c Debug` succeeds with 0 warnings and 0 errors.
 - `dotnet build .\Gambler.Bot.sln -c Debug` succeeds with 0 warnings and 0 errors.
-- `dotnet test .\Platforms\Gambler.Bot.WinUI.Tests\Gambler.Bot.WinUI.Tests.csproj -c Release` succeeds with 28 tests covering runtime safety, session state, settings persistence, insight diagnostics, SQLite bet history reading, history filtering/summaries, and CSV export.
+- `dotnet test .\Platforms\Gambler.Bot.WinUI.Tests\Gambler.Bot.WinUI.Tests.csproj -c Release` succeeds with 29 tests covering runtime safety, session state, settings persistence, update URL configuration, insight diagnostics, SQLite bet history reading, history filtering/summaries, and CSV export.
 - `dotnet publish .\Platforms\Gambler.Bot.WinUI\Gambler.Bot.WinUI.csproj -c Release -r win-x64 --self-contained true -p:WindowsAppSDKSelfContained=true -p:WindowsPackageType=None -p:PublishTrimmed=false -p:PublishSingleFile=false` succeeds locally.
 - `dotnet test .\Gambler.Bot.sln -c Debug --no-build` runs strategy tests successfully, but existing core site integration tests fail because local login parameter JSON is missing and some live seed reset expectations are not satisfied.
 

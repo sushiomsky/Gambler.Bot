@@ -21,6 +21,8 @@ namespace Gambler.Bot
 {
     public partial class App : Application
     {
+        private const string UpdateUrl = "https://github.com/sushiomsky/Gambler.Bot";
+
         public IServiceProvider ServiceProvider { get; private set; }
 
         public override void Initialize()
@@ -36,7 +38,7 @@ namespace Gambler.Bot
         }
         internal static async Task<bool> HasUpdate()
         {
-            var mgr = new UpdateManager(new GithubSource("https://github.com/Seuntjie900/Gambler.Bot", null, false));
+            var mgr = new UpdateManager(new GithubSource(UpdateUrl, null, false));
 
             // check for new version
             var newVersion = await mgr.CheckForUpdatesAsync();
@@ -44,7 +46,7 @@ namespace Gambler.Bot
         }
         internal static async Task UpdateMyApp()
         {
-            var mgr = new UpdateManager(new GithubSource("https://github.com/Seuntjie900/Gambler.Bot", null, false));
+            var mgr = new UpdateManager(new GithubSource(UpdateUrl, null, false));
 
             // check for new version
             var newVersion = await mgr.CheckForUpdatesAsync();
@@ -61,7 +63,7 @@ namespace Gambler.Bot
         {
             try
             {
-                var mgr = new UpdateManager(new GithubSource("https://github.com/Seuntjie900/Gambler.Bot", null, false));
+                var mgr = new UpdateManager(new GithubSource(UpdateUrl, null, false));
                 return mgr.CurrentVersion?.ToFullString() ?? GetAssemblyVersion();
             }
             catch (Exception)
@@ -81,7 +83,7 @@ namespace Gambler.Bot
         {
             try
             {
-                var mgr = new UpdateManager(new GithubSource("https://github.com/Seuntjie900/Gambler.Bot", null, false));
+                var mgr = new UpdateManager(new GithubSource(UpdateUrl, null, false));
                 return mgr?.IsPortable ?? false;
             }
             catch (Exception ex)

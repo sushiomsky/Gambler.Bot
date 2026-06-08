@@ -87,7 +87,7 @@
                     <MenuItem Header="{DynamicResource Localization.InstanceView.Menu.SetupWizard}"/>
                     <MenuItem Header="{DynamicResource Localization.InstanceView.Menu.ResetToDefault}" Command="{Binding ResetCommand}"/>
                     <MenuItem Header="{DynamicResource Localization.InstanceView.Menu.SourceCode}">
-                        <MenuItem Header="Gambler.Bot" Command="{Binding OpenLink}" CommandParameter="https://github.com/Seuntjie900/Gambler.Bot"/>
+                        <MenuItem Header="Gambler.Bot" Command="{Binding OpenLink}" CommandParameter="https://github.com/sushiomsky/Gambler.Bot"/>
                         <MenuItem Header="Gambler.Bot.Strategies" Command="{Binding OpenLink}" CommandParameter="https://github.com/Seuntjie900/Gambler.Bot.Strategies"/>
                         <MenuItem Header="Gambler.Bot.Core"  Command="{Binding OpenLink}" CommandParameter="https://github.com/Seuntjie900/Gambler.Bot.Core"/>
                     </MenuItem>

@@ -8,6 +8,8 @@ namespace Gambler.Bot.WinUI.Services;
 
 public sealed class VelopackUpdateService : IUpdateService
 {
+    public const string DefaultUpdateUrl = "https://github.com/sushiomsky/Gambler.Bot";
+
     private readonly ILogger<VelopackUpdateService> _logger;
 
     public VelopackUpdateService(ILogger<VelopackUpdateService> logger)
@@ -19,7 +21,7 @@ public sealed class VelopackUpdateService : IUpdateService
     {
         try
         {
-            var manager = new UpdateManager(new GithubSource("https://github.com/Seuntjie900/Gambler.Bot", null, false));
+            var manager = new UpdateManager(new GithubSource(DefaultUpdateUrl, null, false));
             var updateInfo = await manager.CheckForUpdatesAsync();
             var version = manager.CurrentVersion?.ToFullString() ?? GetAssemblyVersion();
 
