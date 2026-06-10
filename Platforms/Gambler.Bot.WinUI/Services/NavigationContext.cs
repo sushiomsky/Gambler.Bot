@@ -14,6 +14,7 @@ public sealed record NavigationContext(
     IBetHistorySummaryService BetHistorySummaryService,
     IBetChartService BetChartService,
     IConsoleLogService ConsoleLogService,
+    IRollVerifierService RollVerifierService,
     IInsightService InsightService,
     IAutomationStateService AutomationStateService,
     IAutomationRuntimeService AutomationRuntimeService,

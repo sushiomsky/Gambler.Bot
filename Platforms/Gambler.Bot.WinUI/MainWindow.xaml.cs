@@ -21,6 +21,7 @@ public sealed partial class MainWindow : Window
     private readonly IBetHistorySummaryService _betHistorySummaryService;
     private readonly IBetChartService _betChartService;
     private readonly IConsoleLogService _consoleLogService;
+    private readonly IRollVerifierService _rollVerifierService;
     private readonly IInsightService _insightService;
     private readonly IAutomationStateService _automationStateService;
     private readonly IAutomationRuntimeService _automationRuntimeService;
@@ -42,6 +43,7 @@ public sealed partial class MainWindow : Window
         IBetHistorySummaryService betHistorySummaryService,
         IBetChartService betChartService,
         IConsoleLogService consoleLogService,
+        IRollVerifierService rollVerifierService,
         IInsightService insightService,
         IAutomationStateService automationStateService,
         IAutomationRuntimeService automationRuntimeService,
@@ -62,6 +64,7 @@ public sealed partial class MainWindow : Window
         _betHistorySummaryService = betHistorySummaryService;
         _betChartService = betChartService;
         _consoleLogService = consoleLogService;
+        _rollVerifierService = rollVerifierService;
         _insightService = insightService;
         _automationStateService = automationStateService;
         _automationRuntimeService = automationRuntimeService;
@@ -119,6 +122,9 @@ public sealed partial class MainWindow : Window
                 case "console":
                     NavFrame.Navigate(typeof(ConsolePage), CreateNavigationContext());
                     break;
+                case "verifier":
+                    NavFrame.Navigate(typeof(RollVerifierPage), CreateNavigationContext());
+                    break;
                 case "intelligence":
                     NavFrame.Navigate(typeof(IntelligencePage), CreateNavigationContext());
                     break;
@@ -142,6 +148,7 @@ public sealed partial class MainWindow : Window
         _betHistorySummaryService,
         _betChartService,
         _consoleLogService,
+        _rollVerifierService,
         _insightService,
         _automationStateService,
         _automationRuntimeService,

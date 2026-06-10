@@ -70,6 +70,11 @@
                         <FontIcon Glyph="&#xE756;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
+                <NavigationViewItem Content="Roll Verifier" Tag="verifier">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE9A1;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
                 <NavigationViewItem Content="Intelligence" Tag="intelligence">
                     <NavigationViewItem.Icon>
                         <FontIcon Glyph="&#xE9D2;" />

@@ -16,6 +16,7 @@ This guide describes the new native Windows client built with WinUI 3.
 - [Bet Preview](#bet-preview)
 - [Bet History](#bet-history)
 - [Console](#console)
+- [Roll Verifier](#roll-verifier)
 - [Intelligence](#intelligence)
 - [Settings](#settings)
 - [Live DuckDice Smoke Test](#live-duckdice-smoke-test)
@@ -75,6 +76,7 @@ The left navigation contains the main workspaces:
 - `Strategies`: List of discovered strategy classes.
 - `Bet History`: Native view over persisted SQLite bet tables.
 - `Console`: Runtime diagnostics and operator commands.
+- `Roll Verifier`: Provably-fair roll verification through Core site algorithms.
 - `Intelligence`: Diagnostics and contextual guidance.
 - `Settings`: Native UI settings.
 - `About`: Version and project information.
@@ -214,6 +216,27 @@ Available commands:
 
 The console keeps the latest 500 entries in memory.
 
+## Roll Verifier
+
+The Roll Verifier page checks provably-fair rolls with the same Core site algorithms used by the bot.
+
+Required inputs:
+
+- site,
+- game,
+- revealed server seed,
+- client seed,
+- nonce.
+
+The result card shows:
+
+- site and game,
+- calculated server seed hash,
+- result type,
+- verified roll or multiplier.
+
+Only sites that advertise verification support through Core are accepted.
+
 ## Intelligence
 
 The Intelligence page combines diagnostic information:
@@ -340,7 +363,7 @@ Not fully replaced yet:
 - Monaco/WebView2 programmer mode syntax highlighting,
 - advanced chart interactions,
 - persistent console logs,
-- roll verifier,
+- historical bet-to-verifier autofill,
 - full settings surface,
 - export functions,
 - production-ready screenshot documentation.

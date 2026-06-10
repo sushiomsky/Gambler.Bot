@@ -43,6 +43,7 @@ public partial class App : Application
         services.AddSingleton<IBetHistorySummaryService, BetHistorySummaryService>();
         services.AddSingleton<IBetChartService, BetChartService>();
         services.AddSingleton<IConsoleLogService, ConsoleLogService>();
+        services.AddSingleton<IRollVerifierService, RollVerifierService>();
         services.AddSingleton<IInsightService, InsightService>();
         services.AddSingleton<IAutomationStateService, AutomationStateService>();
         services.AddSingleton<IAutomationRuntimeService, AutomationRuntimeService>();
