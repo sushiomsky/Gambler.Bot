@@ -23,6 +23,11 @@ public sealed class JsonAppSettingsServiceTests : IDisposable
         Assert.True(settings.PromptBeforeUpdates);
         Assert.True(settings.RiskGuardEnabled);
         Assert.True(settings.SessionInsightsEnabled);
+        Assert.Equal("DECOY", settings.DefaultCurrency);
+        Assert.Equal("Dice", settings.DefaultGame);
+        Assert.Equal(0.01m, settings.MinimumBetAmount);
+        Assert.Equal(1, settings.MaximumLiveBetsPerRun);
+        Assert.True(settings.RequireDecoyCurrencyForLiveBets);
         Assert.Equal("SQLite", settings.DefaultStorageProvider);
     }
 
@@ -36,6 +41,16 @@ public sealed class JsonAppSettingsServiceTests : IDisposable
             PromptBeforeUpdates = false,
             RiskGuardEnabled = false,
             SessionInsightsEnabled = false,
+            DefaultSite = "DuckDice",
+            DefaultCurrency = "decoy",
+            DefaultGame = "Dice",
+            MinimumBetAmount = 0.01m,
+            MaximumLiveBetAmount = 0.02m,
+            MaximumLiveBetsPerRun = 3,
+            RequireDecoyCurrencyForLiveBets = true,
+            BetHistoryPageSize = 500,
+            ConsoleRetentionEntries = 750,
+            ChartMaximumPoints = 200,
             DefaultStorageProvider = "PostgreSQL"
         };
 
@@ -46,6 +61,16 @@ public sealed class JsonAppSettingsServiceTests : IDisposable
         Assert.False(loaded.PromptBeforeUpdates);
         Assert.False(loaded.RiskGuardEnabled);
         Assert.False(loaded.SessionInsightsEnabled);
+        Assert.Equal("DuckDice", loaded.DefaultSite);
+        Assert.Equal("DECOY", loaded.DefaultCurrency);
+        Assert.Equal("Dice", loaded.DefaultGame);
+        Assert.Equal(0.01m, loaded.MinimumBetAmount);
+        Assert.Equal(0.02m, loaded.MaximumLiveBetAmount);
+        Assert.Equal(3, loaded.MaximumLiveBetsPerRun);
+        Assert.True(loaded.RequireDecoyCurrencyForLiveBets);
+        Assert.Equal(500, loaded.BetHistoryPageSize);
+        Assert.Equal(750, loaded.ConsoleRetentionEntries);
+        Assert.Equal(200, loaded.ChartMaximumPoints);
         Assert.Equal("PostgreSQL", loaded.DefaultStorageProvider);
     }
 
@@ -73,6 +98,9 @@ public sealed class JsonAppSettingsServiceTests : IDisposable
 
     private JsonAppSettingsService CreateService()
     {
-        return new JsonAppSettingsService(NullLogger<JsonAppSettingsService>.Instance, _settingsPath);
+        return new JsonAppSettingsService(
+            NullLogger<JsonAppSettingsService>.Instance,
+            new SettingsValidationService(),
+            _settingsPath);
     }
 }

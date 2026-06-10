@@ -7,12 +7,17 @@ namespace Gambler.Bot.WinUI.Services;
 public sealed class JsonAppSettingsService : IAppSettingsService
 {
     private readonly ILogger<JsonAppSettingsService> _logger;
+    private readonly ISettingsValidationService _settingsValidationService;
     private readonly JsonSerializerOptions _jsonOptions = new() { WriteIndented = true };
     private readonly string? _settingsPath;
 
-    public JsonAppSettingsService(ILogger<JsonAppSettingsService> logger, string? settingsPath = null)
+    public JsonAppSettingsService(
+        ILogger<JsonAppSettingsService> logger,
+        ISettingsValidationService? settingsValidationService = null,
+        string? settingsPath = null)
     {
         _logger = logger;
+        _settingsValidationService = settingsValidationService ?? new SettingsValidationService();
         _settingsPath = settingsPath;
     }
 
@@ -21,19 +26,20 @@ public sealed class JsonAppSettingsService : IAppSettingsService
         var path = GetSettingsPath();
         if (!File.Exists(path))
         {
-            return new NativeUiSettings();
+            return _settingsValidationService.Normalize(new NativeUiSettings());
         }
 
         try
         {
             await using var stream = File.OpenRead(path);
-            return await JsonSerializer.DeserializeAsync<NativeUiSettings>(stream, cancellationToken: cancellationToken)
+            var settings = await JsonSerializer.DeserializeAsync<NativeUiSettings>(stream, cancellationToken: cancellationToken)
                 ?? new NativeUiSettings();
+            return _settingsValidationService.Normalize(settings);
         }
         catch (Exception ex)
         {
             _logger.LogWarning(ex, "Failed to load WinUI settings from {Path}", path);
-            return new NativeUiSettings();
+            return _settingsValidationService.Normalize(new NativeUiSettings());
         }
     }
 
@@ -41,9 +47,10 @@ public sealed class JsonAppSettingsService : IAppSettingsService
     {
         var path = GetSettingsPath();
         Directory.CreateDirectory(Path.GetDirectoryName(path)!);
+        var normalized = _settingsValidationService.Normalize(settings);
 
         await using var stream = File.Create(path);
-        await JsonSerializer.SerializeAsync(stream, settings, _jsonOptions, cancellationToken);
+        await JsonSerializer.SerializeAsync(stream, normalized, _jsonOptions, cancellationToken);
     }
 
     private string GetSettingsPath()

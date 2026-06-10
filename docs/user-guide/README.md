@@ -262,16 +262,16 @@ The old Avalonia settings area has not been fully replaced yet.
 
 Available WinUI settings:
 
-- native Windows theme preference,
-- update prompt preference,
-- risk guard,
-- session insights,
-- automation loop enablement,
-- automation loop delay in milliseconds,
-- maximum simulation iterations,
-- live bet execution gate,
-- live bet confirmation phrase,
-- default storage provider.
+- appearance and update prompts,
+- default site, currency, game, and storage provider,
+- risk guard and session insights,
+- automation loop enablement, delay, and simulation iteration limit,
+- live bet gate, confirmation phrase, DECOY requirement, minimum bet, maximum live bet, and maximum live bets per run,
+- bet history page size,
+- console retention,
+- chart maximum points.
+
+Settings are normalized when loaded or saved. Unsafe values are clamped to supported ranges.
 
 ## Live DuckDice Smoke Test
 
@@ -364,7 +364,7 @@ Not fully replaced yet:
 - advanced chart interactions,
 - persistent console logs,
 - historical bet-to-verifier autofill,
-- full settings surface,
+- site-specific advanced settings,
 - export functions,
 - production-ready screenshot documentation.
 

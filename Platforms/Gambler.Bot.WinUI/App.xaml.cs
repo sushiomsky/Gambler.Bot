@@ -30,6 +30,7 @@ public partial class App : Application
         var services = new ServiceCollection();
 
         services.AddLogging(builder => builder.AddDebug());
+        services.AddSingleton<ISettingsValidationService, SettingsValidationService>();
         services.AddSingleton<IAppSettingsService, JsonAppSettingsService>();
         services.AddSingleton<IUpdateService, VelopackUpdateService>();
         services.AddSingleton<ISiteCatalogService, ReflectionSiteCatalogService>();

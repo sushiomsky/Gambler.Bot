@@ -14,29 +14,98 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <TextBlock Style="{StaticResource TitleTextBlockStyle}" Text="Settings" />
-        <StackPanel Grid.Row="1" Spacing="12" MaxWidth="680" HorizontalAlignment="Left">
-            <ToggleSwitch x:Name="UseNativeThemeToggle" Header="Use native Windows theme" IsOn="True" />
-            <ToggleSwitch x:Name="PromptBeforeUpdatesToggle" Header="Prompt before updates" IsOn="True" />
-            <ToggleSwitch x:Name="RiskGuardToggle" Header="Risk guard" IsOn="True" />
-            <ToggleSwitch x:Name="SessionInsightsToggle" Header="Session insights" IsOn="True" />
-            <ToggleSwitch x:Name="EnableAutomationLoopToggle" Header="Enable automation loop" IsOn="True" />
-            <TextBox x:Name="AutomationLoopDelayTextBox" Header="Automation loop delay (milliseconds)" Text="1000" />
-            <TextBox x:Name="AutomationMaxSimulationIterationsTextBox" Header="Maximum simulation iterations (0 = unlimited)" Text="0" />
-            <ToggleSwitch x:Name="AllowLiveBetExecutionToggle" Header="Allow live bet execution gate" IsOn="False" />
-            <TextBox x:Name="LiveBetConfirmationPhraseTextBox" Header="Live bet confirmation phrase" PlaceholderText="PLACE LIVE BETS" />
-            <ComboBox x:Name="StorageProviderComboBox" Header="Default storage provider" SelectedIndex="0">
-                <ComboBoxItem Content="SQLite" />
-                <ComboBoxItem Content="SQL Server" />
-                <ComboBoxItem Content="PostgreSQL" />
-                <ComboBoxItem Content="MySQL" />
-            </ComboBox>
-            <Button HorizontalAlignment="Left" Click="SaveButton_Click">
-                <StackPanel Orientation="Horizontal" Spacing="8">
-                    <FontIcon Glyph="&#xE74E;" />
-                    <TextBlock Text="Save settings" />
-                </StackPanel>
-            </Button>
-            <InfoBar x:Name="SaveInfoBar" IsOpen="False" Severity="Success" Title="Settings saved" Message="WinUI settings were written to the app data folder." />
-        </StackPanel>
+        <ScrollViewer Grid.Row="1">
+            <StackPanel Spacing="16" MaxWidth="920" HorizontalAlignment="Left">
+                <Expander Header="Appearance and updates" IsExpanded="True">
+                    <StackPanel Spacing="12">
+                        <ToggleSwitch x:Name="UseNativeThemeToggle" Header="Use native Windows theme" IsOn="True" />
+                        <ToggleSwitch x:Name="PromptBeforeUpdatesToggle" Header="Prompt before updates" IsOn="True" />
+                    </StackPanel>
+                </Expander>
+
+                <Expander Header="Defaults" IsExpanded="True">
+                    <Grid ColumnSpacing="12" RowSpacing="12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <TextBox x:Name="DefaultSiteTextBox" Header="Default site" PlaceholderText="Optional site name" />
+                        <TextBox x:Name="DefaultCurrencyTextBox" Grid.Column="1" Header="Default currency" Text="DECOY" />
+                        <TextBox x:Name="DefaultGameTextBox" Grid.Row="1" Header="Default game" Text="Dice" />
+                        <ComboBox x:Name="StorageProviderComboBox" Grid.Row="1" Grid.Column="1" Header="Default storage provider" SelectedIndex="0">
+                            <ComboBoxItem Content="SQLite" />
+                            <ComboBoxItem Content="SQL Server" />
+                            <ComboBoxItem Content="PostgreSQL" />
+                            <ComboBoxItem Content="MySQL" />
+                        </ComboBox>
+                    </Grid>
+                </Expander>
+
+                <Expander Header="Automation" IsExpanded="True">
+                    <Grid ColumnSpacing="12" RowSpacing="12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <ToggleSwitch x:Name="RiskGuardToggle" Header="Risk guard" IsOn="True" />
+                        <ToggleSwitch x:Name="SessionInsightsToggle" Grid.Column="1" Header="Session insights" IsOn="True" />
+                        <ToggleSwitch x:Name="EnableAutomationLoopToggle" Grid.Row="1" Header="Enable automation loop" IsOn="True" />
+                        <TextBox x:Name="AutomationLoopDelayTextBox" Grid.Row="1" Grid.Column="1" Header="Automation loop delay (milliseconds)" Text="1000" />
+                        <TextBox x:Name="AutomationMaxSimulationIterationsTextBox" Grid.Row="2" Header="Maximum simulation iterations (0 = unlimited)" Text="0" />
+                    </Grid>
+                </Expander>
+
+                <Expander Header="Live bet safety" IsExpanded="True">
+                    <Grid ColumnSpacing="12" RowSpacing="12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <ToggleSwitch x:Name="AllowLiveBetExecutionToggle" Header="Allow live bet execution gate" IsOn="False" />
+                        <ToggleSwitch x:Name="RequireDecoyCurrencyForLiveBetsToggle" Grid.Column="1" Header="Require DECOY currency for live bets" IsOn="True" />
+                        <TextBox x:Name="LiveBetConfirmationPhraseTextBox" Grid.Row="1" Grid.ColumnSpan="2" Header="Live bet confirmation phrase" PlaceholderText="PLACE LIVE BETS" />
+                        <TextBox x:Name="MinimumBetAmountTextBox" Grid.Row="2" Header="Minimum bet amount" Text="0.01" />
+                        <TextBox x:Name="MaximumLiveBetAmountTextBox" Grid.Row="2" Grid.Column="1" Header="Maximum live bet amount" Text="0.01" />
+                        <TextBox x:Name="MaximumLiveBetsPerRunTextBox" Grid.Row="3" Header="Maximum live bets per run" Text="1" />
+                    </Grid>
+                </Expander>
+
+                <Expander Header="Data and diagnostics" IsExpanded="True">
+                    <Grid ColumnSpacing="12" RowSpacing="12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBox x:Name="BetHistoryPageSizeTextBox" Header="Bet history page size" Text="250" />
+                        <TextBox x:Name="ConsoleRetentionEntriesTextBox" Grid.Column="1" Header="Console retention entries" Text="500" />
+                        <TextBox x:Name="ChartMaximumPointsTextBox" Grid.Column="2" Header="Chart maximum points" Text="120" />
+                    </Grid>
+                </Expander>
+
+                <Button HorizontalAlignment="Left" Click="SaveButton_Click">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <FontIcon Glyph="&#xE74E;" />
+                        <TextBlock Text="Save settings" />
+                    </StackPanel>
+                </Button>
+                <InfoBar x:Name="SaveInfoBar" IsOpen="False" Severity="Success" Title="Settings saved" Message="WinUI settings were written to the app data folder." />
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </Page>
