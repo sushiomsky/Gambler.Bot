@@ -215,7 +215,13 @@ Available commands:
 - `runtime`: prints runtime mode, loop iterations, and last runtime message.
 - `clear`: clears the console buffer.
 
-The console keeps the latest 500 entries in memory.
+The console keeps the latest entries according to the configured retention setting and persists them under:
+
+```text
+%APPDATA%\Gambler.Bot\ConsoleLog.jsonl
+```
+
+Use `clear` to remove the in-memory entries and delete the persisted console log.
 
 ## Roll Verifier
 
@@ -269,7 +275,7 @@ Available WinUI settings:
 - automation loop enablement, delay, and simulation iteration limit,
 - live bet gate, confirmation phrase, DECOY requirement, minimum bet, maximum live bet, maximum live bets per run, live stop-loss amount, and live take-profit amount,
 - bet history page size,
-- console retention,
+- persisted console retention,
 - chart maximum points.
 
 Settings are normalized when loaded or saved. Unsafe values are clamped to supported ranges.
@@ -367,7 +373,6 @@ Not fully replaced yet:
 - advanced strategy editor diagnostics,
 - Monaco/WebView2 programmer mode syntax highlighting,
 - advanced chart interactions,
-- persistent console logs,
 - historical bet-to-verifier autofill,
 - site-specific advanced settings,
 - export functions,

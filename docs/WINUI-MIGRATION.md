@@ -39,7 +39,7 @@ The UI-neutral WinUI migration layer is testable through `Platforms/Gambler.Bot.
 - `BetHistorySummaryService` summarizes visible history records for native dashboard cards.
 - `BetChartService` creates native cumulative profit chart snapshots for filtered history records.
 - `BetHistoryExportService` exports loaded or filtered history records to CSV.
-- `ConsoleLogService` stores the latest in-memory diagnostic console entries for the native Console page.
+- `ConsoleLogService` stores the latest diagnostic console entries for the native Console page and persists retained entries to `%APPDATA%\Gambler.Bot\ConsoleLog.jsonl`.
 - `RollVerifierService` verifies provably-fair rolls by delegating to Core site `GetLucky` and `GetHash` implementations.
 - `InsightService` combines settings, catalog, session, and runtime state into diagnostics.
 - `NavigationContext` passes UI-neutral services into pages while the shell is still lightweight.
@@ -59,7 +59,7 @@ The UI-neutral WinUI migration layer is testable through `Platforms/Gambler.Bot.
 
 - `dotnet build .\Platforms\Gambler.Bot.WinUI\Gambler.Bot.WinUI.csproj -c Debug` succeeds with 0 warnings and 0 errors.
 - `dotnet build .\Gambler.Bot.sln -c Debug` succeeds with 0 warnings and 0 errors.
-- `dotnet test .\Platforms\Gambler.Bot.WinUI.Tests\Gambler.Bot.WinUI.Tests.csproj -c Release` succeeds with 58 tests covering runtime safety, simulation loop execution, guarded live loop execution, live loop stop-loss/take-profit exits, guarded single live bet execution, live bet gating, guarded DuckDice live smoke test behavior, Programmer Mode script documents, roll verification, settings validation, console logging, chart snapshots, session state, settings persistence, update URL configuration, insight diagnostics, SQLite bet history reading, history filtering/summaries, and CSV export.
+- `dotnet test .\Platforms\Gambler.Bot.WinUI.Tests\Gambler.Bot.WinUI.Tests.csproj -c Release` succeeds with 61 tests covering runtime safety, simulation loop execution, guarded live loop execution, live loop stop-loss/take-profit exits, guarded single live bet execution, live bet gating, guarded DuckDice live smoke test behavior, Programmer Mode script documents, roll verification, settings validation, persisted console logging, chart snapshots, session state, settings persistence, update URL configuration, insight diagnostics, SQLite bet history reading, history filtering/summaries, and CSV export.
 - `dotnet publish .\Platforms\Gambler.Bot.WinUI\Gambler.Bot.WinUI.csproj -c Release -r win-x64 --self-contained true -p:WindowsAppSDKSelfContained=true -p:WindowsPackageType=None -p:PublishTrimmed=false -p:PublishSingleFile=false` succeeds locally.
 - `dotnet test .\Gambler.Bot.sln -c Debug --no-build` runs strategy tests successfully, but existing core site integration tests fail because local login parameter JSON is missing and some live seed reset expectations are not satisfied.
 
