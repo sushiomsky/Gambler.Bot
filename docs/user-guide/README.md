@@ -184,7 +184,7 @@ Available actions:
 - `Min profit` and `Max profit`: narrow the visible records by profit range.
 - `Verifier-ready only`: shows only rows with server seed, client seed, and nonce data.
 - `Verify selected`: opens the Roll Verifier with server seed, client seed, nonce, site, and game prefilled when the selected history row contains verifier data.
-- `Export`: writes the currently visible records to a CSV file in your Documents folder.
+- `Export`: writes the currently visible records to your Documents folder as CSV or JSON with summary and chart analytics.
 
 The summary cards above the table always reflect the currently visible records:
 
@@ -384,7 +384,6 @@ Not fully replaced yet:
 - advanced strategy editor diagnostics,
 - Monaco/WebView2 programmer mode syntax highlighting,
 - site-specific advanced settings,
-- advanced export functions,
 - production-ready screenshot documentation.
 
 ## Screenshots

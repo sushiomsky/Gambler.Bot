@@ -1,17 +1,39 @@
 using System.Globalization;
 using System.Text;
+using System.Text.Json;
 using Gambler.Bot.WinUI.Models;
 
 namespace Gambler.Bot.WinUI.Services;
 
 public sealed class BetHistoryExportService : IBetHistoryExportService
 {
+    private static readonly JsonSerializerOptions JsonOptions = new()
+    {
+        WriteIndented = true
+    };
+
+    public Task<string> ExportAsync(
+        IReadOnlyList<BetHistoryRecord> records,
+        BetHistoryExportFormat format,
+        BetHistorySummary? summary = null,
+        BetChartSnapshot? chart = null,
+        string? filePath = null,
+        CancellationToken cancellationToken = default)
+    {
+        return format switch
+        {
+            BetHistoryExportFormat.Csv => ExportCsvAsync(records, filePath, cancellationToken),
+            BetHistoryExportFormat.Json => ExportJsonAsync(records, summary, chart, filePath, cancellationToken),
+            _ => throw new ArgumentOutOfRangeException(nameof(format), format, "Unsupported bet history export format.")
+        };
+    }
+
     public async Task<string> ExportCsvAsync(
         IReadOnlyList<BetHistoryRecord> records,
         string? filePath = null,
         CancellationToken cancellationToken = default)
     {
-        var destination = string.IsNullOrWhiteSpace(filePath) ? CreateDefaultFilePath() : filePath;
+        var destination = string.IsNullOrWhiteSpace(filePath) ? CreateDefaultFilePath("csv") : filePath;
         Directory.CreateDirectory(Path.GetDirectoryName(destination)!);
 
         await using var stream = File.Create(destination);
@@ -38,10 +60,32 @@ public sealed class BetHistoryExportService : IBetHistoryExportService
         return destination;
     }
 
-    private static string CreateDefaultFilePath()
+    private static async Task<string> ExportJsonAsync(
+        IReadOnlyList<BetHistoryRecord> records,
+        BetHistorySummary? summary,
+        BetChartSnapshot? chart,
+        string? filePath,
+        CancellationToken cancellationToken)
+    {
+        var destination = string.IsNullOrWhiteSpace(filePath) ? CreateDefaultFilePath("json") : filePath;
+        Directory.CreateDirectory(Path.GetDirectoryName(destination)!);
+
+        var payload = new BetHistoryExportPayload(
+            DateTimeOffset.Now,
+            records.Count,
+            summary,
+            chart,
+            records);
+
+        await using var stream = File.Create(destination);
+        await JsonSerializer.SerializeAsync(stream, payload, JsonOptions, cancellationToken);
+        return destination;
+    }
+
+    private static string CreateDefaultFilePath(string extension)
     {
         var documents = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-        var fileName = $"BetHistory-{DateTimeOffset.Now:yyyyMMdd-HHmmss}.csv";
+        var fileName = $"BetHistory-{DateTimeOffset.Now:yyyyMMdd-HHmmss}.{extension}";
         return Path.Combine(documents, "Gambler.Bot", fileName);
     }
 
@@ -54,4 +98,11 @@ public sealed class BetHistoryExportService : IBetHistoryExportService
 
         return value;
     }
+
+    private sealed record BetHistoryExportPayload(
+        DateTimeOffset ExportedAt,
+        int RecordCount,
+        BetHistorySummary? Summary,
+        BetChartSnapshot? Chart,
+        IReadOnlyList<BetHistoryRecord> Records);
 }

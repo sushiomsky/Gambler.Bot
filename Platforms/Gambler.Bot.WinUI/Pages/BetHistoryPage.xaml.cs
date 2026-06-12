@@ -46,10 +46,13 @@ public sealed partial class BetHistoryPage : Page
 
         try
         {
-            var path = await _navigationContext.BetHistoryExportService.ExportCsvAsync(_filteredRecords);
+            var summary = _navigationContext.BetHistorySummaryService.Summarize(_filteredRecords);
+            var chart = _navigationContext.BetChartService.CreateSnapshot(_filteredRecords);
+            var format = ReadExportFormat();
+            var path = await _navigationContext.BetHistoryExportService.ExportAsync(_filteredRecords, format, summary, chart);
             HistoryInfoBar.Severity = InfoBarSeverity.Success;
             HistoryInfoBar.Title = "Export complete";
-            HistoryInfoBar.Message = $"CSV exported to {path}.";
+            HistoryInfoBar.Message = $"{format} exported to {path}.";
         }
         catch (Exception ex)
         {
@@ -168,5 +171,13 @@ public sealed partial class BetHistoryPage : Page
         return decimal.TryParse(value, NumberStyles.Number, CultureInfo.InvariantCulture, out var result)
             ? result
             : null;
+    }
+
+    private BetHistoryExportFormat ReadExportFormat()
+    {
+        var selected = (ExportFormatComboBox.SelectedItem as ComboBoxItem)?.Content?.ToString();
+        return string.Equals(selected, "JSON with summary", StringComparison.OrdinalIgnoreCase)
+            ? BetHistoryExportFormat.Json
+            : BetHistoryExportFormat.Csv;
     }
 }

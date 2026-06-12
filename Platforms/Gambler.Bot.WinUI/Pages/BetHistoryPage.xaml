@@ -94,6 +94,16 @@
                     Content="Verifier-ready only"
                     Unchecked="FilterControl_Changed" />
             </Grid>
+
+            <ComboBox
+                x:Name="ExportFormatComboBox"
+                Header="Export format"
+                HorizontalAlignment="Left"
+                MinWidth="180"
+                SelectedIndex="0">
+                <ComboBoxItem Content="CSV" />
+                <ComboBoxItem Content="JSON with summary" />
+            </ComboBox>
         </StackPanel>
 
         <Grid Grid.Row="3" ColumnSpacing="12">
