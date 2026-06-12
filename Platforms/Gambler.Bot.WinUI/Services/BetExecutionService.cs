@@ -137,7 +137,8 @@ public sealed class BetExecutionService : IBetExecutionService
             _liveBetsThisRun++;
             return new AutomationCommandResult(
                 true,
-                $"Live bet placed: {result.TotalAmount.ToString("0.########", CultureInfo.InvariantCulture)} {result.Currency}, profit {result.Profit.ToString("0.########", CultureInfo.InvariantCulture)}, id {result.BetID}.");
+                $"Live bet placed: {result.TotalAmount.ToString("0.########", CultureInfo.InvariantCulture)} {result.Currency}, profit {result.Profit.ToString("0.########", CultureInfo.InvariantCulture)}, id {result.BetID}.",
+                result.Profit);
         }
         catch (Exception ex)
         {

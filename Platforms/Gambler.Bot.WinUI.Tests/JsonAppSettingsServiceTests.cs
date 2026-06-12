@@ -27,6 +27,8 @@ public sealed class JsonAppSettingsServiceTests : IDisposable
         Assert.Equal("Dice", settings.DefaultGame);
         Assert.Equal(0.01m, settings.MinimumBetAmount);
         Assert.Equal(1, settings.MaximumLiveBetsPerRun);
+        Assert.Equal(0.05m, settings.LiveStopLossAmount);
+        Assert.Equal(0.05m, settings.LiveTakeProfitAmount);
         Assert.True(settings.RequireDecoyCurrencyForLiveBets);
         Assert.False(settings.EnableLiveAutomationLoop);
         Assert.Equal("SQLite", settings.DefaultStorageProvider);
@@ -49,6 +51,8 @@ public sealed class JsonAppSettingsServiceTests : IDisposable
             MinimumBetAmount = 0.01m,
             MaximumLiveBetAmount = 0.02m,
             MaximumLiveBetsPerRun = 3,
+            LiveStopLossAmount = 0.25m,
+            LiveTakeProfitAmount = 0.5m,
             RequireDecoyCurrencyForLiveBets = true,
             BetHistoryPageSize = 500,
             ConsoleRetentionEntries = 750,
@@ -70,6 +74,8 @@ public sealed class JsonAppSettingsServiceTests : IDisposable
         Assert.Equal(0.01m, loaded.MinimumBetAmount);
         Assert.Equal(0.02m, loaded.MaximumLiveBetAmount);
         Assert.Equal(3, loaded.MaximumLiveBetsPerRun);
+        Assert.Equal(0.25m, loaded.LiveStopLossAmount);
+        Assert.Equal(0.5m, loaded.LiveTakeProfitAmount);
         Assert.True(loaded.RequireDecoyCurrencyForLiveBets);
         Assert.Equal(500, loaded.BetHistoryPageSize);
         Assert.Equal(750, loaded.ConsoleRetentionEntries);

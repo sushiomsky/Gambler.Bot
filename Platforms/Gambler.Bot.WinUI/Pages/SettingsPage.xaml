@@ -75,6 +75,7 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <ToggleSwitch x:Name="AllowLiveBetExecutionToggle" Header="Allow single live bet execution" IsOn="False" />
                         <ToggleSwitch x:Name="EnableLiveAutomationLoopToggle" Grid.Column="1" Header="Enable live automation loop" IsOn="False" />
@@ -83,6 +84,8 @@
                         <TextBox x:Name="MinimumBetAmountTextBox" Grid.Row="2" Header="Minimum bet amount" Text="0.01" />
                         <TextBox x:Name="MaximumLiveBetAmountTextBox" Grid.Row="2" Grid.Column="1" Header="Maximum live bet amount" Text="0.01" />
                         <TextBox x:Name="MaximumLiveBetsPerRunTextBox" Grid.Row="3" Header="Maximum live bets per run" Text="1" />
+                        <TextBox x:Name="LiveStopLossAmountTextBox" Grid.Row="3" Grid.Column="1" Header="Live stop-loss amount" Text="0.05" />
+                        <TextBox x:Name="LiveTakeProfitAmountTextBox" Grid.Row="4" Header="Live take-profit amount" Text="0.05" />
                     </Grid>
                 </Expander>
 

@@ -1,4 +1,5 @@
 using Gambler.Bot.WinUI.Models;
+using System.Globalization;
 
 namespace Gambler.Bot.WinUI.Services;
 
@@ -180,6 +181,7 @@ public sealed class AutomationRuntimeService : IAutomationRuntimeService
 
     private async Task RunLiveLoopAsync(NativeUiSettings settings, CancellationToken cancellationToken)
     {
+        decimal sessionProfit = 0;
         try
         {
             while (!cancellationToken.IsCancellationRequested)
@@ -191,11 +193,24 @@ public sealed class AutomationRuntimeService : IAutomationRuntimeService
                 }
 
                 var result = await _betExecutionService.ExecuteLiveBetAsync(cancellationToken);
+                sessionProfit += result.Profit;
                 _automationStateService.RecordIteration(result.Message, null);
 
                 if (!result.Succeeded)
                 {
                     _automationStateService.Complete(result.Message);
+                    break;
+                }
+
+                if (sessionProfit <= -settings.LiveStopLossAmount)
+                {
+                    _automationStateService.Complete($"Live stop-loss reached ({sessionProfit.ToString("0.########", CultureInfo.InvariantCulture)}).");
+                    break;
+                }
+
+                if (sessionProfit >= settings.LiveTakeProfitAmount)
+                {
+                    _automationStateService.Complete($"Live take-profit reached ({sessionProfit.ToString("0.########", CultureInfo.InvariantCulture)}).");
                     break;
                 }
 

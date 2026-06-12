@@ -59,6 +59,8 @@ public sealed partial class SettingsPage : Page
         MinimumBetAmountTextBox.Text = _settings.MinimumBetAmount.ToString(System.Globalization.CultureInfo.InvariantCulture);
         MaximumLiveBetAmountTextBox.Text = _settings.MaximumLiveBetAmount.ToString(System.Globalization.CultureInfo.InvariantCulture);
         MaximumLiveBetsPerRunTextBox.Text = _settings.MaximumLiveBetsPerRun.ToString();
+        LiveStopLossAmountTextBox.Text = _settings.LiveStopLossAmount.ToString(System.Globalization.CultureInfo.InvariantCulture);
+        LiveTakeProfitAmountTextBox.Text = _settings.LiveTakeProfitAmount.ToString(System.Globalization.CultureInfo.InvariantCulture);
         BetHistoryPageSizeTextBox.Text = _settings.BetHistoryPageSize.ToString();
         ConsoleRetentionEntriesTextBox.Text = _settings.ConsoleRetentionEntries.ToString();
         ChartMaximumPointsTextBox.Text = _settings.ChartMaximumPoints.ToString();
@@ -93,6 +95,8 @@ public sealed partial class SettingsPage : Page
         _settings.MinimumBetAmount = ReadDecimal(MinimumBetAmountTextBox.Text, 0.01m);
         _settings.MaximumLiveBetAmount = ReadDecimal(MaximumLiveBetAmountTextBox.Text, 0.01m);
         _settings.MaximumLiveBetsPerRun = ReadInt32(MaximumLiveBetsPerRunTextBox.Text, 1, 1, 1_000_000);
+        _settings.LiveStopLossAmount = ReadDecimal(LiveStopLossAmountTextBox.Text, 0.05m);
+        _settings.LiveTakeProfitAmount = ReadDecimal(LiveTakeProfitAmountTextBox.Text, 0.05m);
         _settings.BetHistoryPageSize = ReadInt32(BetHistoryPageSizeTextBox.Text, 250, 25, 10_000);
         _settings.ConsoleRetentionEntries = ReadInt32(ConsoleRetentionEntriesTextBox.Text, 500, 50, 10_000);
         _settings.ChartMaximumPoints = ReadInt32(ChartMaximumPointsTextBox.Text, 120, 10, 5_000);

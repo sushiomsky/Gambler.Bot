@@ -37,6 +37,8 @@ public sealed class SettingsValidationServiceTests
             MinimumBetAmount = -1m,
             MaximumLiveBetAmount = 0m,
             MaximumLiveBetsPerRun = 0,
+            LiveStopLossAmount = 0m,
+            LiveTakeProfitAmount = 0m,
             BetHistoryPageSize = 1,
             ConsoleRetentionEntries = 1,
             ChartMaximumPoints = 1
@@ -49,6 +51,8 @@ public sealed class SettingsValidationServiceTests
         Assert.Equal(0.00000001m, normalized.MinimumBetAmount);
         Assert.Equal(normalized.MinimumBetAmount, normalized.MaximumLiveBetAmount);
         Assert.Equal(1, normalized.MaximumLiveBetsPerRun);
+        Assert.Equal(0.00000001m, normalized.LiveStopLossAmount);
+        Assert.Equal(0.00000001m, normalized.LiveTakeProfitAmount);
         Assert.Equal(25, normalized.BetHistoryPageSize);
         Assert.Equal(50, normalized.ConsoleRetentionEntries);
         Assert.Equal(10, normalized.ChartMaximumPoints);

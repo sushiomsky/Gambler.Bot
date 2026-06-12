@@ -164,7 +164,7 @@ public sealed class AutomationRuntimeServiceTests
     [Fact]
     public async Task StartRunsLiveLoopUntilConfiguredLimit()
     {
-        var betExecution = new SuccessfulLiveBetExecutionService();
+        var betExecution = new SuccessfulLiveBetExecutionService(0.01m);
         var fixture = RuntimeFixture.Create(
             siteCatalog: new WorkingSiteCatalogService(),
             strategyCatalog: new WorkingStrategyCatalogService(),
@@ -187,6 +187,46 @@ public sealed class AutomationRuntimeServiceTests
         Assert.Equal(2, fixture.Automation.Current.LoopIterations);
         Assert.Equal("Live bet limit reached (2 per run).", fixture.Automation.Current.LastMessage);
         Assert.Equal(2, betExecution.LiveCalls);
+    }
+
+    [Fact]
+    public async Task LiveLoopStopsAtTakeProfit()
+    {
+        var betExecution = new SuccessfulLiveBetExecutionService(0.03m);
+        var fixture = RuntimeFixture.Create(
+            siteCatalog: new WorkingSiteCatalogService(),
+            strategyCatalog: new WorkingStrategyCatalogService(),
+            betExecution: betExecution,
+            settings: LiveLoopSettings(liveTakeProfitAmount: 0.05m, maximumLiveBetsPerRun: 10));
+        fixture.Sites.SetLiveConnected(TestData.Site);
+        fixture.Strategies.Select(TestData.Strategy);
+
+        var result = fixture.Runtime.Start();
+
+        Assert.True(result.Succeeded);
+        await WaitUntilAsync(() => fixture.Automation.Current.Status == "Completed");
+        Assert.Equal(2, fixture.Automation.Current.LoopIterations);
+        Assert.Equal("Live take-profit reached (0.06).", fixture.Automation.Current.LastMessage);
+    }
+
+    [Fact]
+    public async Task LiveLoopStopsAtStopLoss()
+    {
+        var betExecution = new SuccessfulLiveBetExecutionService(-0.03m);
+        var fixture = RuntimeFixture.Create(
+            siteCatalog: new WorkingSiteCatalogService(),
+            strategyCatalog: new WorkingStrategyCatalogService(),
+            betExecution: betExecution,
+            settings: LiveLoopSettings(liveStopLossAmount: 0.05m, maximumLiveBetsPerRun: 10));
+        fixture.Sites.SetLiveConnected(TestData.Site);
+        fixture.Strategies.Select(TestData.Strategy);
+
+        var result = fixture.Runtime.Start();
+
+        Assert.True(result.Succeeded);
+        await WaitUntilAsync(() => fixture.Automation.Current.Status == "Completed");
+        Assert.Equal(2, fixture.Automation.Current.LoopIterations);
+        Assert.Equal("Live stop-loss reached (-0.06).", fixture.Automation.Current.LastMessage);
     }
 
     private sealed record RuntimeFixture(
@@ -304,7 +344,24 @@ public sealed class AutomationRuntimeServiceTests
         }
     }
 
-    private sealed class SuccessfulLiveBetExecutionService : IBetExecutionService
+    private static NativeUiSettings LiveLoopSettings(
+        decimal liveStopLossAmount = 1m,
+        decimal liveTakeProfitAmount = 1m,
+        int maximumLiveBetsPerRun = 1)
+    {
+        return new NativeUiSettings
+        {
+            EnableLiveAutomationLoop = true,
+            AllowLiveBetExecution = true,
+            LiveBetConfirmationPhrase = "PLACE LIVE BETS",
+            AutomationLoopDelayMs = 100,
+            MaximumLiveBetsPerRun = maximumLiveBetsPerRun,
+            LiveStopLossAmount = liveStopLossAmount,
+            LiveTakeProfitAmount = liveTakeProfitAmount
+        };
+    }
+
+    private sealed class SuccessfulLiveBetExecutionService(decimal profit) : IBetExecutionService
     {
         public int LiveCalls { get; private set; }
 
@@ -317,7 +374,7 @@ public sealed class AutomationRuntimeServiceTests
         public Task<AutomationCommandResult> ExecuteLiveBetAsync(CancellationToken cancellationToken = default)
         {
             LiveCalls++;
-            return Task.FromResult(new AutomationCommandResult(true, $"Live bet {LiveCalls} placed."));
+            return Task.FromResult(new AutomationCommandResult(true, $"Live bet {LiveCalls} placed.", profit));
         }
     }
 

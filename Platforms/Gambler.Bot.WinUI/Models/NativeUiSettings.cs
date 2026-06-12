@@ -17,6 +17,8 @@ public sealed class NativeUiSettings
     public decimal MinimumBetAmount { get; set; } = 0.01m;
     public decimal MaximumLiveBetAmount { get; set; } = 0.01m;
     public int MaximumLiveBetsPerRun { get; set; } = 1;
+    public decimal LiveStopLossAmount { get; set; } = 0.05m;
+    public decimal LiveTakeProfitAmount { get; set; } = 0.05m;
     public bool RequireDecoyCurrencyForLiveBets { get; set; } = true;
     public bool AllowLiveBetExecution { get; set; } = false;
     public string LiveBetConfirmationPhrase { get; set; } = string.Empty;

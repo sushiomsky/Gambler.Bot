@@ -93,9 +93,9 @@ Main actions:
 - `Preview Bet`: prepares the next bet from the active site and strategy without placing it.
 - `Place live bet`: places one guarded live bet only after live login and all live safety settings pass.
 
-The runtime can start a native simulation loop. When live automation loop is explicitly enabled in settings, `Start` can also run a guarded live loop that stops at the configured live-bets-per-run limit.
+The runtime can start a native simulation loop. When live automation loop is explicitly enabled in settings, `Start` can also run a guarded live loop that stops at the configured live-bets-per-run limit, the configured stop-loss amount, or the configured take-profit amount.
 
-Safety rule: live automation loops are disabled by default. Single live bets and live loops require explicit settings, the exact confirmation phrase, a logged-in Core site session, and live bet limits.
+Safety rule: live automation loops are disabled by default. Single live bets and live loops require explicit settings, the exact confirmation phrase, a logged-in Core site session, live bet limits, and live session profit limits.
 
 ## Selecting Sites
 
@@ -267,7 +267,7 @@ Available WinUI settings:
 - default site, currency, game, and storage provider,
 - risk guard and session insights,
 - automation loop enablement, delay, and simulation iteration limit,
-- live bet gate, confirmation phrase, DECOY requirement, minimum bet, maximum live bet, and maximum live bets per run,
+- live bet gate, confirmation phrase, DECOY requirement, minimum bet, maximum live bet, maximum live bets per run, live stop-loss amount, and live take-profit amount,
 - bet history page size,
 - console retention,
 - chart maximum points.
@@ -319,6 +319,7 @@ Current WinUI safety mechanisms:
 - live bet amount is clamped to the minimum and rejected above the configured maximum,
 - live bet execution can require `DECOY` currency,
 - live bets per run are capped,
+- live automation tracks cumulative session profit and stops at the configured stop-loss or take-profit amount,
 - the simulation loop can be limited with a maximum iteration count,
 - `Preview Bet` never places a real bet,
 - password and MFA fields are hidden,
@@ -329,6 +330,7 @@ Recommendations:
 - Test new strategies in simulation mode first.
 - Use very small amounts when live execution is eventually enabled.
 - Verify site, strategy, and currency before any live run.
+- Keep stop-loss and take-profit values conservative while validating a strategy.
 
 ## Troubleshooting
 
@@ -361,8 +363,7 @@ Check:
 Not fully replaced yet:
 
 - old Avalonia UI,
-- advanced full bot loop recovery and stop conditions,
-- live loop profit/loss stop rules,
+- advanced full bot loop recovery and trailing stop conditions,
 - advanced strategy editor diagnostics,
 - Monaco/WebView2 programmer mode syntax highlighting,
 - advanced chart interactions,
