@@ -12,6 +12,7 @@ public sealed record NavigationContext(
     IBetHistoryExportService BetHistoryExportService,
     IBetHistoryFilterService BetHistoryFilterService,
     IBetHistorySummaryService BetHistorySummaryService,
+    IBetHistoryDetailService BetHistoryDetailService,
     IBetChartService BetChartService,
     IConsoleLogService ConsoleLogService,
     IRollVerifierService RollVerifierService,

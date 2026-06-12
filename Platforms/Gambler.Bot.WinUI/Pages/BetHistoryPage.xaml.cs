@@ -93,6 +93,11 @@ public sealed partial class BetHistoryPage : Page
         ApplyFilters();
     }
 
+    private void HistoryListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        UpdateSelectedBetDetails(HistoryListView.SelectedItem as BetHistoryRecord);
+    }
+
     private void LoadHistory()
     {
         if (_navigationContext is null)
@@ -128,8 +133,14 @@ public sealed partial class BetHistoryPage : Page
             VerifierReadyOnlyCheckBox.IsChecked == true);
         _filteredRecords = _navigationContext.BetHistoryFilterService.Apply(_allRecords, criteria);
         HistoryListView.ItemsSource = _filteredRecords;
+        if (HistoryListView.SelectedItem is BetHistoryRecord selected && !_filteredRecords.Contains(selected))
+        {
+            HistoryListView.SelectedItem = null;
+        }
+
         HistorySubtitleText.Text = $"{_filteredRecords.Count} of {_allRecords.Count} records visible.";
         UpdateSummary();
+        UpdateSelectedBetDetails(HistoryListView.SelectedItem as BetHistoryRecord);
     }
 
     private void UpdateSummary()
@@ -179,5 +190,20 @@ public sealed partial class BetHistoryPage : Page
         return string.Equals(selected, "JSON with summary", StringComparison.OrdinalIgnoreCase)
             ? BetHistoryExportFormat.Json
             : BetHistoryExportFormat.Csv;
+    }
+
+    private void UpdateSelectedBetDetails(BetHistoryRecord? record)
+    {
+        if (_navigationContext is null || record is null)
+        {
+            SelectedBetHintText.Text = "Select a history row to inspect all stored bet fields.";
+            SelectedBetDetailsRepeater.ItemsSource = Array.Empty<BetHistoryDetailItem>();
+            return;
+        }
+
+        SelectedBetHintText.Text = record.CanPrefillVerifier
+            ? "This bet contains verifier seed data and can be opened in Roll Verifier."
+            : "This bet does not include enough seed data for automatic verification.";
+        SelectedBetDetailsRepeater.ItemsSource = _navigationContext.BetHistoryDetailService.CreateDetails(record);
     }
 }

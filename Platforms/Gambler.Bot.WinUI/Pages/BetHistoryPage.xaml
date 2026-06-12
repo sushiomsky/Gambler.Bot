@@ -15,6 +15,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
@@ -194,7 +195,28 @@
             </Grid>
         </Border>
 
-        <ListView x:Name="HistoryListView" Grid.Row="5" SelectionMode="Single">
+        <Border Grid.Row="5" Padding="16" CornerRadius="8" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1">
+            <StackPanel Spacing="10">
+                <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="Selected Bet Details" />
+                <TextBlock x:Name="SelectedBetHintText" Foreground="{ThemeResource MutedTextBrush}" Text="Select a history row to inspect all stored bet fields." />
+                <ItemsRepeater x:Name="SelectedBetDetailsRepeater">
+                    <ItemsRepeater.ItemTemplate>
+                        <DataTemplate x:DataType="models:BetHistoryDetailItem">
+                            <Grid Padding="0,3" ColumnSpacing="16">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="160" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Foreground="{ThemeResource MutedTextBrush}" Text="{x:Bind Label}" />
+                                <TextBlock Grid.Column="1" FontFamily="Consolas" TextWrapping="Wrap" Text="{x:Bind Value}" />
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsRepeater.ItemTemplate>
+                </ItemsRepeater>
+            </StackPanel>
+        </Border>
+
+        <ListView x:Name="HistoryListView" Grid.Row="6" SelectionMode="Single" SelectionChanged="HistoryListView_SelectionChanged">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="models:BetHistoryRecord">
                     <Grid Padding="10" ColumnSpacing="16">

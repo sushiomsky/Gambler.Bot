@@ -207,9 +207,7 @@ The chart card below the summary shows:
 
 Rows marked `Fair` include enough seed and nonce data to prefill the Roll Verifier. Rows marked `No seed` can still be reviewed and exported, but cannot be automatically verified from history.
 
-Still pending:
-
-- detailed bet view,
+Selecting a history row opens the native detail card for that bet. The detail card shows timestamp, site, game, currency, amount, profit, outcome, verifier status, server seed, client seed, and nonce when available.
 
 ## Console
 

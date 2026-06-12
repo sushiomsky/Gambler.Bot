@@ -42,6 +42,7 @@ public partial class App : Application
         services.AddSingleton<IBetHistoryExportService, BetHistoryExportService>();
         services.AddSingleton<IBetHistoryFilterService, BetHistoryFilterService>();
         services.AddSingleton<IBetHistorySummaryService, BetHistorySummaryService>();
+        services.AddSingleton<IBetHistoryDetailService, BetHistoryDetailService>();
         services.AddSingleton<IBetChartService, BetChartService>();
         services.AddSingleton<IConsoleLogService, ConsoleLogService>();
         services.AddSingleton<IRollVerifierService, RollVerifierService>();

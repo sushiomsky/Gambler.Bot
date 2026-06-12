@@ -19,6 +19,7 @@ public sealed partial class MainWindow : Window
     private readonly IBetHistoryExportService _betHistoryExportService;
     private readonly IBetHistoryFilterService _betHistoryFilterService;
     private readonly IBetHistorySummaryService _betHistorySummaryService;
+    private readonly IBetHistoryDetailService _betHistoryDetailService;
     private readonly IBetChartService _betChartService;
     private readonly IConsoleLogService _consoleLogService;
     private readonly IRollVerifierService _rollVerifierService;
@@ -41,6 +42,7 @@ public sealed partial class MainWindow : Window
         IBetHistoryExportService betHistoryExportService,
         IBetHistoryFilterService betHistoryFilterService,
         IBetHistorySummaryService betHistorySummaryService,
+        IBetHistoryDetailService betHistoryDetailService,
         IBetChartService betChartService,
         IConsoleLogService consoleLogService,
         IRollVerifierService rollVerifierService,
@@ -62,6 +64,7 @@ public sealed partial class MainWindow : Window
         _betHistoryExportService = betHistoryExportService;
         _betHistoryFilterService = betHistoryFilterService;
         _betHistorySummaryService = betHistorySummaryService;
+        _betHistoryDetailService = betHistoryDetailService;
         _betChartService = betChartService;
         _consoleLogService = consoleLogService;
         _rollVerifierService = rollVerifierService;
@@ -146,6 +149,7 @@ public sealed partial class MainWindow : Window
         _betHistoryExportService,
         _betHistoryFilterService,
         _betHistorySummaryService,
+        _betHistoryDetailService,
         _betChartService,
         _consoleLogService,
         _rollVerifierService,
