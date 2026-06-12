@@ -74,13 +74,30 @@ public sealed class AutomationRuntimeService : IAutomationRuntimeService
         var isLiveMode = string.Equals(siteState.Mode, "Live", StringComparison.OrdinalIgnoreCase);
         if (isLiveMode)
         {
+            if (!settings.EnableLiveAutomationLoop)
+            {
+                return new AutomationCommandResult(false, "Live automation loop is disabled in settings.");
+            }
+
             if (!settings.AllowLiveBetExecution
                 || !string.Equals(settings.LiveBetConfirmationPhrase, LiveConfirmationPhrase, StringComparison.Ordinal))
             {
                 return new AutomationCommandResult(false, "Live bet execution is locked. Enable it in settings and enter the exact confirmation phrase.");
             }
 
-            return new AutomationCommandResult(false, "Live bet execution is gated but not yet enabled in this build. Run simulation loop first.");
+            lock (_gate)
+            {
+                if (_loopCancellation is not null)
+                {
+                    return new AutomationCommandResult(false, "Automation loop is already running.");
+                }
+
+                _loopCancellation = new CancellationTokenSource();
+                _automationStateService.Start("Live", $"Live automation loop started for {siteInstance.SiteName} using {strategyInstance.StrategyName}.");
+                _ = Task.Run(() => RunLiveLoopAsync(settings, _loopCancellation.Token));
+            }
+
+            return new AutomationCommandResult(true, $"Live automation loop started for {siteInstance.SiteName} using {strategyInstance.StrategyName}.");
         }
 
         lock (_gate)
@@ -142,6 +159,49 @@ public sealed class AutomationRuntimeService : IAutomationRuntimeService
                 if (!result.Succeeded)
                 {
                     _automationStateService.Complete(result.Message);
+                    break;
+                }
+
+                await Task.Delay(GetDelay(settings), cancellationToken);
+            }
+        }
+        catch (OperationCanceledException)
+        {
+        }
+        finally
+        {
+            lock (_gate)
+            {
+                _loopCancellation?.Dispose();
+                _loopCancellation = null;
+            }
+        }
+    }
+
+    private async Task RunLiveLoopAsync(NativeUiSettings settings, CancellationToken cancellationToken)
+    {
+        try
+        {
+            while (!cancellationToken.IsCancellationRequested)
+            {
+                if (string.Equals(_automationStateService.Current.Status, "Paused", StringComparison.OrdinalIgnoreCase))
+                {
+                    await Task.Delay(GetDelay(settings), cancellationToken);
+                    continue;
+                }
+
+                var result = await _betExecutionService.ExecuteLiveBetAsync(cancellationToken);
+                _automationStateService.RecordIteration(result.Message, null);
+
+                if (!result.Succeeded)
+                {
+                    _automationStateService.Complete(result.Message);
+                    break;
+                }
+
+                if (_automationStateService.Current.LoopIterations >= settings.MaximumLiveBetsPerRun)
+                {
+                    _automationStateService.Complete($"Live bet limit reached ({settings.MaximumLiveBetsPerRun} per run).");
                     break;
                 }
 

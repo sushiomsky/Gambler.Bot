@@ -53,6 +53,7 @@ public sealed partial class SettingsPage : Page
         AutomationLoopDelayTextBox.Text = _settings.AutomationLoopDelayMs.ToString();
         AutomationMaxSimulationIterationsTextBox.Text = _settings.AutomationMaxSimulationIterations.ToString();
         AllowLiveBetExecutionToggle.IsOn = _settings.AllowLiveBetExecution;
+        EnableLiveAutomationLoopToggle.IsOn = _settings.EnableLiveAutomationLoop;
         RequireDecoyCurrencyForLiveBetsToggle.IsOn = _settings.RequireDecoyCurrencyForLiveBets;
         LiveBetConfirmationPhraseTextBox.Text = _settings.LiveBetConfirmationPhrase;
         MinimumBetAmountTextBox.Text = _settings.MinimumBetAmount.ToString(System.Globalization.CultureInfo.InvariantCulture);
@@ -86,6 +87,7 @@ public sealed partial class SettingsPage : Page
         _settings.AutomationLoopDelayMs = ReadInt32(AutomationLoopDelayTextBox.Text, 1000, 100, 60_000);
         _settings.AutomationMaxSimulationIterations = ReadInt32(AutomationMaxSimulationIterationsTextBox.Text, 0, 0, 1_000_000);
         _settings.AllowLiveBetExecution = AllowLiveBetExecutionToggle.IsOn;
+        _settings.EnableLiveAutomationLoop = EnableLiveAutomationLoopToggle.IsOn;
         _settings.RequireDecoyCurrencyForLiveBets = RequireDecoyCurrencyForLiveBetsToggle.IsOn;
         _settings.LiveBetConfirmationPhrase = LiveBetConfirmationPhraseTextBox.Text.Trim();
         _settings.MinimumBetAmount = ReadDecimal(MinimumBetAmountTextBox.Text, 0.01m);

@@ -127,7 +127,7 @@ public sealed class AutomationRuntimeServiceTests
     }
 
     [Fact]
-    public void LiveStartRequiresExplicitSafetyGate()
+    public void LiveStartRequiresLiveAutomationLoopEnabled()
     {
         var fixture = RuntimeFixture.Create(
             siteCatalog: new WorkingSiteCatalogService(),
@@ -139,8 +139,54 @@ public sealed class AutomationRuntimeServiceTests
         var result = fixture.Runtime.Start();
 
         Assert.False(result.Succeeded);
+        Assert.Equal("Live automation loop is disabled in settings.", result.Message);
+        Assert.Equal("Idle", fixture.Automation.Current.Status);
+    }
+
+    [Fact]
+    public void LiveStartRequiresExplicitSafetyGate()
+    {
+        var fixture = RuntimeFixture.Create(
+            siteCatalog: new WorkingSiteCatalogService(),
+            strategyCatalog: new WorkingStrategyCatalogService(),
+            betExecution: new CountingBetExecutionService(),
+            settings: new NativeUiSettings { EnableLiveAutomationLoop = true });
+        fixture.Sites.SetLiveConnected(TestData.Site);
+        fixture.Strategies.Select(TestData.Strategy);
+
+        var result = fixture.Runtime.Start();
+
+        Assert.False(result.Succeeded);
         Assert.Equal("Live bet execution is locked. Enable it in settings and enter the exact confirmation phrase.", result.Message);
         Assert.Equal("Idle", fixture.Automation.Current.Status);
+    }
+
+    [Fact]
+    public async Task StartRunsLiveLoopUntilConfiguredLimit()
+    {
+        var betExecution = new SuccessfulLiveBetExecutionService();
+        var fixture = RuntimeFixture.Create(
+            siteCatalog: new WorkingSiteCatalogService(),
+            strategyCatalog: new WorkingStrategyCatalogService(),
+            betExecution: betExecution,
+            settings: new NativeUiSettings
+            {
+                EnableLiveAutomationLoop = true,
+                AllowLiveBetExecution = true,
+                LiveBetConfirmationPhrase = "PLACE LIVE BETS",
+                AutomationLoopDelayMs = 100,
+                MaximumLiveBetsPerRun = 2
+            });
+        fixture.Sites.SetLiveConnected(TestData.Site);
+        fixture.Strategies.Select(TestData.Strategy);
+
+        var result = fixture.Runtime.Start();
+
+        Assert.True(result.Succeeded);
+        await WaitUntilAsync(() => fixture.Automation.Current.Status == "Completed");
+        Assert.Equal(2, fixture.Automation.Current.LoopIterations);
+        Assert.Equal("Live bet limit reached (2 per run).", fixture.Automation.Current.LastMessage);
+        Assert.Equal(2, betExecution.LiveCalls);
     }
 
     private sealed record RuntimeFixture(
@@ -255,6 +301,23 @@ public sealed class AutomationRuntimeServiceTests
         public Task<AutomationCommandResult> ExecuteLiveBetAsync(CancellationToken cancellationToken = default)
         {
             return Task.FromResult(new AutomationCommandResult(false, "Live execution is not used by this fixture."));
+        }
+    }
+
+    private sealed class SuccessfulLiveBetExecutionService : IBetExecutionService
+    {
+        public int LiveCalls { get; private set; }
+
+        public AutomationCommandResult PrepareNextBet(out PlaceBetPreview? preview)
+        {
+            preview = null;
+            return new AutomationCommandResult(false, "Preview is not used by this fixture.");
+        }
+
+        public Task<AutomationCommandResult> ExecuteLiveBetAsync(CancellationToken cancellationToken = default)
+        {
+            LiveCalls++;
+            return Task.FromResult(new AutomationCommandResult(true, $"Live bet {LiveCalls} placed."));
         }
     }
 

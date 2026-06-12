@@ -93,9 +93,9 @@ Main actions:
 - `Preview Bet`: prepares the next bet from the active site and strategy without placing it.
 - `Place live bet`: places one guarded live bet only after live login and all live safety settings pass.
 
-The runtime now starts a native simulation loop. The Dashboard shows the current mode, loop iteration count, and latest prepared bet.
+The runtime can start a native simulation loop. When live automation loop is explicitly enabled in settings, `Start` can also run a guarded live loop that stops at the configured live-bets-per-run limit.
 
-Safety rule: live automation loops remain locked. Single live bets require explicit settings, the exact confirmation phrase, a logged-in Core site session, and live bet limits.
+Safety rule: live automation loops are disabled by default. Single live bets and live loops require explicit settings, the exact confirmation phrase, a logged-in Core site session, and live bet limits.
 
 ## Selecting Sites
 
@@ -361,8 +361,8 @@ Check:
 Not fully replaced yet:
 
 - old Avalonia UI,
-- full bot loop,
-- live bot loop execution,
+- advanced full bot loop recovery and stop conditions,
+- live loop profit/loss stop rules,
 - advanced strategy editor diagnostics,
 - Monaco/WebView2 programmer mode syntax highlighting,
 - advanced chart interactions,

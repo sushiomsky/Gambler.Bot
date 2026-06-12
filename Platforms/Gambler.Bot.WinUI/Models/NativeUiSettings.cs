@@ -11,6 +11,7 @@ public sealed class NativeUiSettings
     public bool RiskGuardEnabled { get; set; } = true;
     public bool SessionInsightsEnabled { get; set; } = true;
     public bool EnableAutomationLoop { get; set; } = true;
+    public bool EnableLiveAutomationLoop { get; set; } = false;
     public int AutomationLoopDelayMs { get; set; } = 1000;
     public int AutomationMaxSimulationIterations { get; set; } = 0;
     public decimal MinimumBetAmount { get; set; } = 0.01m;
