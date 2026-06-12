@@ -59,6 +59,32 @@ public sealed partial class BetHistoryPage : Page
         }
     }
 
+    private void VerifySelectedButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (_navigationContext is null)
+        {
+            return;
+        }
+
+        if (HistoryListView.SelectedItem is not BetHistoryRecord record)
+        {
+            HistoryInfoBar.Severity = InfoBarSeverity.Warning;
+            HistoryInfoBar.Title = "No bet selected";
+            HistoryInfoBar.Message = "Select a history row before opening the verifier.";
+            return;
+        }
+
+        if (!record.CanPrefillVerifier)
+        {
+            HistoryInfoBar.Severity = InfoBarSeverity.Warning;
+            HistoryInfoBar.Title = "Verifier data unavailable";
+            HistoryInfoBar.Message = "The selected bet does not include server seed, client seed, and nonce data.";
+            return;
+        }
+
+        Frame.Navigate(typeof(RollVerifierPage), new RollVerifierNavigationRequest(_navigationContext, record));
+    }
+
     private void FilterControl_Changed(object sender, RoutedEventArgs e)
     {
         ApplyFilters();

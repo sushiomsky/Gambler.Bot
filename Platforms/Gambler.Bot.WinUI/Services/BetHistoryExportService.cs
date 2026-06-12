@@ -17,7 +17,7 @@ public sealed class BetHistoryExportService : IBetHistoryExportService
         await using var stream = File.Create(destination);
         await using var writer = new StreamWriter(stream, new UTF8Encoding(encoderShouldEmitUTF8Identifier: true));
 
-        await writer.WriteLineAsync("Timestamp,Site,Game,Currency,Amount,Profit,Outcome");
+        await writer.WriteLineAsync("Timestamp,Site,Game,Currency,Amount,Profit,Outcome,ServerSeed,ClientSeed,Nonce");
         foreach (var record in records)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -29,7 +29,10 @@ public sealed class BetHistoryExportService : IBetHistoryExportService
                 Escape(record.Currency),
                 Escape(record.Amount.ToString(CultureInfo.InvariantCulture)),
                 Escape(record.Profit.ToString(CultureInfo.InvariantCulture)),
-                Escape(record.Outcome)));
+                Escape(record.Outcome),
+                Escape(record.ServerSeed ?? string.Empty),
+                Escape(record.ClientSeed ?? string.Empty),
+                Escape(record.Nonce?.ToString(CultureInfo.InvariantCulture) ?? string.Empty)));
         }
 
         return destination;

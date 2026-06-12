@@ -17,7 +17,7 @@ public sealed class BetHistoryExportServiceTests : IDisposable
 
         var lines = await File.ReadAllLinesAsync(_filePath);
         var line = Assert.Single(lines);
-        Assert.Equal("Timestamp,Site,Game,Currency,Amount,Profit,Outcome", line);
+        Assert.Equal("Timestamp,Site,Game,Currency,Amount,Profit,Outcome,ServerSeed,ClientSeed,Nonce", line);
     }
 
     [Fact]
@@ -33,13 +33,16 @@ public sealed class BetHistoryExportServiceTests : IDisposable
                 "BTC",
                 0.001m,
                 -0.0005m,
-                "Loss")
+                "Loss",
+                "server",
+                "client",
+                7)
         };
 
         await service.ExportCsvAsync(records, _filePath);
 
         var lines = await File.ReadAllLinesAsync(_filePath);
-        Assert.Equal("2026-06-08T10:15:30.0000000+00:00,Stake,Dice,BTC,0.001,-0.0005,Loss", lines[1]);
+        Assert.Equal("2026-06-08T10:15:30.0000000+00:00,Stake,Dice,BTC,0.001,-0.0005,Loss,server,client,7", lines[1]);
     }
 
     [Fact]

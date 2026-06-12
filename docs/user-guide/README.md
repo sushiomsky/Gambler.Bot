@@ -180,6 +180,7 @@ Available actions:
 - `Refresh`: reloads persisted records.
 - `Search history`: filters the visible records by site, game, currency, or outcome.
 - `Outcome`: filters visible records by all results, wins, or losses.
+- `Verify selected`: opens the Roll Verifier with server seed, client seed, nonce, site, and game prefilled when the selected history row contains verifier data.
 - `Export`: writes the currently visible records to a CSV file in your Documents folder.
 
 The summary cards above the table always reflect the currently visible records:
@@ -196,6 +197,8 @@ The chart card below the summary shows:
 - ending profit,
 - best and worst cumulative profit,
 - chart win/loss counts.
+
+Rows marked `Fair` include enough seed and nonce data to prefill the Roll Verifier. Rows marked `No seed` can still be reviewed and exported, but cannot be automatically verified from history.
 
 Still pending:
 
@@ -226,6 +229,8 @@ Use `clear` to remove the in-memory entries and delete the persisted console log
 ## Roll Verifier
 
 The Roll Verifier page checks provably-fair rolls with the same Core site algorithms used by the bot.
+
+You can enter verifier values manually or select a history row marked `Fair` on Bet History and choose `Verify selected`.
 
 Required inputs:
 
@@ -373,9 +378,8 @@ Not fully replaced yet:
 - advanced strategy editor diagnostics,
 - Monaco/WebView2 programmer mode syntax highlighting,
 - advanced chart interactions,
-- historical bet-to-verifier autofill,
 - site-specific advanced settings,
-- export functions,
+- advanced export functions,
 - production-ready screenshot documentation.
 
 ## Screenshots

@@ -29,11 +29,15 @@ public sealed class BetHistoryFilterService : IBetHistoryFilterService
         return Contains(record.Site, searchText)
             || Contains(record.Game, searchText)
             || Contains(record.Currency, searchText)
-            || Contains(record.Outcome, searchText);
+            || Contains(record.Outcome, searchText)
+            || Contains(record.ServerSeed, searchText)
+            || Contains(record.ClientSeed, searchText)
+            || Contains(record.Nonce?.ToString(), searchText);
     }
 
-    private static bool Contains(string value, string searchText)
+    private static bool Contains(string? value, string searchText)
     {
-        return value.Contains(searchText, StringComparison.OrdinalIgnoreCase);
+        return !string.IsNullOrWhiteSpace(value)
+            && value.Contains(searchText, StringComparison.OrdinalIgnoreCase);
     }
 }

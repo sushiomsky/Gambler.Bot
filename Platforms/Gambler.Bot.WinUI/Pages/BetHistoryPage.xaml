@@ -28,6 +28,7 @@
                 <TextBlock x:Name="HistorySubtitleText" Foreground="{ThemeResource MutedTextBrush}" Text="Recent bets and session outcomes." />
             </StackPanel>
             <CommandBar Grid.Column="1" DefaultLabelPosition="Right">
+                <AppBarButton Icon="View" Label="Verify selected" Click="VerifySelectedButton_Click" />
                 <AppBarButton Icon="Refresh" Label="Refresh" Click="RefreshButton_Click" />
                 <AppBarButton Icon="Download" Label="Export" Click="ExportButton_Click" />
             </CommandBar>
@@ -126,7 +127,7 @@
             </Grid>
         </Border>
 
-        <ListView x:Name="HistoryListView" Grid.Row="5" SelectionMode="None">
+        <ListView x:Name="HistoryListView" Grid.Row="5" SelectionMode="Single">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="models:BetHistoryRecord">
                     <Grid Padding="10" ColumnSpacing="16">
@@ -138,6 +139,7 @@
                             <ColumnDefinition Width="120" />
                             <ColumnDefinition Width="120" />
                             <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
 
                         <TextBlock Text="{x:Bind Timestamp}" />
@@ -147,6 +149,7 @@
                         <TextBlock Grid.Column="4" Text="{x:Bind Amount}" />
                         <TextBlock Grid.Column="5" Text="{x:Bind Profit}" />
                         <InfoBadge Grid.Column="6" Value="{x:Bind Outcome}" />
+                        <InfoBadge Grid.Column="7" Value="{x:Bind VerifierStatus}" />
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>

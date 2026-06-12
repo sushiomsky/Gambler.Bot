@@ -39,6 +39,16 @@ public sealed class BetHistoryFilterServiceTests
     }
 
     [Fact]
+    public void SearchMatchesVerifierFields()
+    {
+        var service = new BetHistoryFilterService();
+
+        Assert.Single(service.Apply(TestData.Records, "server-alpha", "All"));
+        Assert.Single(service.Apply(TestData.Records, "client-alpha", "All"));
+        Assert.Single(service.Apply(TestData.Records, "42", "All"));
+    }
+
+    [Fact]
     public void CombinesSearchAndOutcomeFilters()
     {
         var service = new BetHistoryFilterService();
@@ -53,7 +63,7 @@ public sealed class BetHistoryFilterServiceTests
     {
         public static readonly IReadOnlyList<BetHistoryRecord> Records =
         [
-            new(DateTimeOffset.UtcNow, "Stake", "Dice", "BTC", 1m, 0.5m, "Win"),
+            new(DateTimeOffset.UtcNow, "Stake", "Dice", "BTC", 1m, 0.5m, "Win", "server-alpha", "client-alpha", 42),
             new(DateTimeOffset.UtcNow, "Primedice", "Limbo", "ETH", 2m, -1m, "Loss"),
             new(DateTimeOffset.UtcNow, "DuckDice", "Twist", "DOGE", 3m, 1m, "Win")
         ];

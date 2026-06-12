@@ -39,6 +39,30 @@ public sealed class BetHistoryServiceTests : IDisposable
     }
 
     [Fact]
+    public void ReadsOptionalVerifierFieldsWhenAvailable()
+    {
+        CreateDatabase(includeVerifierFields: true);
+        InsertDiceBet(
+            "Alpha",
+            1_700_000_000m,
+            "BTC",
+            "0.001",
+            "0.0005",
+            true,
+            "server-seed",
+            "client-seed",
+            42);
+        var service = new BetHistoryService(NullLogger<BetHistoryService>.Instance, _databasePath);
+
+        var record = Assert.Single(service.GetRecent());
+
+        Assert.Equal("server-seed", record.ServerSeed);
+        Assert.Equal("client-seed", record.ClientSeed);
+        Assert.Equal(42, record.Nonce);
+        Assert.True(record.CanPrefillVerifier);
+    }
+
+    [Fact]
     public void FiltersRecordsBySite()
     {
         CreateDatabase();
@@ -77,22 +101,37 @@ public sealed class BetHistoryServiceTests : IDisposable
         }
     }
 
-    private void CreateDatabase()
+    private void CreateDatabase(bool includeVerifierFields = false)
     {
         using var connection = new SqliteConnection($"Data Source={_databasePath};Pooling=False");
         connection.Open();
         using var command = connection.CreateCommand();
-        command.CommandText = """
-            create table DiceBets (
-                Date text not null,
-                Site text not null,
-                Game integer not null,
-                Currency text not null,
-                TotalAmount text not null,
-                Profit text not null,
-                IsWin integer not null
-            );
-            """;
+        command.CommandText = includeVerifierFields
+            ? """
+                create table DiceBets (
+                    Date text not null,
+                    Site text not null,
+                    Game integer not null,
+                    Currency text not null,
+                    TotalAmount text not null,
+                    Profit text not null,
+                    IsWin integer not null,
+                    ServerSeed text null,
+                    ClientSeed text null,
+                    Nonce integer null
+                );
+                """
+            : """
+                create table DiceBets (
+                    Date text not null,
+                    Site text not null,
+                    Game integer not null,
+                    Currency text not null,
+                    TotalAmount text not null,
+                    Profit text not null,
+                    IsWin integer not null
+                );
+                """;
         command.ExecuteNonQuery();
     }
 
@@ -102,21 +141,36 @@ public sealed class BetHistoryServiceTests : IDisposable
         string currency,
         string amount,
         string profit,
-        bool isWin)
+        bool isWin,
+        string? serverSeed = null,
+        string? clientSeed = null,
+        long? nonce = null)
     {
         using var connection = new SqliteConnection($"Data Source={_databasePath};Pooling=False");
         connection.Open();
         using var command = connection.CreateCommand();
-        command.CommandText = """
-            insert into DiceBets (Date, Site, Game, Currency, TotalAmount, Profit, IsWin)
-            values ($date, $site, 0, $currency, $amount, $profit, $isWin);
-            """;
+        command.CommandText = serverSeed is null && clientSeed is null && nonce is null
+            ? """
+                insert into DiceBets (Date, Site, Game, Currency, TotalAmount, Profit, IsWin)
+                values ($date, $site, 0, $currency, $amount, $profit, $isWin);
+                """
+            : """
+                insert into DiceBets (Date, Site, Game, Currency, TotalAmount, Profit, IsWin, ServerSeed, ClientSeed, Nonce)
+                values ($date, $site, 0, $currency, $amount, $profit, $isWin, $serverSeed, $clientSeed, $nonce);
+                """;
         command.Parameters.AddWithValue("$date", epochSeconds.ToString(CultureInfo.InvariantCulture));
         command.Parameters.AddWithValue("$site", site);
         command.Parameters.AddWithValue("$currency", currency);
         command.Parameters.AddWithValue("$amount", amount);
         command.Parameters.AddWithValue("$profit", profit);
         command.Parameters.AddWithValue("$isWin", isWin ? 1 : 0);
+        if (serverSeed is not null || clientSeed is not null || nonce is not null)
+        {
+            command.Parameters.AddWithValue("$serverSeed", serverSeed ?? (object)DBNull.Value);
+            command.Parameters.AddWithValue("$clientSeed", clientSeed ?? (object)DBNull.Value);
+            command.Parameters.AddWithValue("$nonce", (object?)nonce ?? DBNull.Value);
+        }
+
         command.ExecuteNonQuery();
     }
 }

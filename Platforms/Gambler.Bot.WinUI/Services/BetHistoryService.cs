@@ -76,10 +76,22 @@ public sealed class BetHistoryService : IBetHistoryService
         string? siteName,
         ICollection<BetHistoryRecord> records)
     {
+        var columns = GetColumns(connection, table);
+        var selectColumns = new[]
+        {
+            "Date",
+            "Site",
+            "Game",
+            "Currency",
+            "TotalAmount",
+            "Profit",
+            "IsWin"
+        }.Concat(GetOptionalFairnessColumns(columns));
+
         using var command = connection.CreateCommand();
         command.CommandText = string.IsNullOrWhiteSpace(siteName)
-            ? $"select Date, Site, Game, Currency, TotalAmount, Profit, IsWin from {table}"
-            : $"select Date, Site, Game, Currency, TotalAmount, Profit, IsWin from {table} where Site = $site";
+            ? $"select {string.Join(", ", selectColumns)} from {table}"
+            : $"select {string.Join(", ", selectColumns)} from {table} where Site = $site";
 
         if (!string.IsNullOrWhiteSpace(siteName))
         {
@@ -96,7 +108,43 @@ public sealed class BetHistoryService : IBetHistoryService
                 reader.GetString(3),
                 ReadDecimal(reader.GetString(4)),
                 ReadDecimal(reader.GetString(5)),
-                reader.GetBoolean(6) ? "Win" : "Loss"));
+                reader.GetBoolean(6) ? "Win" : "Loss",
+                ReadOptionalString(reader, columns, "ServerSeed"),
+                ReadOptionalString(reader, columns, "ClientSeed"),
+                ReadOptionalInt64(reader, columns, "Nonce")));
+        }
+    }
+
+    private static HashSet<string> GetColumns(SqliteConnection connection, string table)
+    {
+        using var command = connection.CreateCommand();
+        command.CommandText = $"pragma table_info({table})";
+        using var reader = command.ExecuteReader();
+        var columns = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+        while (reader.Read())
+        {
+            columns.Add(reader.GetString(1));
+        }
+
+        return columns;
+    }
+
+    private static IEnumerable<string> GetOptionalFairnessColumns(IReadOnlySet<string> columns)
+    {
+        if (columns.Contains("ServerSeed"))
+        {
+            yield return "ServerSeed";
+        }
+
+        if (columns.Contains("ClientSeed"))
+        {
+            yield return "ClientSeed";
+        }
+
+        if (columns.Contains("Nonce"))
+        {
+            yield return "Nonce";
         }
     }
 
@@ -137,6 +185,28 @@ public sealed class BetHistoryService : IBetHistoryService
     private static decimal ReadDecimal(string value)
     {
         return decimal.TryParse(value, NumberStyles.Number, CultureInfo.InvariantCulture, out var result) ? result : 0m;
+    }
+
+    private static string? ReadOptionalString(SqliteDataReader reader, IReadOnlySet<string> columns, string column)
+    {
+        if (!columns.Contains(column))
+        {
+            return null;
+        }
+
+        var ordinal = reader.GetOrdinal(column);
+        return reader.IsDBNull(ordinal) ? null : reader.GetString(ordinal);
+    }
+
+    private static long? ReadOptionalInt64(SqliteDataReader reader, IReadOnlySet<string> columns, string column)
+    {
+        if (!columns.Contains(column))
+        {
+            return null;
+        }
+
+        var ordinal = reader.GetOrdinal(column);
+        return reader.IsDBNull(ordinal) ? null : reader.GetInt64(ordinal);
     }
 
     private static string ReadGameName(int gameValue, string table)
