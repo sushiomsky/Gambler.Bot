@@ -46,12 +46,14 @@
 
                         <StackPanel Spacing="2">
                             <TextBlock FontWeight="SemiBold" Text="{x:Bind Name}" />
-                            <HyperlinkButton Padding="0" NavigateUri="{x:Bind Url}" Content="{x:Bind Url}" />
+                            <TextBlock Foreground="{ThemeResource MutedTextBrush}" TextWrapping="Wrap" Text="{x:Bind Url}" />
                         </StackPanel>
 
                         <TextBlock Grid.Column="1" VerticalAlignment="Center" TextWrapping="Wrap" Text="{x:Bind GameText}" />
                         <TextBlock Grid.Column="2" VerticalAlignment="Center" TextWrapping="Wrap" Foreground="{ThemeResource MutedTextBrush}" Text="{x:Bind CurrencyText}" />
-                        <InfoBadge Grid.Column="3" Value="{x:Bind Status}" />
+                        <Border Grid.Column="3" Padding="10,4" CornerRadius="12" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1" VerticalAlignment="Center">
+                            <TextBlock FontSize="12" Text="{x:Bind Status}" />
+                        </Border>
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>

@@ -53,7 +53,9 @@
                             <TextBlock FontWeight="SemiBold" Text="{x:Bind Name}" />
                             <TextBlock Grid.Column="1" Foreground="{ThemeResource MutedTextBrush}" Text="{x:Bind Kind}" />
                             <TextBlock Grid.Column="2" Text="{x:Bind Runtime}" />
-                            <InfoBadge Grid.Column="3" Value="{x:Bind Status}" />
+                            <Border Grid.Column="3" Padding="10,4" CornerRadius="12" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1" VerticalAlignment="Center">
+                                <TextBlock FontSize="12" Text="{x:Bind Status}" />
+                            </Border>
                         </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>

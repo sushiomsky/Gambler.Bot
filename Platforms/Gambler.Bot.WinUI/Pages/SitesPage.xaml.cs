@@ -61,9 +61,23 @@ public sealed partial class SitesPage : Page
             return;
         }
 
-        var sites = _navigationContext.SiteCatalogService.GetSites();
-        SitesListView.ItemsSource = sites;
-        SiteCountText.Text = $"{sites.Count} supported sites discovered from Core.";
+        try
+        {
+            var sites = _navigationContext.SiteCatalogService.GetSites();
+            SitesListView.ItemsSource = sites;
+            SiteCountText.Text = $"{sites.Count} supported sites discovered from Core.";
+            SelectionInfoBar.Severity = InfoBarSeverity.Informational;
+            SelectionInfoBar.Title = "Catalog";
+            SelectionInfoBar.Message = "Site metadata is loaded from the existing Core site classes without using Avalonia.";
+        }
+        catch (Exception ex)
+        {
+            SitesListView.ItemsSource = Array.Empty<SiteSummary>();
+            SiteCountText.Text = "Site catalog could not be loaded.";
+            SelectionInfoBar.Severity = InfoBarSeverity.Error;
+            SelectionInfoBar.Title = "Catalog failed";
+            SelectionInfoBar.Message = ex.Message;
+        }
     }
 
     private void ShowSelectionRequired()

@@ -46,7 +46,9 @@
 
                         <TextBlock FontWeight="SemiBold" Text="{x:Bind Title}" />
                         <TextBlock Grid.Column="1" TextWrapping="Wrap" Foreground="{ThemeResource MutedTextBrush}" Text="{x:Bind Detail}" />
-                        <InfoBadge Grid.Column="2" Value="{x:Bind Severity}" />
+                        <Border Grid.Column="2" Padding="10,4" CornerRadius="12" Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1" VerticalAlignment="Center">
+                            <TextBlock FontSize="12" Text="{x:Bind Severity}" />
+                        </Border>
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>
