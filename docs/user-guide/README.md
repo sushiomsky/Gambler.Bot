@@ -178,8 +178,11 @@ Currently scanned tables:
 Available actions:
 
 - `Refresh`: reloads persisted records.
-- `Search history`: filters the visible records by site, game, currency, or outcome.
+- `Search history`: filters the visible records by site, game, currency, outcome, seed, or nonce.
 - `Outcome`: filters visible records by all results, wins, or losses.
+- `Currency`: filters by exact currency symbol.
+- `Min profit` and `Max profit`: narrow the visible records by profit range.
+- `Verifier-ready only`: shows only rows with server seed, client seed, and nonce data.
 - `Verify selected`: opens the Roll Verifier with server seed, client seed, nonce, site, and game prefilled when the selected history row contains verifier data.
 - `Export`: writes the currently visible records to a CSV file in your Documents folder.
 
@@ -202,7 +205,6 @@ Rows marked `Fair` include enough seed and nonce data to prefill the Roll Verifi
 
 Still pending:
 
-- advanced filtering,
 - detailed bet view,
 
 ## Console

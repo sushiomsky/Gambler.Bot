@@ -59,6 +59,57 @@ public sealed class BetHistoryFilterServiceTests
         Assert.Equal("Stake", record.Site);
     }
 
+    [Fact]
+    public void CriteriaFiltersByCurrency()
+    {
+        var service = new BetHistoryFilterService();
+
+        var records = service.Apply(TestData.Records, new BetHistoryFilterCriteria(Currency: "eth"));
+
+        var record = Assert.Single(records);
+        Assert.Equal("Primedice", record.Site);
+    }
+
+    [Fact]
+    public void CriteriaFiltersByProfitRange()
+    {
+        var service = new BetHistoryFilterService();
+
+        var records = service.Apply(TestData.Records, new BetHistoryFilterCriteria(MinimumProfit: 0m, MaximumProfit: 0.75m));
+
+        var record = Assert.Single(records);
+        Assert.Equal("Stake", record.Site);
+    }
+
+    [Fact]
+    public void CriteriaFiltersVerifierReadyRecords()
+    {
+        var service = new BetHistoryFilterService();
+
+        var records = service.Apply(TestData.Records, new BetHistoryFilterCriteria(VerifierReadyOnly: true));
+
+        var record = Assert.Single(records);
+        Assert.True(record.CanPrefillVerifier);
+    }
+
+    [Fact]
+    public void CriteriaCanCombineAdvancedFilters()
+    {
+        var service = new BetHistoryFilterService();
+        var criteria = new BetHistoryFilterCriteria(
+            SearchText: "dice",
+            Outcome: "Win",
+            Currency: "BTC",
+            MinimumProfit: 0m,
+            MaximumProfit: 1m,
+            VerifierReadyOnly: true);
+
+        var records = service.Apply(TestData.Records, criteria);
+
+        var record = Assert.Single(records);
+        Assert.Equal("Stake", record.Site);
+    }
+
     private static class TestData
     {
         public static readonly IReadOnlyList<BetHistoryRecord> Records =

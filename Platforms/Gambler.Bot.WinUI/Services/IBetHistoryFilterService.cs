@@ -8,4 +8,8 @@ public interface IBetHistoryFilterService
         IReadOnlyList<BetHistoryRecord> records,
         string? searchText,
         string? outcome);
+
+    IReadOnlyList<BetHistoryRecord> Apply(
+        IReadOnlyList<BetHistoryRecord> records,
+        BetHistoryFilterCriteria criteria);
 }

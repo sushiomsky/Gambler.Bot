@@ -9,16 +9,43 @@ public sealed class BetHistoryFilterService : IBetHistoryFilterService
         string? searchText,
         string? outcome)
     {
+        return Apply(records, new BetHistoryFilterCriteria(searchText, outcome));
+    }
+
+    public IReadOnlyList<BetHistoryRecord> Apply(
+        IReadOnlyList<BetHistoryRecord> records,
+        BetHistoryFilterCriteria criteria)
+    {
         var query = records.AsEnumerable();
 
-        if (!string.IsNullOrWhiteSpace(outcome) && !string.Equals(outcome, "All", StringComparison.OrdinalIgnoreCase))
+        if (!string.IsNullOrWhiteSpace(criteria.Outcome) && !string.Equals(criteria.Outcome, "All", StringComparison.OrdinalIgnoreCase))
         {
-            query = query.Where(record => string.Equals(record.Outcome, outcome, StringComparison.OrdinalIgnoreCase));
+            query = query.Where(record => string.Equals(record.Outcome, criteria.Outcome, StringComparison.OrdinalIgnoreCase));
         }
 
-        if (!string.IsNullOrWhiteSpace(searchText))
+        if (!string.IsNullOrWhiteSpace(criteria.Currency))
         {
-            query = query.Where(record => MatchesSearch(record, searchText));
+            query = query.Where(record => string.Equals(record.Currency, criteria.Currency.Trim(), StringComparison.OrdinalIgnoreCase));
+        }
+
+        if (criteria.MinimumProfit.HasValue)
+        {
+            query = query.Where(record => record.Profit >= criteria.MinimumProfit.Value);
+        }
+
+        if (criteria.MaximumProfit.HasValue)
+        {
+            query = query.Where(record => record.Profit <= criteria.MaximumProfit.Value);
+        }
+
+        if (criteria.VerifierReadyOnly)
+        {
+            query = query.Where(record => record.CanPrefillVerifier);
+        }
+
+        if (!string.IsNullOrWhiteSpace(criteria.SearchText))
+        {
+            query = query.Where(record => MatchesSearch(record, criteria.SearchText));
         }
 
         return query.ToList();

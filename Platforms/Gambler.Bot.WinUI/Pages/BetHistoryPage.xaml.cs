@@ -116,7 +116,14 @@ public sealed partial class BetHistoryPage : Page
         }
 
         var outcome = (OutcomeFilterComboBox.SelectedItem as ComboBoxItem)?.Content?.ToString();
-        _filteredRecords = _navigationContext.BetHistoryFilterService.Apply(_allRecords, SearchTextBox.Text, outcome);
+        var criteria = new BetHistoryFilterCriteria(
+            SearchTextBox.Text,
+            outcome,
+            CurrencyFilterTextBox.Text,
+            ReadOptionalDecimal(MinimumProfitTextBox.Text),
+            ReadOptionalDecimal(MaximumProfitTextBox.Text),
+            VerifierReadyOnlyCheckBox.IsChecked == true);
+        _filteredRecords = _navigationContext.BetHistoryFilterService.Apply(_allRecords, criteria);
         HistoryListView.ItemsSource = _filteredRecords;
         HistorySubtitleText.Text = $"{_filteredRecords.Count} of {_allRecords.Count} records visible.";
         UpdateSummary();
@@ -150,5 +157,12 @@ public sealed partial class BetHistoryPage : Page
         ChartEndProfitText.Text = chart.EndProfit.ToString(CultureInfo.InvariantCulture);
         ChartBestWorstText.Text = $"{chart.BestProfit.ToString(CultureInfo.InvariantCulture)} / {chart.WorstProfit.ToString(CultureInfo.InvariantCulture)}";
         ChartWinLossText.Text = $"{chart.Wins} / {chart.Losses}";
+    }
+
+    private static decimal? ReadOptionalDecimal(string? value)
+    {
+        return decimal.TryParse(value, NumberStyles.Number, CultureInfo.InvariantCulture, out var result)
+            ? result
+            : null;
     }
 }
