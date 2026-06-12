@@ -199,7 +199,11 @@ The chart card below the summary shows:
 - a cumulative profit sparkline,
 - ending profit,
 - best and worst cumulative profit,
-- chart win/loss counts.
+- chart win/loss counts,
+- return on investment,
+- average profit per visible bet,
+- maximum drawdown,
+- longest win and loss streaks.
 
 Rows marked `Fair` include enough seed and nonce data to prefill the Roll Verifier. Rows marked `No seed` can still be reviewed and exported, but cannot be automatically verified from history.
 
@@ -379,7 +383,6 @@ Not fully replaced yet:
 - advanced full bot loop recovery and trailing stop conditions,
 - advanced strategy editor diagnostics,
 - Monaco/WebView2 programmer mode syntax highlighting,
-- advanced chart interactions,
 - site-specific advanced settings,
 - advanced export functions,
 - production-ready screenshot documentation.

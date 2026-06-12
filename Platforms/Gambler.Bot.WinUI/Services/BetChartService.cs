@@ -10,19 +10,24 @@ public sealed class BetChartService : IBetChartService
     {
         if (records.Count == 0)
         {
-            return new BetChartSnapshot("No data", 0, 0, 0, 0, 0, 0);
+            return new BetChartSnapshot("No data", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
         }
 
         var ordered = records.OrderBy(record => record.Timestamp).ToList();
         var cumulative = new List<decimal>(ordered.Count);
         decimal running = 0;
+        decimal peak = 0;
+        decimal maximumDrawdown = 0;
 
         foreach (var record in ordered)
         {
             running += record.Profit;
             cumulative.Add(running);
+            peak = Math.Max(peak, running);
+            maximumDrawdown = Math.Max(maximumDrawdown, peak - running);
         }
 
+        var totalWagered = ordered.Sum(record => record.Amount);
         return new BetChartSnapshot(
             CreateSparkline(cumulative),
             cumulative.First(),
@@ -30,7 +35,12 @@ public sealed class BetChartService : IBetChartService
             cumulative.Max(),
             cumulative.Min(),
             ordered.Count(IsWin),
-            ordered.Count(record => !IsWin(record)));
+            ordered.Count(record => !IsWin(record)),
+            ordered.Average(record => record.Profit),
+            totalWagered == 0 ? 0 : cumulative.Last() / totalWagered * 100m,
+            maximumDrawdown,
+            LongestStreak(ordered, win: true),
+            LongestStreak(ordered, win: false));
     }
 
     private static string CreateSparkline(IReadOnlyList<decimal> values)
@@ -54,5 +64,26 @@ public sealed class BetChartService : IBetChartService
     private static bool IsWin(BetHistoryRecord record)
     {
         return string.Equals(record.Outcome, "Win", StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static int LongestStreak(IEnumerable<BetHistoryRecord> records, bool win)
+    {
+        var longest = 0;
+        var current = 0;
+
+        foreach (var record in records)
+        {
+            if (IsWin(record) == win)
+            {
+                current++;
+                longest = Math.Max(longest, current);
+            }
+            else
+            {
+                current = 0;
+            }
+        }
+
+        return longest;
     }
 }

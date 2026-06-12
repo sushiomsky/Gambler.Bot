@@ -37,7 +37,7 @@ The UI-neutral WinUI migration layer is testable through `Platforms/Gambler.Bot.
 - `BetHistoryService` reads persisted SQLite bet tables without depending on Avalonia storage, including optional server seed, client seed, and nonce columns when present.
 - `BetHistoryFilterService` filters loaded history records by text, outcome, verifier seed data, exact currency, profit range, and verifier-ready status.
 - `BetHistorySummaryService` summarizes visible history records for native dashboard cards.
-- `BetChartService` creates native cumulative profit chart snapshots for filtered history records.
+- `BetChartService` creates native cumulative profit chart snapshots for filtered history records, including ROI, average profit, maximum drawdown, and longest win/loss streaks.
 - `BetHistoryExportService` exports loaded or filtered history records to CSV, including verifier seed columns.
 - `ConsoleLogService` stores the latest diagnostic console entries for the native Console page and persists retained entries to `%APPDATA%\Gambler.Bot\ConsoleLog.jsonl`.
 - `RollVerifierService` verifies provably-fair rolls by delegating to Core site `GetLucky` and `GetHash` implementations, with Bet History able to prefill verifier inputs when historical seed data is available.
@@ -50,7 +50,7 @@ The UI-neutral WinUI migration layer is testable through `Platforms/Gambler.Bot.
 - `SitesPage`: supported site catalog with select and simulation actions.
 - `LoginPage`: native login preparation using Core `LoginParameter` metadata, including hidden password/MFA input fields.
 - `StrategiesPage`: strategy catalog with active strategy selection and native Programmer Mode script editing.
-- `BetHistoryPage`: native history surface with persisted SQLite loading, advanced filtering, summary cards, profit sparkline chart, verifier prefill, and CSV export.
+- `BetHistoryPage`: native history surface with persisted SQLite loading, advanced filtering, summary cards, profit sparkline analytics, verifier prefill, and CSV export.
 - `ConsolePage`: native diagnostic console with operator commands for status, site, strategy, and runtime state.
 - `RollVerifierPage`: native provably-fair verifier for site/game/seed/nonce inputs, including navigation prefill from Bet History.
 - `IntelligencePage`: diagnostics derived from the new services.
@@ -59,7 +59,7 @@ The UI-neutral WinUI migration layer is testable through `Platforms/Gambler.Bot.
 
 - `dotnet build .\Platforms\Gambler.Bot.WinUI\Gambler.Bot.WinUI.csproj -c Debug` succeeds with 0 warnings and 0 errors.
 - `dotnet build .\Gambler.Bot.sln -c Debug` succeeds with 0 warnings and 0 errors.
-- `dotnet test .\Platforms\Gambler.Bot.WinUI.Tests\Gambler.Bot.WinUI.Tests.csproj -c Release` succeeds with 67 tests covering runtime safety, simulation loop execution, guarded live loop execution, live loop stop-loss/take-profit exits, guarded single live bet execution, live bet gating, guarded DuckDice live smoke test behavior, Programmer Mode script documents, roll verification, settings validation, persisted console logging, chart snapshots, session state, settings persistence, update URL configuration, insight diagnostics, SQLite bet history reading with verifier fields, advanced history filtering/summaries, and CSV export.
+- `dotnet test .\Platforms\Gambler.Bot.WinUI.Tests\Gambler.Bot.WinUI.Tests.csproj -c Release` succeeds with 68 tests covering runtime safety, simulation loop execution, guarded live loop execution, live loop stop-loss/take-profit exits, guarded single live bet execution, live bet gating, guarded DuckDice live smoke test behavior, Programmer Mode script documents, roll verification, settings validation, persisted console logging, chart analytics snapshots, session state, settings persistence, update URL configuration, insight diagnostics, SQLite bet history reading with verifier fields, advanced history filtering/summaries, and CSV export.
 - `dotnet publish .\Platforms\Gambler.Bot.WinUI\Gambler.Bot.WinUI.csproj -c Release -r win-x64 --self-contained true -p:WindowsAppSDKSelfContained=true -p:WindowsPackageType=None -p:PublishTrimmed=false -p:PublishSingleFile=false` succeeds locally.
 - `dotnet test .\Gambler.Bot.sln -c Debug --no-build` runs strategy tests successfully, but existing core site integration tests fail because local login parameter JSON is missing and some live seed reset expectations are not satisfied.
 

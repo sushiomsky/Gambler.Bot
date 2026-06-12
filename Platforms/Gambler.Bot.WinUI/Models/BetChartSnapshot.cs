@@ -7,4 +7,9 @@ public sealed record BetChartSnapshot(
     decimal BestProfit,
     decimal WorstProfit,
     int Wins,
-    int Losses);
+    int Losses,
+    decimal AverageProfit,
+    decimal ReturnOnInvestmentPercent,
+    decimal MaximumDrawdown,
+    int LongestWinStreak,
+    int LongestLossStreak);

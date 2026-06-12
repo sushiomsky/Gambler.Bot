@@ -157,6 +157,10 @@ public sealed partial class BetHistoryPage : Page
         ChartEndProfitText.Text = chart.EndProfit.ToString(CultureInfo.InvariantCulture);
         ChartBestWorstText.Text = $"{chart.BestProfit.ToString(CultureInfo.InvariantCulture)} / {chart.WorstProfit.ToString(CultureInfo.InvariantCulture)}";
         ChartWinLossText.Text = $"{chart.Wins} / {chart.Losses}";
+        ChartRoiText.Text = $"{chart.ReturnOnInvestmentPercent.ToString("0.##", CultureInfo.InvariantCulture)}%";
+        ChartAverageProfitText.Text = chart.AverageProfit.ToString("0.########", CultureInfo.InvariantCulture);
+        ChartDrawdownText.Text = chart.MaximumDrawdown.ToString("0.########", CultureInfo.InvariantCulture);
+        ChartStreakText.Text = $"{chart.LongestWinStreak} / {chart.LongestLossStreak}";
     }
 
     private static decimal? ReadOptionalDecimal(string? value)
