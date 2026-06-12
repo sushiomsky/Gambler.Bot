@@ -1,5 +1,10 @@
 using Gambler.Bot.WinUI.Models;
 using Gambler.Bot.WinUI.Services;
+using Gambler.Bot.Common.Games;
+using Gambler.Bot.Common.Helpers;
+using Gambler.Bot.Core.Helpers;
+using Gambler.Bot.Core.Sites;
+using Gambler.Bot.Core.Sites.Classes;
 using Xunit;
 
 namespace Gambler.Bot.WinUI.Tests;
@@ -34,12 +39,14 @@ public sealed class SessionServiceTests
     public void LiveConnectionSetsConnectedLiveMode()
     {
         var service = new SiteSessionService();
+        var runtimeSite = new TestSite();
 
-        service.SetLiveConnected(TestData.Site);
+        service.SetLiveConnected(TestData.Site, runtimeSite);
 
         Assert.Equal(TestData.Site, service.Current.SelectedSite);
         Assert.Equal("Live", service.Current.Mode);
         Assert.True(service.Current.IsConnected);
+        Assert.Equal(runtimeSite, service.Current.RuntimeSite);
     }
 
     [Fact]
@@ -83,5 +90,36 @@ public sealed class SessionServiceTests
             "Strategy",
             "Test",
             "Test.Strategy");
+    }
+
+    private sealed class TestSite : BaseSite
+    {
+        protected override Task<bool> _Login(LoginParamValue[] LoginParams)
+        {
+            return Task.FromResult(true);
+        }
+
+        protected override Task<bool> _BrowserLogin()
+        {
+            return Task.FromResult(true);
+        }
+
+        protected override void _Disconnect()
+        {
+        }
+
+        public override void SetProxy(ProxyDetails ProxyInfo)
+        {
+        }
+
+        protected override Task<SiteStats> _UpdateStats()
+        {
+            return Task.FromResult(new SiteStats());
+        }
+
+        protected override IGameResult _GetLucky(string ServerSeed, string ClientSeed, int Nonce, Games Game)
+        {
+            return null!;
+        }
     }
 }

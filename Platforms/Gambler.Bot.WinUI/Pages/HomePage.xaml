@@ -29,6 +29,7 @@
                 <AppBarButton Icon="Pause" Label="Pause" Click="PauseButton_Click" />
                 <AppBarButton Icon="Stop" Label="Stop" Click="StopButton_Click" />
                 <AppBarButton Icon="Preview" Label="Preview bet" Click="PreviewBetButton_Click" />
+                <AppBarButton Icon="Send" Label="Place live bet" Click="LiveBetButton_Click" />
             </CommandBar>
         </Grid>
 

@@ -1,4 +1,5 @@
 using Gambler.Bot.WinUI.Models;
+using Gambler.Bot.Core.Sites;
 
 namespace Gambler.Bot.WinUI.Services;
 
@@ -18,9 +19,9 @@ public sealed class SiteSessionService : ISiteSessionService
         SetState(new SiteSessionState(site, "Simulation", true));
     }
 
-    public void SetLiveConnected(SiteSummary site)
+    public void SetLiveConnected(SiteSummary site, BaseSite? runtimeSite = null)
     {
-        SetState(new SiteSessionState(site, "Live", true));
+        SetState(new SiteSessionState(site, "Live", true, runtimeSite));
     }
 
     public void Clear()

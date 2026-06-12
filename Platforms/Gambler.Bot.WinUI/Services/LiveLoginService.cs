@@ -8,15 +8,18 @@ public sealed class LiveLoginService : ILiveLoginService
 {
     private readonly ISiteCatalogService _siteCatalogService;
     private readonly ISiteSessionService _siteSessionService;
+    private readonly IAppSettingsService _settingsService;
     private readonly ILogger<LiveLoginService> _logger;
 
     public LiveLoginService(
         ISiteCatalogService siteCatalogService,
         ISiteSessionService siteSessionService,
+        IAppSettingsService settingsService,
         ILogger<LiveLoginService> logger)
     {
         _siteCatalogService = siteCatalogService;
         _siteSessionService = siteSessionService;
+        _settingsService = settingsService;
         _logger = logger;
     }
 
@@ -47,6 +50,12 @@ public sealed class LiveLoginService : ILiveLoginService
 
         try
         {
+            var settings = await _settingsService.LoadAsync(cancellationToken);
+            if (!string.IsNullOrWhiteSpace(settings.DefaultCurrency))
+            {
+                site.CurrentCurrency = settings.DefaultCurrency;
+            }
+
             var parameters = site.LoginParams
                 .Select((parameter, index) => new LoginParamValue
                 {
@@ -61,7 +70,7 @@ public sealed class LiveLoginService : ILiveLoginService
 
             if (success)
             {
-                _siteSessionService.SetLiveConnected(profile.Site);
+                _siteSessionService.SetLiveConnected(profile.Site, site);
                 return new AutomationCommandResult(true, $"{profile.Site.Name} login succeeded.");
             }
 

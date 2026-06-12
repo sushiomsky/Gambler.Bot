@@ -96,6 +96,20 @@ public sealed partial class HomePage : Page
             : $"{preview.Site} / {preview.Strategy}: {preview.Amount:0.########} {preview.Currency} on {preview.Game} ({preview.Details})";
     }
 
+    private async void LiveBetButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (_navigationContext is null)
+        {
+            return;
+        }
+
+        var result = await _navigationContext.BetExecutionService.ExecuteLiveBetAsync();
+        BetPreviewInfoBar.IsOpen = true;
+        BetPreviewInfoBar.Severity = result.Succeeded ? InfoBarSeverity.Success : InfoBarSeverity.Warning;
+        BetPreviewInfoBar.Message = result.Message;
+        _navigationContext.ConsoleLogService.Log(result.Succeeded ? "LiveBet" : "Warn", result.Message);
+    }
+
     private void SiteSessionService_StateChanged(object? sender, Models.SiteSessionState e)
     {
         ApplySessionState(e);

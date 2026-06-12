@@ -251,6 +251,11 @@ public sealed class AutomationRuntimeServiceTests
             preview = new PlaceBetPreview("Test Site", "Test Strategy", "Dice", "BTC", 0.00000001m, $"Iteration {Calls}");
             return new AutomationCommandResult(true, $"Prepared iteration {Calls}.");
         }
+
+        public Task<AutomationCommandResult> ExecuteLiveBetAsync(CancellationToken cancellationToken = default)
+        {
+            return Task.FromResult(new AutomationCommandResult(false, "Live execution is not used by this fixture."));
+        }
     }
 
     private sealed class InMemorySettingsService(NativeUiSettings settings) : IAppSettingsService
