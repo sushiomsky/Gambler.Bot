@@ -42,7 +42,23 @@
                     </CommandBar>
 
                     <ScrollViewer Grid.Row="1">
-                        <StackPanel x:Name="LoginFieldsPanel" Spacing="12" />
+                        <StackPanel Spacing="16">
+                            <StackPanel Spacing="6">
+                                <TextBlock FontWeight="SemiBold" Text="Currency for live login" />
+                                <ComboBox
+                                    x:Name="CurrencyComboBox"
+                                    MaxWidth="480"
+                                    HorizontalAlignment="Stretch"
+                                    PlaceholderText="Select currency"
+                                    SelectionChanged="CurrencyComboBox_SelectionChanged" />
+                                <TextBlock
+                                    x:Name="CurrencyHintText"
+                                    Foreground="{ThemeResource MutedTextBrush}"
+                                    Text="Choose the balance/currency the site should load before live betting."
+                                    TextWrapping="Wrap" />
+                            </StackPanel>
+                            <StackPanel x:Name="LoginFieldsPanel" Spacing="12" />
+                        </StackPanel>
                     </ScrollViewer>
                 </Grid>
             </Border>

@@ -10,6 +10,7 @@ public sealed partial class LoginPage : Page
 {
     private NavigationContext? _navigationContext;
     private LoginProfile? _profile;
+    private bool _isLoadingCurrencyChoices;
 
     public LoginPage()
     {
@@ -88,6 +89,17 @@ public sealed partial class LoginPage : Page
         }
     }
 
+    private void CurrencyComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (_isLoadingCurrencyChoices || _profile is null || CurrencyComboBox.SelectedItem is not string selectedCurrency)
+        {
+            return;
+        }
+
+        _profile.SelectedCurrency = selectedCurrency;
+        CurrencyHintText.Text = $"Live login will load the {selectedCurrency} balance for {_profile.Site.Name}.";
+    }
+
     private void LoadProfile()
     {
         var site = _navigationContext?.SiteSessionService.Current.SelectedSite;
@@ -105,6 +117,7 @@ public sealed partial class LoginPage : Page
         }
 
         LoginSubtitleText.Text = $"Preparing login for {_profile.Site.Name}.";
+        RenderCurrencyChoices(_profile);
         RenderLoginFields(_profile);
         NormalLoginText.Text = _profile.SupportsNormalLogin ? "Normal login available" : "Normal login unavailable";
         BrowserLoginText.Text = _profile.SupportsBrowserLogin ? "Browser login available" : "Browser login unavailable";
@@ -164,10 +177,36 @@ public sealed partial class LoginPage : Page
         }
     }
 
+    private void RenderCurrencyChoices(LoginProfile profile)
+    {
+        _isLoadingCurrencyChoices = true;
+        CurrencyComboBox.ItemsSource = profile.CurrencyChoices;
+        CurrencyComboBox.IsEnabled = profile.CurrencyChoices.Count > 0;
+
+        var selectedCurrency = profile.CurrencyChoices.FirstOrDefault(currency =>
+            string.Equals(currency, profile.SelectedCurrency, StringComparison.OrdinalIgnoreCase));
+
+        CurrencyComboBox.SelectedItem = selectedCurrency ?? profile.CurrencyChoices.FirstOrDefault();
+        if (CurrencyComboBox.SelectedItem is string currency)
+        {
+            profile.SelectedCurrency = currency;
+            CurrencyHintText.Text = $"Live login will load the {currency} balance for {profile.Site.Name}.";
+        }
+        else
+        {
+            CurrencyHintText.Text = "This site did not report selectable currencies.";
+        }
+
+        _isLoadingCurrencyChoices = false;
+    }
+
     private void ShowNoProfile()
     {
         LoginSubtitleText.Text = "Select a site before preparing login.";
         LoginFieldsPanel.Children.Clear();
+        CurrencyComboBox.ItemsSource = null;
+        CurrencyComboBox.IsEnabled = false;
+        CurrencyHintText.Text = "Select a site to choose the live-login currency.";
         MirrorText.Text = "";
         LoginInfoBar.Severity = InfoBarSeverity.Warning;
         LoginInfoBar.Title = "No active site";

@@ -34,6 +34,7 @@ public sealed class LoginPreparationService : ILoginPreparationService
             siteInstance.SupportsNormalLogin,
             siteInstance.SupportsBrowserLogin,
             siteInstance.Mirrors.Count == 0 ? [siteInstance.SiteURL] : siteInstance.Mirrors,
+            siteInstance.Currencies.Any() ? siteInstance.Currencies : site.Currencies,
             fields);
     }
 

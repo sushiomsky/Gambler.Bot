@@ -34,7 +34,28 @@ public sealed class LiveLoginServiceTests
         Assert.Equal(2, catalog.CreatedSites.Count);
         Assert.Equal("https://bad.example", catalog.CreatedSites[0].AttemptedUrl);
         Assert.Equal("https://good.example", catalog.CreatedSites[1].AttemptedUrl);
+        Assert.Equal("DECOY", session.Current.RuntimeSite?.CurrentCurrency);
         Assert.Null(profile.Fields[0].Value);
+    }
+
+    [Fact]
+    public async Task LoginAsyncUsesProfileCurrencyBeforeDefaultSettingsCurrency()
+    {
+        var catalog = new FallbackSiteCatalogService("https://good.example");
+        var session = new SiteSessionService();
+        var service = new LiveLoginService(
+            catalog,
+            session,
+            new StaticSettingsService(defaultCurrency: "BTC"),
+            NullLogger<LiveLoginService>.Instance);
+        var profile = CreateProfile(["https://good.example"], ["DECOY", "BTC"]);
+        profile.SelectedCurrency = "DECOY";
+
+        var result = await service.LoginAsync(profile);
+
+        Assert.True(result.Succeeded);
+        Assert.Contains("using DECOY", result.Message);
+        Assert.Equal("DECOY", session.Current.RuntimeSite?.CurrentCurrency);
     }
 
     [Fact]
@@ -57,13 +78,14 @@ public sealed class LiveLoginServiceTests
         Assert.Null(profile.Fields[0].Value);
     }
 
-    private static LoginProfile CreateProfile(IReadOnlyList<string> mirrors)
+    private static LoginProfile CreateProfile(IReadOnlyList<string> mirrors, IReadOnlyList<string>? currencies = null)
     {
         return new LoginProfile(
             TestData.Site,
             SupportsNormalLogin: true,
             SupportsBrowserLogin: false,
             mirrors,
+            currencies ?? ["DECOY"],
             [
                 new LoginFieldModel
                 {
@@ -103,11 +125,11 @@ public sealed class LiveLoginServiceTests
         }
     }
 
-    private sealed class StaticSettingsService : IAppSettingsService
+    private sealed class StaticSettingsService(string defaultCurrency = "DECOY") : IAppSettingsService
     {
         public Task<NativeUiSettings> LoadAsync(CancellationToken cancellationToken = default)
         {
-            return Task.FromResult(new NativeUiSettings { DefaultCurrency = "DECOY" });
+            return Task.FromResult(new NativeUiSettings { DefaultCurrency = defaultCurrency });
         }
 
         public Task SaveAsync(NativeUiSettings settings, CancellationToken cancellationToken = default)

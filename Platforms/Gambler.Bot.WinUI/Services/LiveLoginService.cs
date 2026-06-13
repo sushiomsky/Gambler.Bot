@@ -58,9 +58,13 @@ public sealed class LiveLoginService : ILiveLoginService
                     return new AutomationCommandResult(false, $"{profile.Site.Name} could not be created from Core.");
                 }
 
-                if (!string.IsNullOrWhiteSpace(settings.DefaultCurrency))
+                var selectedCurrency = string.IsNullOrWhiteSpace(profile.SelectedCurrency)
+                    ? settings.DefaultCurrency
+                    : profile.SelectedCurrency;
+
+                if (!string.IsNullOrWhiteSpace(selectedCurrency))
                 {
-                    site.CurrentCurrency = settings.DefaultCurrency;
+                    site.CurrentCurrency = selectedCurrency.Trim().ToUpperInvariant();
                 }
 
                 var parameters = site.LoginParams
@@ -78,7 +82,7 @@ public sealed class LiveLoginService : ILiveLoginService
                     if (success)
                     {
                         _siteSessionService.SetLiveConnected(profile.Site, site);
-                        return new AutomationCommandResult(true, $"{profile.Site.Name} login succeeded via {mirror}.");
+                        return new AutomationCommandResult(true, $"{profile.Site.Name} login succeeded via {mirror} using {site.CurrentCurrency}.");
                     }
 
                     failures.Add(mirror);

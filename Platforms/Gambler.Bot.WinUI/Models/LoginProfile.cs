@@ -5,4 +5,8 @@ public sealed record LoginProfile(
     bool SupportsNormalLogin,
     bool SupportsBrowserLogin,
     IReadOnlyList<string> Mirrors,
-    IReadOnlyList<LoginFieldModel> Fields);
+    IReadOnlyList<string> CurrencyChoices,
+    IReadOnlyList<LoginFieldModel> Fields)
+{
+    public string SelectedCurrency { get; set; } = CurrencyChoices.FirstOrDefault() ?? Site.Currencies.FirstOrDefault() ?? string.Empty;
+}

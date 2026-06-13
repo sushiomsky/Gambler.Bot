@@ -115,6 +115,7 @@ The Login page is generated from the active Core site's login metadata.
 
 Field behavior:
 
+- `Currency for live login` selects the site balance/currency that Core should load before live betting.
 - normal fields are shown as text boxes,
 - secret fields and MFA codes are shown as password boxes,
 - secret values are cleared from the login model after every login attempt.
@@ -125,7 +126,7 @@ Available actions:
 - `Use simulation`: activates the active site without real login.
 - `Live login`: attempts a real Core site login.
 
-DuckDice normal login requires only the `API Key` field. A username is not required. The native login flow tries the configured mirrors in order and can fall back to another DuckDice domain if one mirror is blocked.
+DuckDice normal login requires only the `API Key` field. A username is not required. Select `DECOY` in `Currency for live login` before connecting when you want to use the DECOY balance. The native login flow tries the configured mirrors in order and can fall back to another DuckDice domain if one mirror is blocked.
 
 ## Strategies
 
