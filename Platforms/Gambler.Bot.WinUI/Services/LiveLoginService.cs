@@ -25,13 +25,6 @@ public sealed class LiveLoginService : ILiveLoginService
 
     public async Task<AutomationCommandResult> LoginAsync(LoginProfile profile, CancellationToken cancellationToken = default)
     {
-        var site = _siteCatalogService.CreateSite(profile.Site);
-        if (site is null)
-        {
-            ClearSensitiveValues(profile);
-            return new AutomationCommandResult(false, $"{profile.Site.Name} could not be created from Core.");
-        }
-
         if (!profile.SupportsNormalLogin)
         {
             ClearSensitiveValues(profile);
@@ -51,30 +44,53 @@ public sealed class LiveLoginService : ILiveLoginService
         try
         {
             var settings = await _settingsService.LoadAsync(cancellationToken);
-            if (!string.IsNullOrWhiteSpace(settings.DefaultCurrency))
-            {
-                site.CurrentCurrency = settings.DefaultCurrency;
-            }
+            var mirrors = profile.Mirrors.Count == 0
+                ? new[] { profile.Site.Url }
+                : profile.Mirrors.Where(mirror => !string.IsNullOrWhiteSpace(mirror)).Distinct(StringComparer.OrdinalIgnoreCase).ToArray();
+            var failures = new List<string>();
 
-            var parameters = site.LoginParams
-                .Select((parameter, index) => new LoginParamValue
+            foreach (var mirror in mirrors)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                var site = _siteCatalogService.CreateSite(profile.Site);
+                if (site is null)
                 {
-                    ParameterId = index,
-                    Param = parameter,
-                    Value = profile.Fields.ElementAtOrDefault(index)?.Value
-                })
-                .ToArray();
+                    return new AutomationCommandResult(false, $"{profile.Site.Name} could not be created from Core.");
+                }
 
-            var url = profile.Mirrors.FirstOrDefault() ?? site.SiteURL;
-            var success = await site.LogIn(url, parameters);
+                if (!string.IsNullOrWhiteSpace(settings.DefaultCurrency))
+                {
+                    site.CurrentCurrency = settings.DefaultCurrency;
+                }
 
-            if (success)
-            {
-                _siteSessionService.SetLiveConnected(profile.Site, site);
-                return new AutomationCommandResult(true, $"{profile.Site.Name} login succeeded.");
+                var parameters = site.LoginParams
+                    .Select((parameter, index) => new LoginParamValue
+                    {
+                        ParameterId = index,
+                        Param = parameter,
+                        Value = profile.Fields.ElementAtOrDefault(index)?.Value
+                    })
+                    .ToArray();
+
+                try
+                {
+                    var success = await site.LogIn(mirror, parameters);
+                    if (success)
+                    {
+                        _siteSessionService.SetLiveConnected(profile.Site, site);
+                        return new AutomationCommandResult(true, $"{profile.Site.Name} login succeeded via {mirror}.");
+                    }
+
+                    failures.Add(mirror);
+                }
+                catch (Exception ex)
+                {
+                    failures.Add($"{mirror}: {ex.Message}");
+                    _logger.LogWarning(ex, "Live login failed for {SiteName} via {Mirror}", profile.Site.Name, mirror);
+                }
             }
 
-            return new AutomationCommandResult(false, $"{profile.Site.Name} login failed.");
+            return new AutomationCommandResult(false, $"{profile.Site.Name} login failed on all mirrors: {string.Join("; ", failures)}.");
         }
         catch (Exception ex)
         {

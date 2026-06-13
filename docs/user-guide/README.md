@@ -125,6 +125,8 @@ Available actions:
 - `Use simulation`: activates the active site without real login.
 - `Live login`: attempts a real Core site login.
 
+DuckDice normal login requires only the `API Key` field. A username is not required. The native login flow tries the configured mirrors in order and can fall back to another DuckDice domain if one mirror is blocked.
+
 ## Strategies
 
 The Strategies page loads strategies from `Gambler.Bot.Strategies`.
@@ -301,6 +303,8 @@ The repository contains a guarded live smoke test for DuckDice. It is intentiona
 - bet direction: high
 
 The test does not place a live bet during normal CI or normal local test runs. It only runs when both a local API key and an explicit confirmation variable are present.
+
+There is also a guarded login-only smoke test for DuckDice. It verifies the API key against the current bot API domains without placing a bet.
 
 Store the API key outside the repository:
 

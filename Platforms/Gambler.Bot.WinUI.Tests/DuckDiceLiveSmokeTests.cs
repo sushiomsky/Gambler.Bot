@@ -15,11 +15,41 @@ public sealed class DuckDiceLiveSmokeTests
     private const decimal BetAmount = 0.01m;
     private const decimal Chance = 49.5m;
     private const string LiveBetConfirmation = "DECOY_0.01_OK";
+    private const string LiveLoginConfirmation = "DUCKDICE_LOGIN_OK";
     private readonly ITestOutputHelper _output;
 
     public DuckDiceLiveSmokeTests(ITestOutputHelper output)
     {
         _output = output;
+    }
+
+    [Fact]
+    public async Task DuckDiceApiKeyCanLoginOnCurrentBotApiDomains()
+    {
+        var apiKey = LoadApiKey();
+        if (string.IsNullOrWhiteSpace(apiKey))
+        {
+            _output.WriteLine("Skipped live DuckDice login test: no API key configured.");
+            return;
+        }
+
+        var confirmation = Environment.GetEnvironmentVariable("GAMBLER_BOT_ENABLE_DUCKDICE_LIVE_LOGIN");
+        if (!string.Equals(confirmation, LiveLoginConfirmation, StringComparison.Ordinal))
+        {
+            _output.WriteLine($"Skipped live DuckDice login test: set GAMBLER_BOT_ENABLE_DUCKDICE_LIVE_LOGIN={LiveLoginConfirmation} to test API login without placing a bet.");
+            return;
+        }
+
+        foreach (var domain in new[] { "https://duckdice.io", "https://duckdice.net" })
+        {
+            var site = CreateDuckDiceSite();
+
+            var loggedIn = await site.LogIn(domain, CreateLogin(apiKey));
+
+            Assert.True(loggedIn, $"DuckDice login failed on {domain}.");
+            Assert.True(site.Stats.Balance >= 0, $"DuckDice {Currency} balance should be available on {domain}.");
+            _output.WriteLine($"DuckDice login succeeded on {domain}; {Currency} balance loaded.");
+        }
     }
 
     [Fact]
@@ -39,21 +69,7 @@ public sealed class DuckDiceLiveSmokeTests
             return;
         }
 
-        var site = new DuckDice(NullLogger.Instance)
-        {
-            CurrentCurrency = Currency
-        };
-        site.OnBrowserBypassRequired = _ => Task.FromResult(new BrowserConfig
-        {
-            Cookies = new CookieContainer(),
-            Headers = new Dictionary<string, string>
-            {
-                ["accept"] = "application/json, text/plain, */*",
-                ["user-agent"] = "Gambler.Bot.WinUI.LiveSmoke/1.0"
-            },
-            UserAgent = "Gambler.Bot.WinUI.LiveSmoke/1.0"
-        });
-        site.OnCFCaptchaBypass = _ => Task.CompletedTask;
+        var site = CreateDuckDiceSite();
 
         var loggedIn = await site.LogIn(site.Mirrors[0], CreateLogin(apiKey));
         Assert.True(loggedIn);
@@ -80,6 +96,26 @@ public sealed class DuckDiceLiveSmokeTests
                 Value = apiKey
             }
         ];
+    }
+
+    private static DuckDice CreateDuckDiceSite()
+    {
+        var site = new DuckDice(NullLogger.Instance)
+        {
+            CurrentCurrency = Currency
+        };
+        site.OnBrowserBypassRequired = _ => Task.FromResult(new BrowserConfig
+        {
+            Cookies = new CookieContainer(),
+            Headers = new Dictionary<string, string>
+            {
+                ["accept"] = "application/json, text/plain, */*",
+                ["user-agent"] = "Gambler.Bot.WinUI.LiveSmoke/1.0"
+            },
+            UserAgent = "Gambler.Bot.WinUI.LiveSmoke/1.0"
+        });
+        site.OnCFCaptchaBypass = _ => Task.CompletedTask;
+        return site;
     }
 
     private static string? LoadApiKey()
